@@ -9,8 +9,8 @@
 *.class
 
 # Generated files
-bin/
-gen/
+TLEShine/bin/
+TLEShine/gen/
 
 # Gradle files
 .gradle/
