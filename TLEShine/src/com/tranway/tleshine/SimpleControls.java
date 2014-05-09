@@ -54,7 +54,7 @@ public class SimpleControls extends Activity {
 
 	private byte[] data = new byte[3];
 	private static final int REQUEST_ENABLE_BT = 1;
-	private static final long SCAN_PERIOD = 2000;
+	private static final long SCAN_PERIOD = 10000;
 
 	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
@@ -400,7 +400,7 @@ public class SimpleControls extends Activity {
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi,
 				final byte[] scanRecord) {
-
+			Log.i(TAG, "device address:" + device.getAddress());
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -415,6 +415,7 @@ public class SimpleControls extends Activity {
 									.toUpperCase(Locale.ENGLISH))) {
 						mDevice = device;
 					}
+					mDevice = device;
 				}
 			});
 		}
