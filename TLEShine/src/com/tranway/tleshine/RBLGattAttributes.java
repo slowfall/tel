@@ -25,13 +25,13 @@ import java.util.HashMap;
 public class RBLGattAttributes {
 	private static HashMap<String, String> attributes = new HashMap<String, String>();
 	public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
-	public static String BLE_SHIELD_TX = "713d0003-503e-4c75-ba94-3148f18d941e";
-	public static String BLE_SHIELD_RX = "713d0002-503e-4c75-ba94-3148f18d941e";
-	public static String BLE_SHIELD_SERVICE = "713d0000-503e-4c75-ba94-3148f18d941e";
+	public static String BLE_SHIELD_TX = "0000fc21-0000-1000-8000-00805f9b34fb";
+	public static String BLE_SHIELD_RX = "0000fc20-0000-1000-8000-00805f9b34fb";
+	public static String BLE_SHIELD_SERVICE = "0000fc00-0000-1000-8000-00805f9b34fb";
 
 	static {
 		// RBL Services.
-		attributes.put("713d0000-503e-4c75-ba94-3148f18d941e",
+		attributes.put("0000fc00-0000-1000-8000-00805f9b34fb",
 				"BLE Shield Service");
 		// RBL Characteristics.
 		attributes.put(BLE_SHIELD_TX, "BLE Shield TX");

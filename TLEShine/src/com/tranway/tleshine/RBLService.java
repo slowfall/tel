@@ -65,22 +65,25 @@ public class RBLService extends Service {
 		public void onConnectionStateChange(BluetoothGatt gatt, int status,
 				int newState) {
 			String intentAction;
+			Log.d(TAG, "onConnectionStateChange : gatt=" + gatt
+					+ ",  newState=" + newState);
 
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				intentAction = ACTION_GATT_CONNECTED;
 				broadcastUpdate(intentAction);
-				Log.i(TAG, "Connected to GATT server.");
+				Log.d(TAG, "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
-				Log.i(TAG, "Attempting to start service discovery:"
+				Log.d(TAG, "Attempting to start service discovery:"
 						+ mBluetoothGatt.discoverServices());
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				intentAction = ACTION_GATT_DISCONNECTED;
-				Log.i(TAG, "Disconnected from GATT server.");
+				Log.d(TAG, "Disconnected from GATT server.");
 				broadcastUpdate(intentAction);
 			}
 		}
 
 		public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+			Log.d(TAG, "onCharacteristicRead :  rssi=" + rssi + ", status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_GATT_RSSI, rssi);
 			} else {
@@ -90,6 +93,7 @@ public class RBLService extends Service {
 
 		@Override
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+			Log.d(TAG, "onCharacteristicRead :  status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
 			} else {
@@ -100,6 +104,8 @@ public class RBLService extends Service {
 		@Override
 		public void onCharacteristicRead(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
+			Log.d(TAG, "onCharacteristicRead : characteristic UUID="
+					+ characteristic.getUuid() + ", status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 			}
@@ -108,6 +114,8 @@ public class RBLService extends Service {
 		@Override
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
+			Log.d(TAG, "onCharacteristicRead : characteristic UUID="
+					+ characteristic.getUuid());
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 		}
 	};

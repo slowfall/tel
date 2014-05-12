@@ -11,6 +11,10 @@
 # Generated files
 TLEShine/bin/
 TLEShine/gen/
+facebook/bin/
+facebook/gen/
+WeiboSDK/bin/
+WeiboSDK/gen/
 
 # Gradle files
 .gradle/
