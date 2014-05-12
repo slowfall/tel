@@ -21,5 +21,11 @@
     <string name="AIText">----</string>
     <string name="connect">Connect</string>
     <string name="loading">Refreshing......</string>
+    <string name="title_activity_select_login">SelectLoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="toast_auth_success">授权成功</string>
+    <string name="toast_auth_failed">授权失败</string>
+    <string name="toast_auth_canceled">取消授权</string>
 </resources>

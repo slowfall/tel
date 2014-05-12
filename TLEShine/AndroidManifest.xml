@@ -34,6 +34,18 @@
         <service
             android:name="com.tranway.tleshine.RBLService"
             android:enabled="true" />
+
+        <activity
+            android:name="com.tranway.tleshine.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.SelectLoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_select_login"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>
