@@ -25,7 +25,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="facebook">facebook</string>
     <string name="toast_auth_success">授权成功</string>
     <string name="toast_auth_failed">授权失败</string>
     <string name="toast_auth_canceled">取消授权</string>
+	<string name="app_id">497906953566757</string>
 </resources>
