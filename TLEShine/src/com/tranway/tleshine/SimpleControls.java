@@ -4,6 +4,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.tranway.tleshine.model.Util;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -400,7 +402,7 @@ public class SimpleControls extends Activity {
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi,
 				final byte[] scanRecord) {
-			Log.i(TAG, "device address:" + device.getAddress());
+			Log.i(TAG, "device address:" + device.getAddress() + ", scanRecord=" + Util.bytesToHex(scanRecord));
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

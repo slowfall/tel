@@ -18,6 +18,8 @@ package com.tranway.tleshine;
 
 import java.util.UUID;
 
+import com.tranway.tleshine.model.Util;
+
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -83,7 +85,7 @@ public class RBLService extends Service {
 		}
 
 		public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-			Log.d(TAG, "onCharacteristicRead :  rssi=" + rssi + ", status=" + status);
+			Log.d(TAG, "onReadRemoteRssi :  rssi=" + rssi + ", status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_GATT_RSSI, rssi);
 			} else {
@@ -93,7 +95,7 @@ public class RBLService extends Service {
 
 		@Override
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-			Log.d(TAG, "onCharacteristicRead :  status=" + status);
+			Log.d(TAG, "onServicesDiscovered :  status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
 			} else {
@@ -105,7 +107,7 @@ public class RBLService extends Service {
 		public void onCharacteristicRead(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
 			Log.d(TAG, "onCharacteristicRead : characteristic UUID="
-					+ characteristic.getUuid() + ", status=" + status);
+					+ characteristic.getUuid() + ", characteristic value=" + Util.bytesToHex(characteristic.getValue()) + ", status=" + status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 			}
@@ -114,8 +116,8 @@ public class RBLService extends Service {
 		@Override
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
-			Log.d(TAG, "onCharacteristicRead : characteristic UUID="
-					+ characteristic.getUuid());
+			Log.d(TAG, "onCharacteristicChanged : characteristic UUID="
+					+ characteristic.getUuid() + ", characteristic value=" + Util.bytesToHex(characteristic.getValue()));
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 		}
 	};
