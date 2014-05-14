@@ -1,6 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.tranway.tleshine.LoginActivity" >
+    tools:context="com.tranway.telshine.loginAndRegister.LoginActivity" >
 
     <!-- Login progress -->
 

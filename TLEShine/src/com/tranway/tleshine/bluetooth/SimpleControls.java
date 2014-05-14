@@ -1,9 +1,10 @@
-package com.tranway.tleshine;
+package com.tranway.tleshine.bluetooth;
 
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.Util;
 
 import android.app.Activity;

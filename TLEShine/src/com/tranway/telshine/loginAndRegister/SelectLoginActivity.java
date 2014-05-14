@@ -1,4 +1,4 @@
-package com.tranway.tleshine;
+package com.tranway.telshine.loginAndRegister;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +18,10 @@ import com.sina.weibo.sdk.auth.WeiboAuth;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.R.id;
+import com.tranway.tleshine.R.layout;
+import com.tranway.tleshine.R.string;
 import com.tranway.tleshine.model.AccessTokenKeeper;
 import com.tranway.tleshine.model.Constants;
 import com.tranway.tleshine.util.SystemUiHider;
@@ -51,7 +55,11 @@ public class SelectLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_select_login);
-
+		
+		setup(savedInstanceState);
+	}
+	
+	private void setup(Bundle savedInstanceState) {
 		// 创建微博实例
 		mWeiboAuth = new WeiboAuth(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
 
@@ -93,6 +101,7 @@ public class SelectLoginActivity extends Activity {
 				onClickLogin();
 			}
 		});
+		
 	}
 
 	@Override

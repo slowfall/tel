@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tranway.tleshine;
+package com.tranway.tleshine.bluetooth;
 
 import java.util.UUID;
 
