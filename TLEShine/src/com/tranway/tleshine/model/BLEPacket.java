@@ -33,13 +33,28 @@ public class BLEPacket {
 			buf[8] = steps[0];
 			buf[9] = steps[1];
 			buf[10] = steps[2];
-			byte checksum = 0x11;
-			buf[11] = checksum;
+			buf[11] = checksum(buf, 11);
 		}
 		return buf;
 	}
 
-	public byte[] toBytes(int i, int length) {
+	public byte[] makeUTCForWrite(boolean isNeedUpdate, long utcTime) {
+		byte[] buf = new byte[7];
+		if (isNeedUpdate) {
+			buf[0] = (byte) 0xE1;
+		} else {
+			buf[0] = (byte) 0xE0;
+		}
+		buf[1] = (byte) 0x01;// Sequence number
+		byte[] utcBytes = toBytes(utcTime, 4);
+		for (int i = 0; i < utcBytes.length; i++) {
+			buf[2 + i] = utcBytes[i];
+		}
+		buf[6] = checksum(buf, 6);
+		return buf;
+	}
+
+	private byte[] toBytes(int i, int length) {
 		byte[] result = new byte[length];
 
 		for (int j = 0; j < length; j++) {
@@ -49,4 +64,22 @@ public class BLEPacket {
 		return result;
 	}
 
+	public byte[] toBytes(long i, int length) {
+		byte[] result = new byte[length];
+
+		for (int j = 0; j < length; j++) {
+			result[j] = (byte) (i >> 8 * (length - j - 1));
+		}
+
+		return result;
+	}
+
+	public byte checksum(byte[] bytes, int length) {
+		int sum = 0;
+		for (int i = 0; i < length; i++) {
+			sum += bytes[i];
+		}
+		int checksum = (sum % 0xFF) ^ 0xFF;
+		return (byte) checksum;
+	}
 }

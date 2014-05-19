@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tranway.telshine.loginAndRegister.SelectLoginActivity" >
+    tools:context="com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity" >
 
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_guide"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/ll_login_btns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -46,5 +47,14 @@
             android:layout_height="wrap_content"
             android:text="@string/register" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_guide_dots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_login_btns"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" />
 
 </RelativeLayout>

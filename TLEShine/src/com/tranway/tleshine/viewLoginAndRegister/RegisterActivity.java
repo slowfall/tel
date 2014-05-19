@@ -1,9 +1,4 @@
-package com.tranway.telshine.loginAndRegister;
-
-import com.tranway.tleshine.R;
-import com.tranway.tleshine.R.id;
-import com.tranway.tleshine.R.layout;
-import com.tranway.tleshine.util.SystemUiHider;
+package com.tranway.tleshine.viewLoginAndRegister;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e. status bar and

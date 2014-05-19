@@ -1,10 +1,4 @@
-package com.tranway.telshine.loginAndRegister;
-
-import com.tranway.tleshine.R;
-import com.tranway.tleshine.R.id;
-import com.tranway.tleshine.R.layout;
-import com.tranway.tleshine.R.menu;
-import com.tranway.tleshine.R.string;
+package com.tranway.tleshine.viewLoginAndRegister;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,6 +14,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.tranway.tleshine.R;
 
 /**
  * Activity which displays a login screen to the user, offering registration as well.

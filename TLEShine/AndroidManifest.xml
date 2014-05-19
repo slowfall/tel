@@ -40,12 +40,12 @@
             android:enabled="true" />
 
         <activity
-            android:name="com.tranway.telshine.loginAndRegister.LoginActivity"
+            android:name="com.tranway.tleshine.viewLoginAndRegister.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.tranway.telshine.loginAndRegister.SelectLoginActivity"
+            android:name="com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_select_login"
             android:theme="@style/FullscreenTheme" >
@@ -57,7 +57,7 @@
             android:value="@string/app_id" />
 
         <activity
-            android:name="com.tranway.telshine.loginAndRegister.RegisterActivity"
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_register"
             android:theme="@style/FullscreenTheme" >
