@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="/WeiboSDK/libs/weibosdkcore.jar"/>
+	<classpathentry kind="lib" path="libs/afinal_0.5.1_bin.jar" sourcepath="libs/afinal_0.5_src.zip"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
