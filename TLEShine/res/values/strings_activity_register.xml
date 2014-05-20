@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="title_activity_register">RegisterActivity</string>
+    <!-- Strings related to register -->
+    <string name="email_invalid">This Email is invalid</string>
+    <string name="password_invalid">The two passwords you entered do not match</string>
+    <string name="register_info_incomplete">The registration information is not complete</string>
+    
+    <string name="register_tips">请简单的介绍一下你自己</string>
+    <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
+
+    <string name="exsit">退出</string>
+    <string name="my_info">我的信息</string>
+    <string name="next">下一步</string>
+    
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="prompt_birthday">生日</string>
+    <string name="prompt_high">身高</string>
+    <string name="prompt_weight">体重</string>
+    
+    <string name="complete">完成</string>
+</resources>

@@ -1,10 +1,9 @@
-package com.tranway.tleshine.viewLoginAndRegister;
+package com.tranway.tleshine.viewSettings;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +16,7 @@ import android.widget.EditText;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 
-public class RegisterActivity extends Activity implements OnClickListener {
+public class RegisterUserInfoActivity extends Activity implements OnClickListener {
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
 	private Button mBackBtn, mNextBtn;
@@ -133,13 +132,9 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private void nextButtonClick() {
 		if (isEmailAvaliable && isPasswordAvaliable) {
+			String email = mEmailTxt.getText().toString();
+			String password = mPwdTxt.getText().toString();
 			// TODO..
-			
-			// String email = mEmailTxt.getText().toString();
-			// String password = mPwdTxt.getText().toString();
-
-			Intent intent = new Intent(this, RegisterUserInfoActivity.class);
-			startActivity(intent);
 		} else {
 			ToastHelper.showToast(R.string.register_info_incomplete);
 		}

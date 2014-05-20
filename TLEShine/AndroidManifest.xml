@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name="com.tranway.tleshine.model.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/redbear"
         android:label="@string/app_name" >
@@ -61,6 +62,22 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_register"
             android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsUserHighActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/CustomWindowTransparent"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsUserWeightActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/CustomWindowTransparent"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
     </application>
 

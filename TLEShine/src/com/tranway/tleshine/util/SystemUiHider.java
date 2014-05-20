@@ -8,7 +8,7 @@ import android.view.View;
  * A utility class that helps with showing and hiding system UI such as the status bar and
  * navigation/system bar. This class uses backward-compatibility techniques described in <a href=
  * "http://developer.android.com/training/backward-compatible-ui/index.html"> Creating
- * Backward-Compatible UIs</a> to ensure that devices running any version of ndroid OS are
+ * Backward-Compatible UIs</a> to ensure that devices running any version of android OS are
  * supported. More specifically, there are separate implementations of this abstract class: for
  * newer devices, {@link #getInstance} will return a {@link SystemUiHiderHoneycomb} instance, while
  * on older devices {@link #getInstance} will return a {@link SystemUiHiderBase} instance.
@@ -76,12 +76,9 @@ public abstract class SystemUiHider {
 	 * The object will be either a {@link SystemUiHiderBase} or {@link SystemUiHiderHoneycomb}
 	 * depending on the device.
 	 * 
-	 * @param activity
-	 *            The activity whose window's system UI should be controlled by this class.
-	 * @param anchorView
-	 *            The view on which {@link View#setSystemUiVisibility(int)} will be called.
-	 * @param flags
-	 *            Either 0 or any combination of {@link #FLAG_FULLSCREEN},
+	 * @param activity The activity whose window's system UI should be controlled by this class.
+	 * @param anchorView The view on which {@link View#setSystemUiVisibility(int)} will be called.
+	 * @param flags Either 0 or any combination of {@link #FLAG_FULLSCREEN},
 	 *            {@link #FLAG_HIDE_NAVIGATION}, and {@link #FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES}.
 	 */
 	public static SystemUiHider getInstance(Activity activity, View anchorView, int flags) {
@@ -156,8 +153,7 @@ public abstract class SystemUiHider {
 		/**
 		 * Called when the system UI visibility has changed.
 		 * 
-		 * @param visible
-		 *            True if the system UI is visible.
+		 * @param visible True if the system UI is visible.
 		 */
 		public void onVisibilityChange(boolean visible);
 	}
