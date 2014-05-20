@@ -58,16 +58,14 @@ public class SimpleControls extends Activity {
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final long SCAN_PERIOD = 10000;
 
-	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+			'b', 'c', 'd', 'e', 'f' };
 
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
-		public void onServiceConnected(ComponentName componentName,
-				IBinder service) {
-			mBluetoothLeService = ((RBLService.LocalBinder) service)
-					.getService();
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				finish();
@@ -86,13 +84,10 @@ public class SimpleControls extends Activity {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Disconnected",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
 				setButtonDisable();
-			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
-					.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Connected",
-						Toast.LENGTH_SHORT).show();
+			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+				Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
 
 				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -109,7 +104,9 @@ public class SimpleControls extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.main);
+		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
 
 		rssiValue = (TextView) findViewById(R.id.rssiValue);
 
@@ -137,11 +134,9 @@ public class SimpleControls extends Activity {
 							} else {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										Toast toast = Toast
-												.makeText(
-														SimpleControls.this,
-														"Couldn't search Ble Shiled device!",
-														Toast.LENGTH_SHORT);
+										Toast toast = Toast.makeText(SimpleControls.this,
+												"Couldn't search Ble Shiled device!",
+												Toast.LENGTH_SHORT);
 										toast.setGravity(0, 0, Gravity.CENTER);
 										toast.show();
 									}
@@ -166,8 +161,7 @@ public class SimpleControls extends Activity {
 		digitalOutBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				byte buf[] = new byte[] { (byte) 0x01, (byte) 0x00, (byte) 0x00 };
 
 				if (isChecked == true)
@@ -184,8 +178,7 @@ public class SimpleControls extends Activity {
 		AnalogInBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				byte[] buf = new byte[] { (byte) 0xA0, (byte) 0x00, (byte) 0x00 };
 
 				if (isChecked == true)
@@ -214,8 +207,7 @@ public class SimpleControls extends Activity {
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				byte[] buf = new byte[] { (byte) 0x03, (byte) 0x00, (byte) 0x00 };
 
 				buf[1] = (byte) servoSeekBar.getProgress();
@@ -241,8 +233,7 @@ public class SimpleControls extends Activity {
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				byte[] buf = new byte[] { (byte) 0x02, (byte) 0x00, (byte) 0x00 };
 
 				buf[1] = (byte) PWMSeekBar.getProgress();
@@ -252,24 +243,20 @@ public class SimpleControls extends Activity {
 			}
 		});
 
-		if (!getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT)
-					.show();
+		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			finish();
 		}
 
 		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = mBluetoothManager.getAdapter();
 		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
 
-		Intent gattServiceIntent = new Intent(SimpleControls.this,
-				RBLService.class);
+		Intent gattServiceIntent = new Intent(SimpleControls.this, RBLService.class);
 		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 	}
 
@@ -278,8 +265,7 @@ public class SimpleControls extends Activity {
 		super.onResume();
 
 		if (!mBluetoothAdapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
 
@@ -302,8 +288,7 @@ public class SimpleControls extends Activity {
 			} else if (data[i] == 0x0B) {
 				int Value;
 
-				Value = ((data[i + 1] << 8) & 0x0000ff00)
-						| (data[i + 2] & 0x000000ff);
+				Value = ((data[i + 1] << 8) & 0x0000ff00) | (data[i + 2] & 0x000000ff);
 
 				AnalogInValue.setText(Value + "");
 			}
@@ -355,13 +340,11 @@ public class SimpleControls extends Activity {
 		setButtonEnable();
 		startReadRssi();
 
-		characteristicTx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
+		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
 		BluetoothGattCharacteristic characteristicRx = gattService
 				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
-		mBluetoothLeService.setCharacteristicNotification(characteristicRx,
-				true);
+		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
 
@@ -398,9 +381,10 @@ public class SimpleControls extends Activity {
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
-		public void onLeScan(final BluetoothDevice device, final int rssi,
-				final byte[] scanRecord) {
-			Log.i(TAG, "device address:" + device.getAddress() + ", scanRecord=" + Util.bytesToHex(scanRecord));
+		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+			Log.i(TAG,
+					"device address:" + device.getAddress() + ", scanRecord="
+							+ Util.bytesToHex(scanRecord));
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -411,8 +395,7 @@ public class SimpleControls extends Activity {
 					}
 					serviceUuid = bytesToHex(serviceUuidBytes);
 					if (stringToUuidString(serviceUuid).equals(
-							RBLGattAttributes.BLE_SHIELD_SERVICE
-									.toUpperCase(Locale.ENGLISH))) {
+							RBLGattAttributes.BLE_SHIELD_SERVICE.toUpperCase(Locale.ENGLISH))) {
 						mDevice = device;
 					}
 					mDevice = device;
@@ -467,8 +450,7 @@ public class SimpleControls extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// User chose not to enable Bluetooth.
-		if (requestCode == REQUEST_ENABLE_BT
-				&& resultCode == Activity.RESULT_CANCELED) {
+		if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
 			finish();
 			return;
 		}
