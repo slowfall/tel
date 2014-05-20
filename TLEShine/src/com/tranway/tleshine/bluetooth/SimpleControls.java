@@ -4,9 +4,6 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.Util;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -26,7 +23,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -35,6 +31,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.Util;
 
 public class SimpleControls extends Activity {
 	private final static String TAG = SimpleControls.class.getSimpleName();
