@@ -20,4 +20,6 @@
     <string name="prompt_weight">体重</string>
     
     <string name="complete">完成</string>
+    
+    <string name="parse_date_exception">很抱歉，程序出现异常</string>
 </resources>

@@ -36,6 +36,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -167,7 +168,8 @@ public class WheelView extends View {
 	/**
 	 * Initializes class data
 	 * 
-	 * @param context the context
+	 * @param context
+	 *            the context
 	 */
 	private void initData(Context context) {
 		gestureDetector = new GestureDetector(context, gestureListener);
@@ -187,7 +189,8 @@ public class WheelView extends View {
 	/**
 	 * Sets wheel adapter
 	 * 
-	 * @param adapter the new wheel adapter
+	 * @param adapter
+	 *            the new wheel adapter
 	 */
 	public void setAdapter(WheelAdapter adapter) {
 		this.adapter = adapter;
@@ -198,7 +201,8 @@ public class WheelView extends View {
 	/**
 	 * Set the the specified scrolling interpolator
 	 * 
-	 * @param interpolator the interpolator
+	 * @param interpolator
+	 *            the interpolator
 	 */
 	public void setInterpolator(Interpolator interpolator) {
 		scroller.forceFinished(true);
@@ -217,7 +221,8 @@ public class WheelView extends View {
 	/**
 	 * Sets count of visible items
 	 * 
-	 * @param count the new count
+	 * @param count
+	 *            the new count
 	 */
 	public void setVisibleItems(int count) {
 		visibleItems = count;
@@ -236,7 +241,8 @@ public class WheelView extends View {
 	/**
 	 * Sets label
 	 * 
-	 * @param newLabel the label to set
+	 * @param newLabel
+	 *            the label to set
 	 */
 	public void setLabel(String newLabel) {
 		if (label == null || !label.equals(newLabel)) {
@@ -249,7 +255,8 @@ public class WheelView extends View {
 	/**
 	 * Adds wheel changing listener
 	 * 
-	 * @param listener the listener
+	 * @param listener
+	 *            the listener
 	 */
 	public void addChangingListener(OnWheelChangedListener listener) {
 		changingListeners.add(listener);
@@ -258,7 +265,8 @@ public class WheelView extends View {
 	/**
 	 * Removes wheel changing listener
 	 * 
-	 * @param listener the listener
+	 * @param listener
+	 *            the listener
 	 */
 	public void removeChangingListener(OnWheelChangedListener listener) {
 		changingListeners.remove(listener);
@@ -267,8 +275,10 @@ public class WheelView extends View {
 	/**
 	 * Notifies changing listeners
 	 * 
-	 * @param oldValue the old wheel value
-	 * @param newValue the new wheel value
+	 * @param oldValue
+	 *            the old wheel value
+	 * @param newValue
+	 *            the new wheel value
 	 */
 	protected void notifyChangingListeners(int oldValue, int newValue) {
 		for (OnWheelChangedListener listener : changingListeners) {
@@ -279,7 +289,8 @@ public class WheelView extends View {
 	/**
 	 * Adds wheel scrolling listener
 	 * 
-	 * @param listener the listener
+	 * @param listener
+	 *            the listener
 	 */
 	public void addScrollingListener(OnWheelScrollListener listener) {
 		scrollingListeners.add(listener);
@@ -288,7 +299,8 @@ public class WheelView extends View {
 	/**
 	 * Removes wheel scrolling listener
 	 * 
-	 * @param listener the listener
+	 * @param listener
+	 *            the listener
 	 */
 	public void removeScrollingListener(OnWheelScrollListener listener) {
 		scrollingListeners.remove(listener);
@@ -324,14 +336,17 @@ public class WheelView extends View {
 	/**
 	 * Sets the current item. Does nothing when index is wrong.
 	 * 
-	 * @param index the item index
-	 * @param animated the animation flag
+	 * @param index
+	 *            the item index
+	 * @param animated
+	 *            the animation flag
 	 */
 	public void setCurrentItem(int index, boolean animated) {
 		if (adapter == null || adapter.getItemsCount() == 0) {
 			return; // throw?
 		}
 		if (index < 0 || index >= adapter.getItemsCount()) {
+			Log.e("WheelView", "set (item=" + index + ") > (max=" + adapter.getItemsCount());
 			if (isCyclic) {
 				while (index < 0) {
 					index += adapter.getItemsCount();
@@ -357,14 +372,16 @@ public class WheelView extends View {
 	/**
 	 * Sets the current item w/o animation. Does nothing when index is wrong.
 	 * 
-	 * @param index the item index
+	 * @param index
+	 *            the item index
 	 */
 	public void setCurrentItem(int index) {
 		setCurrentItem(index, false);
 	}
 
 	/**
-	 * Tests if wheel is cyclic. That means before the 1st item there is shown the last one
+	 * Tests if wheel is cyclic. That means before the 1st item there is shown
+	 * the last one
 	 * 
 	 * @return true if wheel is cyclic
 	 */
@@ -375,7 +392,8 @@ public class WheelView extends View {
 	/**
 	 * Set wheel cyclic flag
 	 * 
-	 * @param isCyclic the flag to set
+	 * @param isCyclic
+	 *            the flag to set
 	 */
 	public void setCyclic(boolean isCyclic) {
 		this.isCyclic = isCyclic;
@@ -404,8 +422,7 @@ public class WheelView extends View {
 		}
 
 		if (valuePaint == null) {
-			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG
-					| Paint.DITHER_FLAG);
+			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
 			// valuePaint.density = getResources().getDisplayMetrics().density;
 			valuePaint.setTextSize(TEXT_SIZE);
 			valuePaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);
@@ -434,7 +451,8 @@ public class WheelView extends View {
 	/**
 	 * Calculates desired height for layout
 	 * 
-	 * @param layout the source layout
+	 * @param layout
+	 *            the source layout
 	 * @return the desired layout height
 	 */
 	private int getDesiredHeight(Layout layout) {
@@ -453,7 +471,8 @@ public class WheelView extends View {
 	/**
 	 * Returns text item by index
 	 * 
-	 * @param index the item index
+	 * @param index
+	 *            the item index
 	 * @return the item or null
 	 */
 	public String getTextItem(int index) {
@@ -546,8 +565,10 @@ public class WheelView extends View {
 	/**
 	 * Calculates control width and creates text layouts
 	 * 
-	 * @param widthSize the input layout width
-	 * @param mode the layout mode
+	 * @param widthSize
+	 *            the input layout width
+	 * @param mode
+	 *            the layout mode
 	 * @return the calculated control width
 	 */
 	private int calculateLayoutWidth(int widthSize, int mode) {
@@ -612,14 +633,16 @@ public class WheelView extends View {
 	/**
 	 * Creates layouts
 	 * 
-	 * @param widthItems width of items layout
-	 * @param widthLabel width of label layout
+	 * @param widthItems
+	 *            width of items layout
+	 * @param widthLabel
+	 *            width of label layout
 	 */
 	private void createLayouts(int widthItems, int widthLabel) {
 		if (itemsLayout == null || itemsLayout.getWidth() > widthItems) {
 			itemsLayout = new StaticLayout(buildText(isScrollingPerformed), itemsPaint, widthItems,
-					widthLabel > 0 ? Layout.Alignment.ALIGN_OPPOSITE
-							: Layout.Alignment.ALIGN_CENTER, 1, ADDITIONAL_ITEM_HEIGHT, false);
+					widthLabel > 0 ? Layout.Alignment.ALIGN_OPPOSITE : Layout.Alignment.ALIGN_CENTER, 1,
+					ADDITIONAL_ITEM_HEIGHT, false);
 		} else {
 			itemsLayout.increaseWidthTo(widthItems);
 		}
@@ -627,8 +650,8 @@ public class WheelView extends View {
 		if (!isScrollingPerformed && (valueLayout == null || valueLayout.getWidth() > widthItems)) {
 			String text = getAdapter() != null ? getAdapter().getItem(currentItem) : null;
 			valueLayout = new StaticLayout(text != null ? text : "", valuePaint, widthItems,
-					widthLabel > 0 ? Layout.Alignment.ALIGN_OPPOSITE
-							: Layout.Alignment.ALIGN_CENTER, 1, ADDITIONAL_ITEM_HEIGHT, false);
+					widthLabel > 0 ? Layout.Alignment.ALIGN_OPPOSITE : Layout.Alignment.ALIGN_CENTER, 1,
+					ADDITIONAL_ITEM_HEIGHT, false);
 		} else if (isScrollingPerformed) {
 			valueLayout = null;
 		} else {
@@ -637,8 +660,8 @@ public class WheelView extends View {
 
 		if (widthLabel > 0) {
 			if (labelLayout == null || labelLayout.getWidth() > widthLabel) {
-				labelLayout = new StaticLayout(label, valuePaint, widthLabel,
-						Layout.Alignment.ALIGN_NORMAL, 1, ADDITIONAL_ITEM_HEIGHT, false);
+				labelLayout = new StaticLayout(label, valuePaint, widthLabel, Layout.Alignment.ALIGN_NORMAL, 1,
+						ADDITIONAL_ITEM_HEIGHT, false);
 			} else {
 				labelLayout.increaseWidthTo(widthLabel);
 			}
@@ -674,7 +697,8 @@ public class WheelView extends View {
 
 		if (itemsLayout == null) {
 			if (itemsWidth == 0) {
-				// calculateLayoutWidth(getMeasuredWidth(), MeasureSpec.EXACTLY);
+				// calculateLayoutWidth(getMeasuredWidth(),
+				// MeasureSpec.EXACTLY);
 				calculateLayoutWidth(getWidth(), MeasureSpec.EXACTLY);
 			} else {
 				createLayouts(itemsWidth, labelWidth);
@@ -697,21 +721,22 @@ public class WheelView extends View {
 	/**
 	 * Draws shadows on top and bottom of control
 	 * 
-	 * @param canvas the canvas for drawing
+	 * @param canvas
+	 *            the canvas for drawing
 	 */
 	private void drawShadows(Canvas canvas) {
 		topShadow.setBounds(0, 0, getWidth(), getHeight() / visibleItems);
 		topShadow.draw(canvas);
 
-		bottomShadow
-				.setBounds(0, getHeight() - getHeight() / visibleItems, getWidth(), getHeight());
+		bottomShadow.setBounds(0, getHeight() - getHeight() / visibleItems, getWidth(), getHeight());
 		bottomShadow.draw(canvas);
 	}
 
 	/**
 	 * Draws value and label layout
 	 * 
-	 * @param canvas the canvas for drawing
+	 * @param canvas
+	 *            the canvas for drawing
 	 */
 	private void drawValue(Canvas canvas) {
 		valuePaint.setColor(VALUE_TEXT_COLOR);
@@ -740,7 +765,8 @@ public class WheelView extends View {
 	/**
 	 * Draws items
 	 * 
-	 * @param canvas the canvas for drawing
+	 * @param canvas
+	 *            the canvas for drawing
 	 */
 	private void drawItems(Canvas canvas) {
 		canvas.save();
@@ -758,12 +784,14 @@ public class WheelView extends View {
 	/**
 	 * Draws rect for current value
 	 * 
-	 * @param canvas the canvas for drawing
+	 * @param canvas
+	 *            the canvas for drawing
 	 */
 	private void drawCenterLine(Canvas canvas) {
 		float center = getHeight() / 2;
 		float offset = getItemHeight() / 2;
-		// centerDrawable.setBounds(0, center - offset, getWidth(), center + offset);
+		// centerDrawable.setBounds(0, center - offset, getWidth(), center +
+		// offset);
 		// centerDrawable.draw(canvas);
 		centerLinePaint.setStrokeWidth(2.0f);
 		canvas.drawLine(0, center - offset, getMeasuredWidth(), center - offset, centerLinePaint);
@@ -786,7 +814,8 @@ public class WheelView extends View {
 	/**
 	 * Scrolls the wheel
 	 * 
-	 * @param delta the scrolling value
+	 * @param delta
+	 *            the scrolling value
 	 */
 	private void doScroll(int delta) {
 		scrollingOffset += delta;
@@ -862,7 +891,8 @@ public class WheelView extends View {
 	/**
 	 * Set next message to queue. Clears queue before.
 	 * 
-	 * @param message the message to set
+	 * @param message
+	 *            the message to set
 	 */
 	private void setNextMessage(int message) {
 		clearMessages();
@@ -916,8 +946,7 @@ public class WheelView extends View {
 		lastScrollY = 0;
 		int offset = scrollingOffset;
 		int itemHeight = getItemHeight();
-		boolean needToIncrease = offset > 0 ? currentItem < adapter.getItemsCount()
-				: currentItem > 0;
+		boolean needToIncrease = offset > 0 ? currentItem < adapter.getItemsCount() : currentItem > 0;
 		if ((isCyclic || needToIncrease) && Math.abs((float) offset) > (float) itemHeight / 2) {
 			if (offset < 0)
 				offset += itemHeight + MIN_DELTA_FOR_SCROLLING;
@@ -957,8 +986,10 @@ public class WheelView extends View {
 	/**
 	 * Scroll the wheel
 	 * 
-	 * @param itemsToSkip items to scroll
-	 * @param time scrolling duration
+	 * @param itemsToSkip
+	 *            items to scroll
+	 * @param time
+	 *            scrolling duration
 	 */
 	public void scroll(int itemsToScroll, int time) {
 		scroller.forceFinished(true);
@@ -968,4 +999,5 @@ public class WheelView extends View {
 		setNextMessage(MESSAGE_SCROLL);
 		startScrolling();
 	}
+
 }

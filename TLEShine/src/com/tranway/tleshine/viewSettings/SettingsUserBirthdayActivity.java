@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.widget.CustomizedBirthdayWheelView;
-import com.tranway.tleshine.widget.CustomizedWeightWheelView;
 
 public class SettingsUserBirthdayActivity extends Activity {
 
@@ -30,15 +29,14 @@ public class SettingsUserBirthdayActivity extends Activity {
 	}
 
 	private void initView() {
-		mBirthdayWheel = (CustomizedBirthdayWheelView) findViewById(R.id.weight_wheel);
+		mBirthdayWheel = (CustomizedBirthdayWheelView) findViewById(R.id.birthday_wheel);
 		Button mCompleteBtn = (Button) findViewById(R.id.btn_complete);
 		mCompleteBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent mIntent = new Intent();
-				// TODO...
-				// mIntent.putExtra(RESPONSE_NAME_VALUE, mBirthdayWheel.);
+				mIntent.putExtra(RESPONSE_NAME_VALUE, mBirthdayWheel.getBirthday());
 				SettingsUserBirthdayActivity.this.setResult(0, mIntent);
 				finish();
 			}

@@ -1,6 +1,7 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,13 +14,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.util.DateUtil;
+import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
 
 public class RegisterUserInfoActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserInfoActivity.class.getSimpleName();
 
-	private TextView mHighTxt, mWeightTxt;
+	private TextView mHighTxt, mWeightTxt, mBirthdayTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mHighTxt.setOnClickListener(this);
 		mWeightTxt = (TextView) findViewById(R.id.txt_weight);
 		mWeightTxt.setOnClickListener(this);
+		mBirthdayTxt = (TextView) findViewById(R.id.txt_birthday);
+		mBirthdayTxt.setOnClickListener(this);
 	}
 
 	private void initTitleView() {
@@ -70,6 +76,10 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			Intent intent2 = new Intent(this, SettingsUserWeightActivity.class);
 			startActivityForResult(intent2, SettingsUserWeightActivity.REQUEST_CODE);
 			break;
+		case R.id.txt_birthday:
+			Intent intent3 = new Intent(this, SettingsUserBirthdayActivity.class);
+			startActivityForResult(intent3, SettingsUserBirthdayActivity.REQUEST_CODE);
+			break;
 		default:
 			break;
 		}
@@ -77,6 +87,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (data == null) {
+			return;
+		}
 		switch (requestCode) {
 		case SettingsUserHighActivity.REQUEST_CODE:
 			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
@@ -87,19 +100,29 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
 			mWeightTxt.setText(weightValueToString(weight));
 			break;
+		case SettingsUserBirthdayActivity.REQUEST_CODE:
+			String birthday = data.getStringExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE);
+			try {
+				String text = DateUtil.getBirthdayByFormatDate(birthday);
+				mBirthdayTxt.setText(text);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				ToastHelper.showToast(R.string.parse_date_exception);
+			}
+			break;
 		default:
 			break;
 		}
 	}
 
 	private String highValueToString(int high) {
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		String s = df.format((float) high / 100) + " 米";
 		return s;
 	}
 
 	private String weightValueToString(int weight) {
-		DecimalFormat df = new DecimalFormat("#.0");
+		DecimalFormat df = new DecimalFormat("#0.0");
 		String s = df.format((float) weight / 10) + " 公斤";
 		return s;
 	}

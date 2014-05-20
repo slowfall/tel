@@ -51,7 +51,8 @@
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:text="@string/male" />
+                    android:text="@string/male"
+                    android:textColor="@android:color/darker_gray" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
@@ -60,7 +61,8 @@
                     android:layout_weight="1.0"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="@string/female" />
+                    android:text="@string/female"
+                    android:textColor="@android:color/darker_gray" />
             </RadioGroup>
 
             <TextView
