@@ -17,6 +17,8 @@ public class UserInfo {
 	private int stride; // Stride(Unit: 1cm); 1byte
 	private int sex; // Sex 0x00:Female 0x01:Male; 1 byte
 	private int stepsTarget; // Steps target; 3 byte
+	private String email; // User register Email
+	private String password; // User register Password
 
 	public UserInfo() {
 
@@ -108,4 +110,26 @@ public class UserInfo {
 	public void setStepsTarget(int stepsTarget) {
 		this.stepsTarget = stepsTarget;
 	}
+
+	/**
+	 * Register email
+	 * 
+	 * @return user register email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 }

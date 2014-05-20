@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,8 +17,11 @@ import android.widget.EditText;
 
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class RegisterActivity extends Activity implements OnClickListener {
+
+	private static final String TAG = RegisterActivity.class.getSimpleName();
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
 	private Button mBackBtn, mNextBtn;
@@ -134,10 +138,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private void nextButtonClick() {
 		if (isEmailAvaliable && isPasswordAvaliable) {
 			// TODO..
-			
-			// String email = mEmailTxt.getText().toString();
-			// String password = mPwdTxt.getText().toString();
 
+			// Assume registration is successful
+			String password = mPwdTxt.getText().toString();
+			String email = mEmailTxt.getText().toString();
+			boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
+			boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, password);
+			Log.d(TAG, "result p = " + p + "  e = " + e);
 			Intent intent = new Intent(this, RegisterUserInfoActivity.class);
 			startActivity(intent);
 		} else {
