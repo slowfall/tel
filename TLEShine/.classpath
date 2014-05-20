@@ -10,13 +10,5 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/WeiboSDK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="F:/android-sdk-windows/platforms/android-19/android.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/F:/android-sdk-windows/docs/reference"/>
-		</attributes>
-		<accessrules>
-			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
-		</accessrules>
-	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
