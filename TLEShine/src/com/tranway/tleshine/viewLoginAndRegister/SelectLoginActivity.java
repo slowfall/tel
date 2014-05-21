@@ -31,7 +31,6 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.AccessTokenKeeper;
 import com.tranway.tleshine.model.Constants;
-import com.tranway.tleshine.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

@@ -19,6 +19,7 @@ public class UserInfo {
 	private int stepsTarget; // Steps target; 3 byte
 	private String email; // User register Email
 	private String password; // User register Password
+	private String birthday; // User register Birthday
 
 	public UserInfo() {
 
@@ -132,4 +133,12 @@ public class UserInfo {
 		this.password = password;
 	}
 
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
 }

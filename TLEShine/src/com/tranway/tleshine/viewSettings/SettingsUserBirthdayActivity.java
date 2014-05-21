@@ -11,6 +11,14 @@ import android.widget.Button;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.widget.CustomizedBirthdayWheelView;
 
+/**
+ * SettingsUserBirthdayActivity is a custom WheelView, used to set the birthday, the returned result
+ * format is 1991-08-19, through startActivityForResult to call the Activity, and through
+ * REQUEST_CODE and RESPONSE_NAME_VALUE to get results.
+ * 
+ * @author shz
+ * 
+ */
 public class SettingsUserBirthdayActivity extends Activity {
 
 	public static final int REQUEST_CODE = 0x1003;

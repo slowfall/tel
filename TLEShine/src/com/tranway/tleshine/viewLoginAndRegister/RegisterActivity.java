@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -139,17 +138,21 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		if (isEmailAvaliable && isPasswordAvaliable) {
 			// TODO..
 
-			// Assume registration is successful
-			String password = mPwdTxt.getText().toString();
-			String email = mEmailTxt.getText().toString();
-			boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
-			boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, password);
-			Log.d(TAG, "result p = " + p + "  e = " + e);
+			// assume register success...
+			saveUserResgiterInfo();
 			Intent intent = new Intent(this, RegisterUserInfoActivity.class);
 			startActivity(intent);
 		} else {
 			ToastHelper.showToast(R.string.register_info_incomplete);
 		}
+	}
+
+	private boolean saveUserResgiterInfo() {
+		String password = mPwdTxt.getText().toString();
+		String email = mEmailTxt.getText().toString();
+		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
+		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
+		return p && e;
 	}
 
 	private void controlNextButton() {

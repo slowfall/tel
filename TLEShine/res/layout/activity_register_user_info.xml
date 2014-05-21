@@ -36,34 +36,30 @@
                 android:gravity="center"
                 android:text="@string/privacy_tips" />
 
-            <RadioGroup
-                android:id="@+id/radio_sex"
-                android:layout_width="match_parent"
+            <com.android.segmented.SegmentedGroup
+                android:id="@+id/group_sex"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:minHeight="80dp"
                 android:orientation="horizontal" >
 
                 <RadioButton
                     android:id="@+id/radio_male"
-                    android:layout_width="0dp"
+                    style="@style/RadioButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:button="@null"
                     android:checked="true"
-                    android:gravity="center"
-                    android:text="@string/male"
-                    android:textColor="@android:color/darker_gray" />
+                    android:text="@string/male" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
-                    android:layout_width="0dp"
+                    style="@style/RadioButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/female"
-                    android:textColor="@android:color/darker_gray" />
-            </RadioGroup>
+                    android:text="@string/female" />
+            </com.android.segmented.SegmentedGroup>
 
             <TextView
                 android:id="@+id/txt_birthday"

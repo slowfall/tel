@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.tranway.tleshine.viewSettings.SettingsUserInfoActivity" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/title_control" />
+
+    <ScrollView
+        android:id="@+id/view_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/include_title"
+        android:background="@android:color/white" >
+
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true" />
+
+            <com.android.segmented.SegmentedGroup
+                android:id="@+id/group_sex"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:minHeight="80dp"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/radio_male"
+                    style="@style/RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:id="@+id/radio_female"
+                    style="@style/RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female" />
+            </com.android.segmented.SegmentedGroup>
+
+            <LinearLayout
+                style="@style/LayoutSquareBorderTop"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/birthday" />
+
+                <TextView
+                    android:id="@+id/txt_birthday"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_birthday" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LayoutSquareBorderMiddle"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/high" />
+
+                <TextView
+                    android:id="@+id/txt_high"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_high" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LayoutSquareBorderBottom"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight" />
+
+                <TextView
+                    android:id="@+id/txt_weight"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_weight" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
