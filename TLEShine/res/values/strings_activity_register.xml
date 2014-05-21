@@ -11,13 +11,18 @@
 
     <string name="exsit">退出</string>
     <string name="my_info">我的信息</string>
-    <string name="next">下一步</string>
+    <string name="next_step">下一步</string>
+    <string name="pre_step">上一步</string>
+    <string name="edit_my_info">编辑我的信息</string>
     
     <string name="male">男性</string>
     <string name="female">女性</string>
-    <string name="prompt_birthday">生日</string>
-    <string name="prompt_high">身高</string>
-    <string name="prompt_weight">体重</string>
+    <string name="birthday">生日</string>
+    <string name="prompt_birthday">请设置您的生日</string>
+    <string name="high">身高</string>
+    <string name="prompt_high">请设置您的身高</string>
+    <string name="weight">体重</string>
+    <string name="prompt_weight">请设置您的体重</string>
     
     <string name="complete">完成</string>
     

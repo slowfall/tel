@@ -9,9 +9,16 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.widget.CustomizedHighWheelView;
 import com.tranway.tleshine.widget.CustomizedWeightWheelView;
 
+/**
+ * SettingsUserWeightActivity is a custom WheelView, used to set the weight, the returned results is
+ * in units of 0.1Kg, through startActivityForResult to call the Activity, and through REQUEST_CODE
+ * and RESPONSE_NAME_VALUE to get results.
+ * 
+ * @author shz
+ * 
+ */
 public class SettingsUserWeightActivity extends Activity {
 
 	public static final int REQUEST_CODE = 0x1002;

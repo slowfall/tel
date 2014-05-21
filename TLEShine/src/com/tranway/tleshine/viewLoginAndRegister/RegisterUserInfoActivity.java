@@ -1,21 +1,23 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.android.segmented.SegmentedGroup;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
-import com.tranway.tleshine.util.DateUtil;
+import com.tranway.tleshine.util.UserInfoOperation;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
@@ -24,6 +26,8 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private static final String TAG = RegisterUserInfoActivity.class.getSimpleName();
 
 	private TextView mHighTxt, mWeightTxt, mBirthdayTxt;
+	private SegmentedGroup mSexGroup;
+	private RadioButton mMaleRadio, mFemaleRadio;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,12 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mWeightTxt.setOnClickListener(this);
 		mBirthdayTxt = (TextView) findViewById(R.id.txt_birthday);
 		mBirthdayTxt.setOnClickListener(this);
+
+		mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
+		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
+		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
+		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
+		Log.d(TAG, "set tint color = " + Color.BLACK);
 	}
 
 	private void initTitleView() {
@@ -52,7 +62,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
 		Button mNextBtn = (Button) findViewById(R.id.btn_right);
-		mNextBtn.setText(R.string.next);
+		mNextBtn.setText(R.string.next_step);
 		mNextBtn.setOnClickListener(this);
 		mNextBtn.setVisibility(View.VISIBLE);
 		mNextBtn.setClickable(false);
@@ -94,16 +104,16 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		case SettingsUserHighActivity.REQUEST_CODE:
 			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
 			Log.d(TAG, "get wheel view high=" + high);
-			mHighTxt.setText(highValueToString(high));
+			mHighTxt.setText(UserInfoOperation.convertHighToString(high));
 			break;
 		case SettingsUserWeightActivity.REQUEST_CODE:
 			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
-			mWeightTxt.setText(weightValueToString(weight));
+			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
 			String birthday = data.getStringExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE);
 			try {
-				String text = DateUtil.getBirthdayByFormatDate(birthday);
+				String text = UserInfoOperation.convertDateToBirthday(birthday);
 				mBirthdayTxt.setText(text);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -115,15 +125,20 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		}
 	}
 
-	private String highValueToString(int high) {
-		DecimalFormat df = new DecimalFormat("#0.00");
-		String s = df.format((float) high / 100) + " 米";
-		return s;
+	private int getUserSelectSex() {
+		int sex = 0x00;
+		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
+			return sex;
+		}
+
+		int check = mSexGroup.getCheckedRadioButtonId();
+		if (check == mMaleRadio.getId()) {
+			sex = 0x00;
+		} else if (check == mFemaleRadio.getId()) {
+			sex = 0x01;
+		}
+
+		return sex;
 	}
 
-	private String weightValueToString(int weight) {
-		DecimalFormat df = new DecimalFormat("#0.0");
-		String s = df.format((float) weight / 10) + " 公斤";
-		return s;
-	}
 }

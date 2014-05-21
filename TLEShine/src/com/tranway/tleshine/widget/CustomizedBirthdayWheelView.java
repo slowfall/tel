@@ -19,16 +19,15 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 	private static final int YEAR_BASE = 1970;
 	// private static final int MONTH_BASE = 1;
 	private static final int DAY_BASE = 1;
-	private String[] monthStrings = { "January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December" };
+	private String[] monthStrings = { "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" };
 	private WheelView mMonthWheel;
 	private WheelView mDayWheel;
 	private WheelView mYearWheel;
 
 	private int default_year = 1990 - YEAR_BASE;
-	private int default_month = 3;
-
-	// private int default_day = 3;
+	private int default_month = 6;
+	private int default_day = 5;
 
 	public CustomizedBirthdayWheelView(Context context) {
 		super(context);
@@ -57,6 +56,7 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 		int maxDay = getMaxDayInMonth(mMonthWheel.getCurrentItem());
 		mDayWheel.setAdapter(new NumericWheelAdapter(DAY_BASE, maxDay, null));
 		mDayWheel.setCyclic(false);
+		mDayWheel.setCurrentItem(default_day);
 
 		mYearWheel = (WheelView) findViewById(R.id.wheel_right);
 		mYearWheel.setAdapter(new NumericWheelAdapter(YEAR_BASE, YEAR_MAX, null));

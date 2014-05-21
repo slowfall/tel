@@ -11,12 +11,15 @@ import com.tranway.tleshine.R;
 
 public class CustomizedWeightWheelView extends LinearLayout {
 
-	private String[] weightUnitArray = { "公斤" };
+	private String[] unitArray = { "公斤" };
 	private WheelView mKgWheel;
 	private WheelView mGWheel;
 	private WheelView mUnitWheel;
 
-	private String[] gStrings; // centimeter string on WheelView
+	private String[] gStrings;
+	private static final int KG_BASE = 10;
+	private int default_kg = 50;
+	private int default_g = 6;
 
 	public CustomizedWeightWheelView(Context context) {
 		super(context);
@@ -30,33 +33,28 @@ public class CustomizedWeightWheelView extends LinearLayout {
 
 	private void initialize() {
 		mKgWheel = (WheelView) findViewById(R.id.wheel_left);
-		mKgWheel.setAdapter(new NumericWheelAdapter(0, 200, null));
-		// meterWheel.setLabel(getString(R.string.number));
-		// meterWheel.setCurrentItem(phoneCount);
+		mKgWheel.setAdapter(new NumericWheelAdapter(KG_BASE, 200, null));
 		mKgWheel.setCyclic(false);
+		mKgWheel.setCurrentItem(default_kg);
 
 		gStrings = gToKgStrings();
 		mGWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mGWheel.setAdapter(new ArrayWheelAdapter<String>(gStrings, gStrings.length));
-		// centimeterWheel.setLabel(getString(R.string.number));
-		// centimeterWheel.setCurrentItem(smsCount);
 		mGWheel.setCyclic(false);
+		mGWheel.setCurrentItem(default_g);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel
-				.setAdapter(new ArrayWheelAdapter<String>(weightUnitArray, weightUnitArray.length));
-		// unitWheel.setLabel(getString(R.string.number));
-		// unitWheel.setCurrentItem(clockCount);
+		mUnitWheel.setAdapter(new ArrayWheelAdapter<String>(unitArray, unitArray.length));
 		mUnitWheel.setCyclic(false);
 	}
 
 	/**
-	 * Get the user setting height value
+	 * Get the user setting weight
 	 * 
-	 * @return return weight, unit is G
+	 * @return return weight, unit is 0.1KG, such as 510*0.1KG
 	 */
 	public int getWeight() {
-		return mKgWheel.getCurrentItem() * 10 + mGWheel.getCurrentItem();
+		return (mKgWheel.getCurrentItem() + KG_BASE) * 10 + mGWheel.getCurrentItem();
 	}
 
 	private String[] gToKgStrings() {

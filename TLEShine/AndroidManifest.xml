@@ -86,6 +86,16 @@
             android:theme="@style/CustomWindowTransparent"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsUserInfoActivity"
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

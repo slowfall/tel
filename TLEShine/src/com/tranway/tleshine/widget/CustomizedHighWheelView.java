@@ -11,19 +11,14 @@ import com.tranway.tleshine.R;
 
 public class CustomizedHighWheelView extends LinearLayout {
 
-	/**
-	 * Units of a user's height
-	 */
-	public enum HighUnit {
-		FOOT, METER
-	}
-
 	private WheelView mMeterWheel;
 	private WheelView mCmWheel;
 	private WheelView mUnitWheel;
 
-	private String[] cmStrings; // centimeter string on WheelView
+	private String[] cmStrings; // WheelView上显示的厘米部分，如 .65
 	private String[] unit = { "米" };
+	private int default_m = 1;
+	private int default_cm = 7;
 
 	public CustomizedHighWheelView(Context context) {
 		super(context);
@@ -38,21 +33,17 @@ public class CustomizedHighWheelView extends LinearLayout {
 	private void initialize() {
 		mMeterWheel = (WheelView) findViewById(R.id.wheel_left);
 		mMeterWheel.setAdapter(new NumericWheelAdapter(0, 2, null));
-		// meterWheel.setLabel(getString(R.string.number));
-		// meterWheel.setCurrentItem(phoneCount);
 		mMeterWheel.setCyclic(false);
+		mMeterWheel.setCurrentItem(default_m);
 
 		cmStrings = cmToMeterStrings();
 		mCmWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mCmWheel.setAdapter(new ArrayWheelAdapter<String>(cmStrings, cmStrings.length));
-		// centimeterWheel.setLabel(getString(R.string.number));
-		// centimeterWheel.setCurrentItem(smsCount);
 		mCmWheel.setCyclic(false);
+		mCmWheel.setCurrentItem(default_cm);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
 		mUnitWheel.setAdapter(new ArrayWheelAdapter<String>(unit, unit.length));
-		// unitWheel.setLabel(getString(R.string.number));
-		// unitWheel.setCurrentItem(clockCount);
 		mUnitWheel.setCyclic(false);
 	}
 
