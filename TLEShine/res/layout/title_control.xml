@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="#FF6633" >
+    android:background="@color/activity_title_bg_color"
+    android:padding="2dp" >
 
     <Button
         android:id="@+id/btn_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:textColor="@color/activity_title_text_color"
+        android:textSize="@dimen/activity_title_btn_size"
         android:visibility="gone" />
 
     <TextView
@@ -18,13 +21,16 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:ellipsize="end"
-        android:textSize="25sp" />
+        android:textColor="@color/activity_title_text_color"
+        android:textSize="@dimen/activity_title_text_size" />
 
     <Button
         android:id="@+id/btn_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:textColor="@color/activity_title_text_color"
+        android:textSize="@dimen/activity_title_btn_size"
         android:visibility="gone" />
 
 </RelativeLayout>

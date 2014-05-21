@@ -12,11 +12,15 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.android.segmented.SegmentedGroup;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfo;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoOperation;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
@@ -29,12 +33,16 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private SegmentedGroup mSexGroup;
 	private RadioButton mMaleRadio, mFemaleRadio;
 
+	private UserInfo userInfo;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_register_user_info);
+
+		userInfo = UserInfoKeeper.readUserInfo(this);
 
 		initView();
 	}
@@ -53,7 +61,18 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
 		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
 		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
-		Log.d(TAG, "set tint color = " + Color.BLACK);
+		mSexGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int arg1) {
+				// TODO Auto-generated method stub
+				if (arg1 == mFemaleRadio.getId()) {
+					userInfo.setSex(UserInfo.SEX_FEMALE);
+				} else {
+					userInfo.setSex(UserInfo.SEX_MALE);
+				}
+			}
+		});
 	}
 
 	private void initTitleView() {
@@ -104,17 +123,22 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		case SettingsUserHighActivity.REQUEST_CODE:
 			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
 			Log.d(TAG, "get wheel view high=" + high);
+			userInfo.setHeight(high);
 			mHighTxt.setText(UserInfoOperation.convertHighToString(high));
 			break;
 		case SettingsUserWeightActivity.REQUEST_CODE:
 			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
+			userInfo.setWeight(weight);
 			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
 			String birthday = data.getStringExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE);
+			userInfo.setBirthday(birthday);
 			try {
 				String text = UserInfoOperation.convertDateToBirthday(birthday);
 				mBirthdayTxt.setText(text);
+				int age = UserInfoOperation.convertDateToAge(birthday);
+				userInfo.setAge(age);
 			} catch (ParseException e) {
 				e.printStackTrace();
 				ToastHelper.showToast(R.string.parse_date_exception);
@@ -125,17 +149,25 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		}
 	}
 
+	private boolean savedUserInfoToSP() {
+		if (userInfo == null) {
+			return false;
+		}
+
+		return UserInfoKeeper.writeUserInfo(this, userInfo);
+	}
+
 	private int getUserSelectSex() {
-		int sex = 0x00;
+		int sex = UserInfo.SEX_FEMALE;
 		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
 			return sex;
 		}
 
 		int check = mSexGroup.getCheckedRadioButtonId();
 		if (check == mMaleRadio.getId()) {
-			sex = 0x00;
+			sex = UserInfo.SEX_MALE;
 		} else if (check == mFemaleRadio.getId()) {
-			sex = 0x01;
+			sex = UserInfo.SEX_FEMALE;
 		}
 
 		return sex;

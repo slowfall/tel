@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -15,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class RegisterActivity extends Activity implements OnClickListener {
@@ -24,9 +21,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
 	private Button mBackBtn, mNextBtn;
-
-	private boolean isEmailAvaliable = false;
-	private boolean isPasswordAvaliable = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,84 +34,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		mEmailTxt = (EditText) findViewById(R.id.email);
-		mEmailTxt.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				String email = mEmailTxt.getText().toString();
-				if (!checkEmailAvailable(email)) {
-					mEmailTxt.setError(getResources().getString(R.string.email_invalid));
-					isEmailAvaliable = false;
-				} else {
-					isEmailAvaliable = true;
-				}
-				controlNextButton();
-			}
-		});
-
 		mPwdTxt = (EditText) findViewById(R.id.password);
-		mPwdTxt.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				String confirmPassword = mConfirmPwdTxt.getText().toString();
-				String password = mPwdTxt.getText().toString();
-				if (!checkPasswordAvailable(password, confirmPassword)) {
-					mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
-					isPasswordAvaliable = false;
-				} else {
-					isPasswordAvaliable = true;
-				}
-				controlNextButton();
-			}
-		});
-
 		mConfirmPwdTxt = (EditText) findViewById(R.id.confirm_password);
-		mConfirmPwdTxt.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				String confirmPassword = mConfirmPwdTxt.getText().toString();
-				String password = mPwdTxt.getText().toString();
-				if (!checkPasswordAvailable(password, confirmPassword)) {
-					mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
-					isPasswordAvaliable = false;
-				} else {
-					isPasswordAvaliable = true;
-				}
-				controlNextButton();
-			}
-		});
 
 		mBackBtn = (Button) findViewById(R.id.btn_back);
 		mBackBtn.setOnClickListener(this);
 		mNextBtn = (Button) findViewById(R.id.btn_next);
 		mNextBtn.setOnClickListener(this);
-		mNextBtn.setClickable(false);
 	}
 
 	@Override
@@ -135,16 +58,33 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private void nextButtonClick() {
-		if (isEmailAvaliable && isPasswordAvaliable) {
-			// TODO..
+		String email = mEmailTxt.getText().toString();
+		String confirmPassword = mConfirmPwdTxt.getText().toString();
+		String password = mPwdTxt.getText().toString();
 
-			// assume register success...
-			saveUserResgiterInfo();
-			Intent intent = new Intent(this, RegisterUserInfoActivity.class);
-			startActivity(intent);
-		} else {
-			ToastHelper.showToast(R.string.register_info_incomplete);
+		if (!checkUserRegisterInfo(email, password, confirmPassword)) {
+			return;
 		}
+		// TODO..
+		// assume register success...
+		saveUserResgiterInfo();
+		Intent intent = new Intent(this, RegisterUserInfoActivity.class);
+		startActivity(intent);
+	}
+
+	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
+		if (!checkEmailAvailable(email)) {
+			mEmailTxt.setError(getResources().getString(R.string.email_invalid));
+			mEmailTxt.requestFocus();
+			return false;
+		}
+		if (!checkPasswordAvailable(pwd, cPwd)) {
+			mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
+			mConfirmPwdTxt.requestFocus();
+			return false;
+		}
+
+		return true;
 	}
 
 	private boolean saveUserResgiterInfo() {
@@ -153,14 +93,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
 		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
 		return p && e;
-	}
-
-	private void controlNextButton() {
-		if (isEmailAvaliable && isPasswordAvaliable) {
-			mNextBtn.setClickable(true);
-		} else {
-			mNextBtn.setClickable(false);
-		}
 	}
 
 	private boolean checkEmailAvailable(String email) {

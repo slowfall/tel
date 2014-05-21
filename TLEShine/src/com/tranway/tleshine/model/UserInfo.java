@@ -11,6 +11,10 @@ public class UserInfo {
 	public static final int USER_INFO_BYTES_LENGTH_NEED_UPDATE = 12;
 	public static final byte NOT_NEED_UPDATE_FLAG = (byte) 0xE0;
 	public static final byte NEED_UPDATE_FLAG = (byte) 0xE1;
+	
+	public static final int SEX_FEMALE = 0x00;
+	public static final int SEX_MALE = 0x01;
+	
 	private int weight; // Weight(Unit: 0.1Kg); 2byte
 	private int age; // Age; 1byte
 	private int height; // Height(Unit: 1cm); 1byte

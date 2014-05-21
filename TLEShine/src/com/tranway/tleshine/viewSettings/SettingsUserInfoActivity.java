@@ -4,7 +4,6 @@ import java.text.ParseException;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.android.segmented.SegmentedGroup;
@@ -40,7 +41,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 		userInfo = UserInfoKeeper.readUserInfo(this);
 
 		initView();
-		updateUserInfo(userInfo);
+		updateUserInfoUI(userInfo);
 	}
 
 	private void initView() {
@@ -58,10 +59,21 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
 		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
 		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
-		Log.d(TAG, "set tint color = " + Color.BLACK);
+		mSexGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int arg1) {
+				// TODO Auto-generated method stub
+				if (arg1 == mFemaleRadio.getId()) {
+					userInfo.setSex(UserInfo.SEX_FEMALE);
+				} else {
+					userInfo.setSex(UserInfo.SEX_MALE);
+				}
+			}
+		});
 	}
 
-	private void updateUserInfo(UserInfo userInfo) {
+	private void updateUserInfoUI(UserInfo userInfo) {
 		if (userInfo == null) {
 			ToastHelper.showToast(R.string.read_user_info_exception);
 			finish();
@@ -77,6 +89,13 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 		}
 		mHighTxt.setText(UserInfoOperation.convertHighToString(userInfo.getHeight()));
 		mWeightTxt.setText(UserInfoOperation.convertWeightToString(userInfo.getWeight()));
+		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
+			mFemaleRadio.setChecked(true);
+			mMaleRadio.setChecked(false);
+		} else {
+			mMaleRadio.setChecked(true);
+			mFemaleRadio.setChecked(false);
+		}
 
 	}
 
@@ -136,6 +155,8 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 			try {
 				String text = UserInfoOperation.convertDateToBirthday(birthday);
 				mBirthdayTxt.setText(text);
+				int age = UserInfoOperation.convertDateToAge(birthday);
+				userInfo.setAge(age);
 			} catch (ParseException e) {
 				e.printStackTrace();
 				ToastHelper.showToast(R.string.parse_date_exception);
@@ -155,16 +176,16 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 	}
 
 	private int getUserSelectSex() {
-		int sex = 0x00;
+		int sex = UserInfo.SEX_FEMALE;
 		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
 			return sex;
 		}
 
 		int check = mSexGroup.getCheckedRadioButtonId();
 		if (check == mMaleRadio.getId()) {
-			sex = 0x00;
+			sex = UserInfo.SEX_MALE;
 		} else if (check == mFemaleRadio.getId()) {
-			sex = 0x01;
+			sex = UserInfo.SEX_FEMALE;
 		}
 
 		return sex;

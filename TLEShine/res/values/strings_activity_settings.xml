@@ -1,4 +1,20 @@
 <resources>
 
+    <string name="settings">设置</string>
+    <string name="account">账户</string>
     <string name="read_user_info_exception">很抱歉，程序读取用户信息失败，请重新尝试</string>
+    <string name="connect_shine">链接 Shine</string>
+    <string name="logout">注销</string>
+    <string name="unit">单位</string>
+    <string name="distance">距离</string>
+    <string name="mile">英里</string>
+    <string name="km">公里</string>
+    <string name="weight">体重</string>
+    <string name="bound">磅</string>
+    <string name="kg">公斤</string>
+    
+    <string name="help_and_privacy">帮助和隐私</string>
+    <string name="support">支持</string>
+	<string name="provision">使用条款</string>
+
 </resources>

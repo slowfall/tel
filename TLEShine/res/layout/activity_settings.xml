@@ -1,0 +1,246 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.tranway.tleshine.viewSettings.SettingsUserInfoActivity" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/title_control" />
+
+    <ScrollView
+        android:id="@+id/view_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/include_title"
+        android:background="@android:color/darker_gray" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="25dp"
+                android:includeFontPadding="false"
+                android:padding="15dp"
+                android:text="@string/account"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/btn_userinfo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:drawableRight="@drawable/arrow"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/my_info"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <Button
+                    android:id="@+id/btn_connect"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/connect_shine"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/logout"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="25dp"
+                android:includeFontPadding="false"
+                android:padding="15dp"
+                android:text="@string/unit"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout_distance"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:addStatesFromChildren="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center_vertical"
+                        android:text="@string/distance"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <com.android.segmented.SegmentedGroup
+                        android:id="@+id/group_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center|right"
+                        android:orientation="horizontal" >
+
+                        <RadioButton
+                            android:id="@+id/radio_mile"
+                            style="@style/RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mile" />
+
+                        <RadioButton
+                            android:id="@+id/radio_km"
+                            style="@style/RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/km" />
+                    </com.android.segmented.SegmentedGroup>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <LinearLayout
+                    android:id="@+id/layout_weight"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:addStatesFromChildren="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center_vertical"
+                        android:text="@string/weight"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <com.android.segmented.SegmentedGroup
+                        android:id="@+id/group_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center|right"
+                        android:orientation="horizontal" >
+
+                        <RadioButton
+                            android:id="@+id/radio_bound"
+                            style="@style/RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bound" />
+
+                        <RadioButton
+                            android:id="@+id/radio_kg"
+                            style="@style/RadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/kg" />
+                    </com.android.segmented.SegmentedGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="25dp"
+                android:includeFontPadding="false"
+                android:padding="15dp"
+                android:text="@string/help_and_privacy"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/white"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/btn_support"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/support"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <Button
+                    android:id="@+id/btn_provision"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/provision"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
