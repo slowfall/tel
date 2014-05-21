@@ -29,13 +29,8 @@
             android:name="com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_select_login"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
 
         <service
@@ -95,6 +90,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewMainTabs.MainTabsActivity"
+            android:label="@string/title_activity_main_tabs" 
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
