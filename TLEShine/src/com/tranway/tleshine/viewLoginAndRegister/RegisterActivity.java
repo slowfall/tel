@@ -78,6 +78,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mEmailTxt.requestFocus();
 			return false;
 		}
+		if(pwd.equals("")) {
+			mPwdTxt.setError(getResources().getString(R.string.password_empty));
+			mPwdTxt.requestFocus();
+			return false;
+		}
 		if (!checkPasswordAvailable(pwd, cPwd)) {
 			mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
 			mConfirmPwdTxt.requestFocus();
@@ -106,7 +111,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean checkPasswordAvailable(String pwd, String confirmPwd) {
-		if (pwd == null || confirmPwd == null || !confirmPwd.equals(pwd)) {
+		if (pwd == null || confirmPwd == null) {
+			return false;
+		}
+		if (!confirmPwd.equals(pwd)) {
+			return false;
+		}
+		if (pwd.equals("")) {
 			return false;
 		}
 
