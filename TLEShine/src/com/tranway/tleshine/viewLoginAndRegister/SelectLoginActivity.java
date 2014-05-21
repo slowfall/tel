@@ -31,14 +31,7 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.AccessTokenKeeper;
 import com.tranway.tleshine.model.Constants;
-import com.tranway.tleshine.util.SystemUiHider;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- * 
- * @see SystemUiHider
- */
 public class SelectLoginActivity extends Activity {
 	private static final String TAG = SelectLoginActivity.class.getSimpleName();
 	/** 微博 Web 授权类，提供登陆等功能 */
@@ -120,6 +113,24 @@ public class SelectLoginActivity extends Activity {
 						onClickLogin();
 					}
 				});
+		
+		findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+				startActivity(intent);
+			}
+		});
 		mPager = (ViewPager) findViewById(R.id.vp_guide);
 		mDotsLayout = (LinearLayout) findViewById(R.id.ll_guide_dots);
 

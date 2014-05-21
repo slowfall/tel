@@ -15,24 +15,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:text="@string/login" />
 
             <com.facebook.widget.LoginButton
                 android:id="@+id/btn_facebook_login"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/com_facebook_button_blue" />
             <!-- android:background="@drawable/com_facebook_button_blue" /> -->
 
             <com.sina.weibo.sdk.widget.LoginButton
@@ -43,6 +45,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register" />
