@@ -100,7 +100,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 	}
 
 	private void initTitleView() {
-		Button mPreBtn = (Button) findViewById(R.id.btn_left);
+		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
 		mPreBtn.setText(R.string.pre_step);
 		mPreBtn.setVisibility(View.VISIBLE);
 		mPreBtn.setOnClickListener(this);
@@ -111,7 +111,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_left:
+		case R.id.btn_title_left:
 			savedUserInfoToSP();
 			finish();
 			break;

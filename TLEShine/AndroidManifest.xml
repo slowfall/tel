@@ -101,6 +101,11 @@
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsGoalActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

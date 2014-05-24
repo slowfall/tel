@@ -16,5 +16,18 @@
     <string name="help_and_privacy">帮助和隐私</string>
     <string name="support">支持</string>
 	<string name="provision">使用条款</string>
+	
+	<string name="setting_goal">设定目标</string>
+	<string name="how_achieve_goal">如何实现目标：</string>
+	<string name="walk">步行</string>
+	<string name="run">跑步</string>
+	<string name="swim">游泳</string>
+	<string name="or">或者</string>
+	<string name="hour">小时</string>
+	<string name="explain_point_num">每天活动的点数</string>
+	<string name="intensity_light">轻量运动</string>
+	<string name="intensity_moderate">适量运动</string>
+	<string name="intensity_strenuous">剧烈运动</string>
+	
 
 </resources>

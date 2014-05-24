@@ -18,7 +18,7 @@ public class CustomizedHighWheelView extends LinearLayout {
 	private String[] cmStrings; // WheelView上显示的厘米部分，如 .65
 	private String[] unit = { "米" };
 	private int default_m = 1;
-	private int default_cm = 7;
+	private int default_cm = 70;
 
 	public CustomizedHighWheelView(Context context) {
 		super(context);

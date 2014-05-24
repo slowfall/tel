@@ -38,7 +38,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button mPreBtn = (Button) findViewById(R.id.btn_left);
+		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
 		mPreBtn.setText(R.string.pre_step);
 		mPreBtn.setVisibility(View.VISIBLE);
 		mPreBtn.setOnClickListener(this);

@@ -1,5 +1,6 @@
 <resources>
 
+    <color name="black">#FF000000</color>
     <color name="black_overlay">#66000000</color>
     
     <color name="border_square_color_gray">#FFC0C0C0</color>
@@ -11,4 +12,5 @@
     <color name="activity_title_text_color">#FFFFFFFF</color>
     <color name="activity_title_bg_color">#FFFF6633</color>
 
+    <color name="layout_achieve_goal_method_bg_color">#FFC0C0C0</color>
 </resources>

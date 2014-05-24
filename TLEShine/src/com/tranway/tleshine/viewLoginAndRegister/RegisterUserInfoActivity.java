@@ -22,6 +22,7 @@ import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoOperation;
+import com.tranway.tleshine.viewSettings.SettingsGoalActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
@@ -76,15 +77,14 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	}
 
 	private void initTitleView() {
-		Button mExsitBtn = (Button) findViewById(R.id.btn_left);
+		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
 		mExsitBtn.setText(R.string.exsit);
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
-		Button mNextBtn = (Button) findViewById(R.id.btn_right);
+		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
 		mNextBtn.setText(R.string.next_step);
 		mNextBtn.setOnClickListener(this);
 		mNextBtn.setVisibility(View.VISIBLE);
-		mNextBtn.setClickable(false);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.my_info);
 	}
@@ -92,10 +92,11 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_left:
+		case R.id.btn_title_left:
 			finish();
 			break;
-		case R.id.btn_right:
+		case R.id.btn_title_right:
+			onNextButtonClick();
 			break;
 		case R.id.txt_high:
 			Intent intent1 = new Intent(this, SettingsUserHighActivity.class);
@@ -148,6 +149,12 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			break;
 		}
 	}
+	
+	private void onNextButtonClick() {
+		savedUserInfoToSP();
+		Intent intent = new Intent(this, SettingsGoalActivity.class);
+		startActivity(intent);
+	}
 
 	private boolean savedUserInfoToSP() {
 		if (userInfo == null) {
@@ -157,20 +164,20 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		return UserInfoKeeper.writeUserInfo(this, userInfo);
 	}
 
-	private int getUserSelectSex() {
-		int sex = UserInfo.SEX_FEMALE;
-		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
-			return sex;
-		}
-
-		int check = mSexGroup.getCheckedRadioButtonId();
-		if (check == mMaleRadio.getId()) {
-			sex = UserInfo.SEX_MALE;
-		} else if (check == mFemaleRadio.getId()) {
-			sex = UserInfo.SEX_FEMALE;
-		}
-
-		return sex;
-	}
+//	private int getUserSelectSex() {
+//		int sex = UserInfo.SEX_FEMALE;
+//		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
+//			return sex;
+//		}
+//
+//		int check = mSexGroup.getCheckedRadioButtonId();
+//		if (check == mMaleRadio.getId()) {
+//			sex = UserInfo.SEX_MALE;
+//		} else if (check == mFemaleRadio.getId()) {
+//			sex = UserInfo.SEX_FEMALE;
+//		}
+//
+//		return sex;
+//	}
 
 }

@@ -1,31 +1,15 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.tranway.tleshine.viewLoginAndRegister.RegisterActivity" >
 
-    <LinearLayout
-        android:id="@+id/register_status"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/login_status_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/login_progress_signing_in"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+        layout="@layout/title_control" />
 
     <ScrollView
         android:id="@+id/register_form"
@@ -38,55 +22,45 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/txt_tips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register" />
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/register_accout_tips"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_middle" />
 
             <EditText
                 android:id="@+id/email"
                 style="@style/edittext_userinfo"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/border_square"
                 android:hint="@string/prompt_email"
                 android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textCursorDrawable="@null" />
 
             <EditText
                 android:id="@+id/password"
                 style="@style/edittext_userinfo"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_square"
                 android:hint="@string/prompt_password"
                 android:imeOptions="actionNext"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
 
             <EditText
                 android:id="@+id/confirm_password"
                 style="@style/edittext_userinfo"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_square"
                 android:hint="@string/prompt_confirm_password"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/ll_control"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:text="back" />
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:text="next" />
-    </RelativeLayout>
-
-</merge>
+</LinearLayout>

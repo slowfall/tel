@@ -7,7 +7,7 @@
     android:padding="2dp" >
 
     <Button
-        android:id="@+id/btn_left"
+        android:id="@+id/btn_title_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -25,7 +25,7 @@
         android:textSize="@dimen/activity_title_text_size" />
 
     <Button
-        android:id="@+id/btn_right"
+        android:id="@+id/btn_title_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
