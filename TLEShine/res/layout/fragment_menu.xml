@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.tranway.tleshine.viewMainTabs.MenuFragment" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_goal"
+            style="@style/button_like_list"
+            android:text="@string/my_goal" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/border_square_color_gray" />
+
+        <Button
+            android:id="@+id/btn_shine"
+            style="@style/button_like_list"
+            android:text="@string/my_shine" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/border_square_color_gray" />
+
+        <Button
+            android:id="@+id/btn_settings"
+            style="@style/button_like_list"
+            android:text="@string/settings" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/border_square_color_gray" />
+    </LinearLayout>
+
+</RelativeLayout>

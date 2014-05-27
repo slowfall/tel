@@ -22,7 +22,6 @@ import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoOperation;
-import com.tranway.tleshine.viewSettings.SettingsGoalActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
@@ -152,7 +151,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	
 	private void onNextButtonClick() {
 		savedUserInfoToSP();
-		Intent intent = new Intent(this, SettingsGoalActivity.class);
+		Intent intent = new Intent(this, RegisterUserGoalActivity.class);
 		startActivity(intent);
 	}
 

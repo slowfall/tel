@@ -21,8 +21,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
-	private Button mBackBtn, mNextBtn;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,6 +84,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
+		if (email.equals("")) {
+			mEmailTxt.setError(getResources().getString(R.string.email_empty));
+			mEmailTxt.requestFocus();
+			return false;
+		}
 		if (!checkEmailAvailable(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_invalid));
 			mEmailTxt.requestFocus();
@@ -116,7 +120,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		if (email == null) {
 			return false;
 		}
-		String regEx = "^([a-z0-9A-Z]+[_-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		// ^([a-z0-9A-Z]+[_-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$
+		String regEx = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(email);
 		return matcher.matches();

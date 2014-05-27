@@ -29,5 +29,8 @@
 	<string name="intensity_moderate">适量运动</string>
 	<string name="intensity_strenuous">剧烈运动</string>
 	
-
+	<string name="cancel">取消</string>
+	<string name="save">保存</string>
+	<string name="my_goal">我的目标</string>
+	<string name="crrent_situation">每天当前情况： </string>
 </resources>

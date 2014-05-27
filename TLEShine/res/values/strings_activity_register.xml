@@ -2,6 +2,7 @@
 
     <string name="title_activity_register">RegisterActivity</string>
     <!-- Strings related to register -->
+    <string name="email_empty">请输入有效的邮箱地址</string>
     <string name="email_invalid">邮箱格式错误</string>
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>

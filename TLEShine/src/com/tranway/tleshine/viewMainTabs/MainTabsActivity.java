@@ -11,7 +11,7 @@ import android.os.Bundle;
 import com.tranway.tleshine.R;
 
 public class MainTabsActivity extends Activity {
-	private static final int TAB_TAG_SETTINGS = 0;
+	private static final int TAB_TAG_MENU = 0;
 	private static final int TAB_TAG_DAY = 1;
 	private static final int TAB_TAG_NIGHT = 2;
 
@@ -30,10 +30,10 @@ public class MainTabsActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 
-		Tab settingsTab = actionBar.newTab();
-		settingsTab.setIcon(R.drawable.ic_launcher);
-		settingsTab.setTag(TAB_TAG_SETTINGS);
-		settingsTab.setTabListener(new MyTabListener(null));
+		Tab menuTab = actionBar.newTab();
+		menuTab.setIcon(R.drawable.ic_launcher);
+		menuTab.setTag(TAB_TAG_MENU);
+		menuTab.setTabListener(new MyTabListener(new MenuFragment()));
 
 		Tab dayTab = actionBar.newTab();
 		dayTab.setIcon(R.drawable.ic_launcher);
@@ -45,7 +45,7 @@ public class MainTabsActivity extends Activity {
 		nightTab.setTag(TAB_TAG_NIGHT);
 		nightTab.setTabListener(new MyTabListener(new NightFragment()));
 
-		actionBar.addTab(settingsTab);
+		actionBar.addTab(menuTab);
 		actionBar.addTab(dayTab);
 		actionBar.addTab(nightTab);
 		actionBar.selectTab(dayTab);
@@ -68,8 +68,8 @@ public class MainTabsActivity extends Activity {
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
 			int tag = (Integer) tab.getTag();
 			switch (tag) {
-			case TAB_TAG_SETTINGS:
-				// TODO goto settings view
+			case TAB_TAG_MENU:
+				ft.replace(R.id.fl_fragment_replace, mFragment);
 				break;
 			case TAB_TAG_DAY:
 			case TAB_TAG_NIGHT:
@@ -84,7 +84,7 @@ public class MainTabsActivity extends Activity {
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 			int tag = (Integer) tab.getTag();
 			switch (tag) {
-			case TAB_TAG_SETTINGS:
+			case TAB_TAG_MENU:
 				// do nothing
 				break;
 			case TAB_TAG_DAY:
