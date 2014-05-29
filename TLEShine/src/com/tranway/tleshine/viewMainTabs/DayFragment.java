@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,12 +24,19 @@ import android.widget.ScrollView;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.PointInfo;
 import com.tranway.tleshine.model.ViewPagerAdapter;
+import com.tranway.tleshine.widget.chartview.ChartView;
+import com.tranway.tleshine.widget.chartview.LinearSeries;
+import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
+import com.tranway.tleshine.widget.chartview.LabelAdapter;
+import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
 
 public class DayFragment extends Fragment {
 
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
+
+	private static final float VIEWPAGE_HEIGHT_PERCENT = 0.5f;
 
 	// private JazzyViewPager mPager;
 	private ViewPager mViewPager;
@@ -59,17 +67,27 @@ public class DayFragment extends Fragment {
 	private void initView(View v) {
 		Rect rect = new Rect();
 		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top;
+		int statusHeight = rect.top - 50;
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
+
+		mScrollView = (ScrollView) v.findViewById(R.id.scrollview);
+
+		initViewPagerLayout(v, displayWidth, displayHeight);
+		initChatLayout(v, displayWidth, displayHeight, statusHeight);
+
+	}
+
+	private void initViewPagerLayout(View v, int displayWidth, int displayHeight) {
 		mViewPager = (ViewPager) v.findViewById(R.id.viewpager);
 		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mList);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(mList.size());
 		// 设置ViewPager的width和height，width = 屏幕宽度*2/3，height = 屏幕高度*3/5
-		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3, displayHeight / 2);
+		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
+				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
 		mViewPager.setLayoutParams(params);
 		mViewPager.setCurrentItem(mList.size() - 1);
 		mPagerLayout = (LinearLayout) v.findViewById(R.id.layout_viewpager);
@@ -82,18 +100,12 @@ public class DayFragment extends Fragment {
 				return mViewPager.dispatchTouchEvent(event);
 			}
 		});
+	}
 
+	private void initChatLayout(View v, int displayWidth, int displayHeight, int statusHeight) {
 		mChartLayout = (LinearLayout) v.findViewById(R.id.layout_chart);
-		mScrollView = (ScrollView) v.findViewById(R.id.scrollview);
-		// mScrollView.setOnTouchListener(scrollListener);
-		ViewGroup.LayoutParams chartParams = mChartLayout.getLayoutParams();
-		chartParams.width = displayWidth;
-		chartParams.height = displayHeight - statusHeight;
-		mChartLayout.setLayoutParams(chartParams);
-
 		mScrollBtn = (Button) v.findViewById(R.id.btn_scroll);
 		mScrollBtn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -106,6 +118,35 @@ public class DayFragment extends Fragment {
 				}
 			}
 		});
+
+		ViewGroup.LayoutParams chartLayoutParams = mChartLayout.getLayoutParams();
+		chartLayoutParams.width = displayWidth;
+		chartLayoutParams.height = displayHeight - statusHeight;
+		mChartLayout.setLayoutParams(chartLayoutParams);
+
+		ChartView chartView = (ChartView) v.findViewById(R.id.chart_view);
+		ViewGroup.LayoutParams chartParams = chartView.getLayoutParams();
+		chartParams.width = displayWidth - 40;
+		chartParams.height = displayHeight / 4 + 20;
+		Log.d("-----------", "height = " + chartParams.height);
+		chartView.setLayoutParams(chartParams);
+		chartView.setGridLinesHorizontal(3);
+		chartView.setGridLinesVertical(0);
+		LinearSeries series = new LinearSeries();
+		series.setLineColor(getResources().getColor(R.color.yellow));
+		series.setLineWidth(5);
+		series.addPoint(new LinearPoint(0, 100));
+		series.addPoint(new LinearPoint(6, 140));
+		series.addPoint(new LinearPoint(12, 80));
+		series.addPoint(new LinearPoint(18, 200));
+		series.addPoint(new LinearPoint(24, 100));
+		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
+		// Add chart view data
+		chartView.addSeries(series);
+		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
+		mAdapter.setLabelValues(labels);
+		chartView.setBottomLabelAdapter(mAdapter);
+
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {

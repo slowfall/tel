@@ -34,7 +34,7 @@
             android:id="@+id/layout_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/yellow"
+            android:gravity="center_horizontal"
             android:orientation="vertical" >
 
             <Button
@@ -43,16 +43,17 @@
                 android:layout_height="40dp"
                 android:text="scroll" />
 
-            <TextView
-                android:id="@+id/txt_date"
+            <com.tranway.tleshine.widget.chartview.ChartView
+                xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
+                android:id="@+id/chart_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_big" />
+                android:layout_margin="8dp"
+                chartview:bottomLabelHeight="20dp"
+                chartview:gridLineColor="#C0C0C0"
+                chartview:gridLineWidth="3dp"
+                chartview:gridLinesHorizontal="5"
+                chartview:gridLinesVertical="5" />
         </LinearLayout>
     </LinearLayout>
 
