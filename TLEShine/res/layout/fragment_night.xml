@@ -1,20 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tranway.tleshine.widget.CustomizedScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@android:color/white"
+    android:scrollbars="none" >
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layout_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:text="@string/Servo" />
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Servo" />
+        <LinearLayout
+            android:id="@+id/layout_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:layerType="software"
+            android:orientation="vertical" >
 
-</LinearLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clipChildren="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btn_scroll"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:text="scroll" />
+
+            <com.tranway.tleshine.widget.chartview.ChartView
+                xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
+                android:id="@+id/chart_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                chartview:bottomLabelHeight="20dp"
+                chartview:gridLineColor="#C0C0C0"
+                chartview:gridLineWidth="3dp"
+                chartview:gridLinesHorizontal="5"
+                chartview:gridLinesVertical="5" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.tranway.tleshine.widget.CustomizedScrollView>

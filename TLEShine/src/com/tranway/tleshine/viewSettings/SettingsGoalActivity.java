@@ -74,12 +74,12 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	}
 
 	private void showDayFragment() {
-		FragmentDayGoal fragment = new FragmentDayGoal();
+		DayGoalFragment fragment = new DayGoalFragment();
 		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, fragment).commit();
 	}
 
 	private void showNightFragment() {
-		FragmentNightGoal fragment = new FragmentNightGoal();
+		NightGoalFragment fragment = new NightGoalFragment();
 		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, fragment).commit();
 	}
 

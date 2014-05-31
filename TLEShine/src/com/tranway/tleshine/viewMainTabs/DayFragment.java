@@ -21,14 +21,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.PointInfo;
+import com.tranway.tleshine.model.DailyExercise;
+import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
-import com.tranway.tleshine.widget.chartview.LinearSeries;
-import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
 import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
+import com.tranway.tleshine.widget.chartview.LinearSeries;
+import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
 public class DayFragment extends Fragment {
 
@@ -46,17 +48,29 @@ public class DayFragment extends Fragment {
 	private boolean isScrolling = false;
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
-	private ArrayList<PointInfo> mList = new ArrayList<PointInfo>();
+
+	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
+
+	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_day, container, false);
+		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		for (int i = 0; i <= 6; i++) {
-			PointInfo mInfo = new PointInfo();
-			mInfo.setCurPoint((i + 1) * 10);
-			mInfo.setMaxPoint(100);
-			mInfo.setDate((i + 1) + " 月 " + (i + 2) + " 日 ");
-			mList.add(mInfo);
+			DailyExercise mExercise = new DailyExercise();
+			mExercise.setDate(83834387L); // !!!
+			mExercise.setGoal(1000);
+			mExercise.setAchieve(800);
+			exList.add(mExercise);
+		}
+
+		long ret = dbManager.addDailyExerciseInfo(exList);
+		if (ret != -1) {
+			mList.addAll(dbManager.queryDailyExerciseInfo());
+			for (DailyExercise ex : mList) {
+				Log.d("------", "date : " + ex.getDate());
+			}
 		}
 
 		initView(v);

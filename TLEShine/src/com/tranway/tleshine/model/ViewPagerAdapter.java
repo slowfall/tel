@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +16,11 @@ import com.tranway.tleshine.widget.RoundProgressBar;
 public class ViewPagerAdapter extends PagerAdapter {
 
 	private LayoutInflater mInflater;
-	// private ViewPager mPager;
-	// private Context context;
-	private ArrayList<PointInfo> mList;
+	private ArrayList<DailyExercise> mList;
 	private int position;
 
-	public ViewPagerAdapter(Context context, ViewPager mPager, ArrayList<PointInfo> mList) {
+	public ViewPagerAdapter(Context context, ViewPager mPager, ArrayList<DailyExercise> mList) {
 		mInflater = LayoutInflater.from(context);
-		// this.context = context;
-		// this.mPager = mPager;
 		this.mList = mList;
 	}
 
@@ -42,11 +37,9 @@ public class ViewPagerAdapter extends PagerAdapter {
 		holder.mProgress = (RoundProgressBar) view.findViewById(R.id.progress);
 		holder.mTimeTxt = (TextView) view.findViewById(R.id.txt_date);
 
-		PointInfo info = mList.get(position);
-		holder.mProgress.setProgress(info.getCurPoint(), info.getMaxPoint());
-		holder.mTimeTxt.setText(info.getDate());
-		Log.d("------", "position = " + position + "; date = " + info.getDate() + ";cur = " + info.getCurPoint()
-				+ "; max = " + info.getMaxPoint());
+		DailyExercise ex = mList.get(position);
+		holder.mProgress.setProgress(ex.getAchieve(), ex.getGoal());
+		holder.mTimeTxt.setText(String.valueOf(ex.getDate()));
 
 		container.addView(view);
 		return view;
