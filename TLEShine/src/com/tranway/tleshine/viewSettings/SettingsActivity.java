@@ -14,8 +14,6 @@ import com.tranway.tleshine.R;
 public class SettingsActivity extends Activity implements OnClickListener {
 	private static final String TAG = SettingsActivity.class.getSimpleName();
 
-	// private SegmentedGroup mDistanceGroup, mWeightGroup;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,7 +26,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 	private void initView() {
 		initTitleView();
-		
+
 		findViewById(R.id.btn_userinfo).setOnClickListener(this);
 		findViewById(R.id.btn_connect).setOnClickListener(this);
 		findViewById(R.id.btn_logout).setOnClickListener(this);
@@ -38,7 +36,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button mPreBtn = (Button) findViewById(R.id.btn_left);
+		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
 		mPreBtn.setText(R.string.pre_step);
 		mPreBtn.setVisibility(View.VISIBLE);
 		mPreBtn.setOnClickListener(this);
@@ -48,10 +46,13 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()) {
+		switch (v.getId()) {
 		case R.id.btn_userinfo:
 			Intent intent = new Intent(this, SettingsUserInfoActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.btn_title_left:
+			finish();
 			break;
 		}
 	}

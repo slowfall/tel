@@ -14,7 +14,7 @@ public class BLEPacket {
 				Util.logE(TAG, "need update, user info can not be null.");
 				return new byte[1];
 			}
-			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NOT_NEED_UPDATE];
+			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NEED_UPDATE];
 			buf[0] = UserInfo.NEED_UPDATE_FLAG;
 			buf[1] = (byte) 0x01; // Sequence number
 			byte[] weight = toBytes(userInfo.getWeight(), 2);
@@ -28,12 +28,13 @@ public class BLEPacket {
 			buf[8] = steps[0];
 			buf[9] = steps[1];
 			buf[10] = steps[2];
-			buf[11] = checksum(buf, 11);
+			buf[11] = checksum(buf, buf.length - 1);
 		} else {
-			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NEED_UPDATE];
+			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NOT_NEED_UPDATE];
 			buf[0] = UserInfo.NOT_NEED_UPDATE_FLAG;
 			buf[1] = (byte) 0x01; // Sequence number
 			buf[2] = (byte) 0x00; // 0x00:Succeed 0x01:Failed
+			buf[3] = checksum(buf, buf.length - 2);
 		}
 		return buf;
 	}

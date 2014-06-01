@@ -31,11 +31,6 @@
             android:label="@string/title_activity_select_login"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -102,8 +97,23 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsGoalActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.tranway.tleshine.BLEConnectActivity"
             android:label="@string/title_activity_bleconnect" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

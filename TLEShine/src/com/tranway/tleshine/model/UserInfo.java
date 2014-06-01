@@ -47,6 +47,9 @@ public class UserInfo {
 		return weight;
 	}
 
+	/**
+	 * @param weight (Unit: 0.1Kg); 2byte
+	 */
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
@@ -73,6 +76,9 @@ public class UserInfo {
 		return height;
 	}
 
+	/**
+	 * @param height (Unit: 1cm);
+	 */
 	public void setHeight(int height) {
 		this.height = height;
 	}
@@ -86,6 +92,9 @@ public class UserInfo {
 		return stride;
 	}
 
+	/**
+	 * @param stride (Unit: 1cm); 1byte
+	 */
 	public void setStride(int stride) {
 		this.stride = stride;
 	}
@@ -99,6 +108,9 @@ public class UserInfo {
 		return sex;
 	}
 
+	/**
+	 * @param sex 0x00:Female 0x01:Male; 1 byte
+	 */
 	public void setSex(int sex) {
 		this.sex = sex;
 	}

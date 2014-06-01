@@ -61,21 +61,39 @@
                     android:text="@string/female" />
             </com.android.segmented.SegmentedGroup>
 
-            <TextView
-                android:id="@+id/txt_birthday"
-                style="@style/textview_userinfo"
-                android:layout_marginTop="20dp"
-                android:hint="@string/prompt_birthday" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_square"
+                android:orientation="vertical"
+                android:padding="10dp" >
 
-            <TextView
-                android:id="@+id/txt_high"
-                style="@style/textview_userinfo"
-                android:hint="@string/prompt_high" />
+                <TextView
+                    android:id="@+id/txt_birthday"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_birthday" />
 
-            <TextView
-                android:id="@+id/txt_weight"
-                style="@style/textview_userinfo"
-                android:hint="@string/prompt_weight" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/border_square_color_gray" />
+
+                <TextView
+                    android:id="@+id/txt_high"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_high" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/border_square_color_gray" />
+
+                <TextView
+                    android:id="@+id/txt_weight"
+                    style="@style/textview_userinfo"
+                    android:hint="@string/prompt_weight" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

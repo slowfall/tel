@@ -10,5 +10,43 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
-
+    
+    <declare-styleable name="RoundProgressBar">
+        <attr name="roundColor" format="color" />				<!-- 圆形底色 --> 
+        <attr name="roundProgressColor" format="color" />		<!-- 圆形进度颜色 --> 
+        <attr name="roundWidth" format="dimension"></attr>		<!-- 宽度 --> 
+        <attr name="textCurrentColor" format="color" />			<!-- 当前进度字体颜色 --> 
+        <attr name="textTotalColor" format="color" />			<!-- 总进度字体颜色 --> 
+        <attr name="textCurrentSize" format="dimension" />		<!-- 当前进度字体大小 --> 
+        <attr name="textTotalSize" format="dimension" />		<!-- 总进度字体大小 --> 
+        <attr name="max" format="integer"></attr>				<!-- 最大进度值 --> 
+        <attr name="textIsDisplayable" format="boolean"></attr>	<!-- 是否显示文本 --> 
+        <attr name="style">										<!-- 进度样式 --> 
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+    </declare-styleable>
+    
+       <declare-styleable name="TextView">
+        <attr name="textStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="black" value="8" />
+            <flag name="condensed" value="16" />
+            <flag name="light" value="32" />
+            <flag name="medium" value="64" />
+            <flag name="thin" value="128" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ChartView">
+        <attr name="gridLineColor" format="reference|color" />
+        <attr name="gridLineWidth" format="reference|dimension" />
+        <attr name="gridLinesHorizontal" format="reference|integer" />
+        <attr name="gridLinesVertical" format="reference|integer" />
+        <attr name="leftLabelWidth" format="reference|dimension" />
+        <attr name="topLabelHeight" format="reference|dimension" />
+        <attr name="rightLabelWidth" format="reference|dimension" />
+        <attr name="bottomLabelHeight" format="reference|dimension" />
+    </declare-styleable>
 </resources>

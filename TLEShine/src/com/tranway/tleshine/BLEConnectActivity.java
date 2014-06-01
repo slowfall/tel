@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
 import com.tranway.tleshine.model.MyApplication;
+import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 
@@ -187,6 +188,13 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		switch (type) {
 		//User Info command
 		case 0x01:
+			UserInfo userInfo = new UserInfo();
+			userInfo.setWeight(665);
+			userInfo.setAge(10);
+			userInfo.setHeight(170);
+			userInfo.setStride(90);
+			userInfo.setSex(0);
+			userInfo.setStepsTarget(1000);
 			byte[] info = packet.makeUserInfoForWrite(false, null);
 			characteristicTx.setValue(info);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -244,10 +252,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 							@Override
 							public void run() {
 								mConnectBtn.setEnabled(true);
-								// Intent intent = new
-								// Intent(MyApplication.getAppContext(),
-								// MainTabsActivity.class);
-								// startActivity(intent);
+//								 Intent intent = new
+//								 Intent(MyApplication.getAppContext(),
+//								 MainTabsActivity.class);
+//								 startActivity(intent);
 							}
 						});
 					}

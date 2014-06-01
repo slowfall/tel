@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.UserInfoKeeper;
@@ -20,8 +21,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
-	private Button mBackBtn, mNextBtn;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,23 +33,34 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
+		initTitleView();
+
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);
 		mConfirmPwdTxt = (EditText) findViewById(R.id.confirm_password);
 
-		mBackBtn = (Button) findViewById(R.id.btn_back);
-		mBackBtn.setOnClickListener(this);
-		mNextBtn = (Button) findViewById(R.id.btn_next);
+	}
+
+	private void initTitleView() {
+		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
+		mExsitBtn.setText(R.string.exsit);
+		mExsitBtn.setVisibility(View.VISIBLE);
+		mExsitBtn.setOnClickListener(this);
+		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
+		mNextBtn.setText(R.string.next_step);
 		mNextBtn.setOnClickListener(this);
+		mNextBtn.setVisibility(View.VISIBLE);
+		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		mTitleTxt.setText(R.string.register);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_back:
+		case R.id.btn_title_left:
 			finish();
 			break;
-		case R.id.btn_next:
+		case R.id.btn_title_right:
 			nextButtonClick();
 			break;
 		default:
@@ -73,12 +84,17 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
+		if (email.equals("")) {
+			mEmailTxt.setError(getResources().getString(R.string.email_empty));
+			mEmailTxt.requestFocus();
+			return false;
+		}
 		if (!checkEmailAvailable(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_invalid));
 			mEmailTxt.requestFocus();
 			return false;
 		}
-		if(pwd.equals("")) {
+		if (pwd.equals("")) {
 			mPwdTxt.setError(getResources().getString(R.string.password_empty));
 			mPwdTxt.requestFocus();
 			return false;
@@ -104,7 +120,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		if (email == null) {
 			return false;
 		}
-		String regEx = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		// ^([a-z0-9A-Z]+[_-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$
+		String regEx = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(email);
 		return matcher.matches();
