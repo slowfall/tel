@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.MyApplication;
 
 /**
  * Activity which displays a login screen to the user, offering registration as well.
@@ -96,6 +99,10 @@ public class LoginActivity extends Activity {
 	 * attempt is made.
 	 */
 	public void attemptLogin() {
+		//TODO add login interface, change activity to BLEConnectActivity
+		Intent intent = new Intent(MyApplication.getAppContext(), BLEConnectActivity.class);
+		startActivity(intent);
+		
 		if (mAuthTask != null) {
 			return;
 		}

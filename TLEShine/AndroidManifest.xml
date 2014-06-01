@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="18"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -100,6 +100,10 @@
             android:name="com.tranway.tleshine.viewMainTabs.MainTabsActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.BLEConnectActivity"
+            android:label="@string/title_activity_bleconnect" >
         </activity>
     </application>
 
