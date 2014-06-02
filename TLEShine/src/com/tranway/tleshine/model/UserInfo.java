@@ -14,7 +14,8 @@ public class UserInfo {
 	
 	public static final int SEX_FEMALE = 0x00;
 	public static final int SEX_MALE = 0x01;
-	
+	public static final String PASSWORD = "password";
+	public static final String EMAIL = "email";
 	private int weight; // Weight(Unit: 0.1Kg); 2byte
 	private int age; // Age; 1byte
 	private int height; // Height(Unit: 1cm); 1byte

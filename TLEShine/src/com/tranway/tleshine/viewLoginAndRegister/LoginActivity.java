@@ -1,5 +1,11 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -15,21 +21,30 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.tranway.telshine.database.DBHelper;
+import com.tranway.telshine.database.DBInfo;
 import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.MyApplication;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.UserInfo;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
+import com.tranway.tleshine.model.ToastHelper;
 
 /**
- * Activity which displays a login screen to the user, offering registration as well.
+ * Activity which displays a login screen to the user, offering registration as
+ * well.
  */
 public class LoginActivity extends Activity {
 	/**
-	 * A dummy authentication store containing known user names and passwords. TODO: remove after
-	 * connecting to a real authentication system.
+	 * A dummy authentication store containing known user names and passwords.
+	 * TODO: remove after connecting to a real authentication system.
 	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] { "foo@example.com:hello", "bar@example.com:world" };
-
+	private static final String[] DUMMY_CREDENTIALS = new String[] {
+			"foo@example.com:hello", "bar@example.com:world" };
+	private static final String LOGIN_END_URL = "/checklogin";
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -63,27 +78,30 @@ public class LoginActivity extends Activity {
 		mEmailView.setText(mEmail);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					attemptLogin();
-					return true;
-				}
-				return false;
-			}
-		});
+		mPasswordView
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
+						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+							attemptLogin();
+							return true;
+						}
+						return false;
+					}
+				});
 
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		mLoginFormView = findViewById(R.id.login_form);
 
-		findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				attemptLogin();
-			}
-		});
+		findViewById(R.id.sign_in_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						attemptLogin();
+					}
+				});
 	}
 
 	@Override
@@ -94,15 +112,11 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Attempts to sign in or register the account specified by the login form. If there are form
-	 * errors (invalid email, missing fields, etc.), the errors are presented and no actual login
-	 * attempt is made.
+	 * Attempts to sign in or register the account specified by the login form.
+	 * If there are form errors (invalid email, missing fields, etc.), the
+	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		//TODO add login interface, change activity to BLEConnectActivity
-		Intent intent = new Intent(MyApplication.getAppContext(), BLEConnectActivity.class);
-		startActivity(intent);
-		
 		if (mAuthTask != null) {
 			return;
 		}
@@ -148,10 +162,51 @@ public class LoginActivity extends Activity {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			request(mEmail, mPassword);
 		}
+	}
+
+	private void request(String email, String password) {
+		showProgress(true);
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				showProgress(false);
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						int statusCode = data
+								.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							Intent intent = new Intent(MyApplication
+									.getAppContext(), BLEConnectActivity.class);
+							startActivity(intent);
+							finish();
+						} else {
+							ToastHelper.showToast(
+									R.string.error_incorrect_email_passowrd,
+									Toast.LENGTH_LONG);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				showProgress(false);
+				ToastHelper.showToast(R.string.error_server_return,
+						Toast.LENGTH_SHORT);
+			}
+		});
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put(UserInfo.PASSWORD, password);
+		httpRequest.get(LOGIN_END_URL + "/" + email + "/", data);
 	}
 
 	/**
@@ -163,23 +218,28 @@ public class LoginActivity extends Activity {
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+			int shortAnimTime = getResources().getInteger(
+					android.R.integer.config_shortAnimTime);
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0)
+			mLoginStatusView.animate().setDuration(shortAnimTime)
+					.alpha(show ? 1 : 0)
 					.setListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+							mLoginStatusView.setVisibility(show ? View.VISIBLE
+									: View.GONE);
 						}
 					});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1)
+			mLoginFormView.animate().setDuration(shortAnimTime)
+					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+							mLoginFormView.setVisibility(show ? View.GONE
+									: View.VISIBLE);
 						}
 					});
 		} else {
@@ -191,7 +251,8 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * Represents an asynchronous login/registration task used to authenticate the user.
+	 * Represents an asynchronous login/registration task used to authenticate
+	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
@@ -225,7 +286,8 @@ public class LoginActivity extends Activity {
 			if (success) {
 				finish();
 			} else {
-				mPasswordView.setError(getString(R.string.error_incorrect_password));
+				mPasswordView
+						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
 		}

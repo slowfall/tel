@@ -1,9 +1,5 @@
 package com.tranway.tleshine.model;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,16 +7,7 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,34 +17,31 @@ import android.util.Log;
 
 public class TLEHttpRequest {
 	private static final String LOG_CAT = TLEHttpRequest.class.getSimpleName();
-	private static final String SERVER_ADDRESS = "http://192.168.1.111";
-	private static final int SERVER_PORT = 8080;
+	private static final String SERVER_ADDRESS = "http://113.105.115.30";
+	private static final int SERVER_PORT = 5520;	
 
-	public static final String JSON = "json";
-	public static final String DATA = "data";
-	public static final String STATE = "state";
+	public static final String STATUS = "status";
+	public static final String STATUS_CODE = "statusCode";
 	public static final String MSG = "msg";
-
-	private static final int STATE_SUCCESS = 1;
+	public static final int STATE_SUCCESS = 0;
+	public static final int STATE_FAILED = 1;
 
 	private String mainUrl;
 	private OnHttpRequestListener mListener;
-	private HttpClient httpClient;
 	private FinalHttp finalHttp;
 	private static TLEHttpRequest singleInstance;
-	
+
 	public static TLEHttpRequest instance() {
 		if (singleInstance == null) {
 			singleInstance = new TLEHttpRequest();
 		}
 		return singleInstance;
 	}
-	
+
 	private TLEHttpRequest() {
-		httpClient = new DefaultHttpClient();
 		finalHttp = new FinalHttp();
 		finalHttp.configCookieStore(new BasicCookieStore());
-		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/";
+		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/use";
 	}
 
 	public interface OnHttpRequestListener {
@@ -68,88 +52,6 @@ public class TLEHttpRequest {
 
 	public void setOnHttpRequestListener(OnHttpRequestListener listener) {
 		mListener = listener;
-	}
-
-	public void httpGet(String endUrl) {
-
-	}
-
-	public void httpPost(String endUrl, Map<String, String> data) {
-		if (data == null || data.size() <= 0) {
-			return;
-		}
-
-		new HttpThread(endUrl, data).start();
-	}
-
-	private class HttpThread extends Thread {
-		private String myEndUrl;
-		private Map<String, String> myData;
-
-		public HttpThread(String endUrl, Map<String, String> data) {
-			myEndUrl = endUrl;
-			myData = data;
-		}
-
-		@Override
-		public void run() {
-			String url = mainUrl + myEndUrl;
-			try {
-				// String encodeUrl = URLEncoder.encode(url, HTTP.UTF_8);
-				HttpPost httpPost = new HttpPost(url);
-				Log.d(LOG_CAT, url);
-				List<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
-				for (Entry<String, String> entry : myData.entrySet()) {
-					BasicNameValuePair pair = new BasicNameValuePair(entry.getKey(), entry.getValue());
-					pairs.add(pair);
-				}
-				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
-				HttpResponse response = httpClient.execute(httpPost);
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 200) {
-					HttpEntity entity = response.getEntity();
-					String result = EntityUtils.toString(entity);
-					Log.d(LOG_CAT, result);
-
-					JSONObject json = new JSONObject(result);
-					JSONObject jsonRoot = json.getJSONObject(JSON);
-					String data = jsonRoot.getString(DATA);
-					JSONObject jsonData;
-					if ("".equals(data)) {
-						jsonData = new JSONObject();
-					} else {
-						jsonData = jsonRoot.getJSONObject(DATA);
-					}
-					int state = jsonRoot.getInt(STATE);
-					String msg = jsonRoot.getString(MSG);
-					if (mListener != null) {
-						if (state != STATE_SUCCESS) {
-							mListener.onFailure(myEndUrl, state, msg);
-							return;
-						} else {
-							mListener.onSuccess(myEndUrl, jsonData);
-						}
-					}
-				} else {
-					if (mListener != null) {
-						mListener.onFailure(myEndUrl, statusCode, response.getStatusLine().getReasonPhrase());
-					}
-				}
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			super.run();
-		}
 	}
 
 	public void get(String endUrl, Map<String, String> data) {
@@ -182,7 +84,7 @@ public class TLEHttpRequest {
 		private String myUrl;
 
 		public MyAjaxCallBack(String url) {
-			myUrl = url;			
+			myUrl = url;
 		}
 
 		@Override
@@ -199,24 +101,9 @@ public class TLEHttpRequest {
 			Log.d(LOG_CAT, t);
 			try {
 				JSONObject json = new JSONObject(t);
-				JSONObject jsonRoot = json.getJSONObject(JSON);
-				int state = jsonRoot.getInt(STATE);
-				String msg = jsonRoot.getString(MSG);
-				if (mListener != null) {
-					if (state != STATE_SUCCESS) {
-						mListener.onFailure(myUrl, state, msg);
-						return;
-					} else {
-						String jsonDataStr = jsonRoot.getString(DATA);
-						JSONObject jsonData = null;
-						if (!"".equals(jsonDataStr)) {
-							jsonData = jsonRoot.getJSONObject(DATA);
-						}
-						mListener.onSuccess(myUrl, jsonData);
-					}
-				}
+				mListener.onSuccess(myUrl, json);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				mListener.onFailure(myUrl, STATE_FAILED, "failed");
 				e.printStackTrace();
 			}
 			super.onSuccess(t);

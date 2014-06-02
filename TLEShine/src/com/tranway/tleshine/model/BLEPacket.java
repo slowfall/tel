@@ -7,7 +7,7 @@ public class BLEPacket {
 		// TODO Auto-generated constructor stub
 	}
 
-	public byte[] makeUserInfoForWrite(boolean isNeedUpdate, UserInfo userInfo) {
+	public byte[] makeUserInfoForWrite(boolean isNeedUpdate, byte sequenceNumber, UserInfo userInfo) {
 		byte[] buf;
 		if (isNeedUpdate) {
 			if (userInfo == null) {
@@ -16,7 +16,7 @@ public class BLEPacket {
 			}
 			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NEED_UPDATE];
 			buf[0] = UserInfo.NEED_UPDATE_FLAG;
-			buf[1] = (byte) 0x01; // Sequence number
+			buf[1] = sequenceNumber; // Sequence number
 			byte[] weight = toBytes(userInfo.getWeight(), 2);
 			buf[2] = weight[0];
 			buf[3] = weight[1];
@@ -32,7 +32,7 @@ public class BLEPacket {
 		} else {
 			buf = new byte[UserInfo.USER_INFO_BYTES_LENGTH_NOT_NEED_UPDATE];
 			buf[0] = UserInfo.NOT_NEED_UPDATE_FLAG;
-			buf[1] = (byte) 0x01; // Sequence number
+			buf[1] = sequenceNumber; // Sequence number
 			buf[2] = (byte) 0x00; // 0x00:Succeed 0x01:Failed
 			buf[3] = checksum(buf, buf.length - 2);
 		}
@@ -44,12 +44,14 @@ public class BLEPacket {
 	 *            flag for update time
 	 * @param utcTime
 	 *            UTC time in second
+	 * @param sequenceNumber
+	 * 			  sequence number
 	 * @return UTC time byte array
 	 */
-	public byte[] makeUTCForWrite(boolean isNeedUpdate, long utcTime) {
+	public byte[] makeUTCForWrite(boolean isNeedUpdate, byte sequenceNumber, long utcTime) {
 		byte[] buf = new byte[7];
 		if (isNeedUpdate) {
-			buf[0] = (byte) 0xE1;
+			buf[0] = (byte) 0xE2;
 		} else {
 			buf[0] = (byte) 0xE0;
 		}
@@ -58,7 +60,16 @@ public class BLEPacket {
 		for (int i = 0; i < utcBytes.length; i++) {
 			buf[2 + i] = utcBytes[i];
 		}
-		buf[6] = checksum(buf, 6);
+		buf[6] = checksum(buf, buf.length - 1);
+		return buf;
+	}
+	
+	public byte[] makeReplyACK(byte sequenceNumber) {
+		byte[] buf = new byte[4];
+		buf[0] = (byte) 0xE0;
+		buf[1] = sequenceNumber;
+		buf[2] = (byte) 0x00;
+		buf[3] = checksum(buf, 2);
 		return buf;
 	}
 
