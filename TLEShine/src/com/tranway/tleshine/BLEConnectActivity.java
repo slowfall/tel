@@ -183,10 +183,12 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 	private void handleBLEData(byte[] data) {
 		BLEPacket packet = new BLEPacket();
-		byte mask = (byte)0x0f;
-		int type = data[0] & mask;
+		byte sequenceMask = (byte) 0xf0;
+		byte typeMask = (byte) 0x0f;
+		int type = data[0] & typeMask;
+		byte sequenceNumber = (byte) ((data[0] & sequenceMask) >> 4);
 		switch (type) {
-		//User Info command
+		// User Info command
 		case 0x01:
 			UserInfo userInfo = new UserInfo();
 			userInfo.setWeight(665);
@@ -195,14 +197,15 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			userInfo.setStride(90);
 			userInfo.setSex(0);
 			userInfo.setStepsTarget(1000);
-			byte[] info = packet.makeUserInfoForWrite(false, null);
+			byte[] info = packet.makeUserInfoForWrite(false, sequenceNumber,
+					null);
 			characteristicTx.setValue(info);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
-		//UTC command
+		// UTC command
 		case 0x02:
 			long utcTime = System.currentTimeMillis() / 1000;
-			byte[] utc = packet.makeUTCForWrite(true, utcTime);
+			byte[] utc = packet.makeUTCForWrite(true, sequenceNumber, utcTime);
 			characteristicTx.setValue(utc);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
@@ -252,10 +255,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 							@Override
 							public void run() {
 								mConnectBtn.setEnabled(true);
-//								 Intent intent = new
-//								 Intent(MyApplication.getAppContext(),
-//								 MainTabsActivity.class);
-//								 startActivity(intent);
+								// Intent intent = new
+								// Intent(MyApplication.getAppContext(),
+								// MainTabsActivity.class);
+								// startActivity(intent);
 							}
 						});
 					}

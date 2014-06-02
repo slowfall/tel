@@ -1,0 +1,32 @@
+<resources>
+
+    <string name="title_activity_register">RegisterActivity</string>
+    <!-- Strings related to register -->
+    <string name="email_empty">请输入有效的邮箱地址</string>
+    <string name="email_invalid">邮箱格式错误</string>
+    <string name="password_invalid">两次输入密码不一致</string>
+    <string name="password_empty">请输入密码</string>
+    
+    <string name="register_accout_tips">成为一名 TeKit 用户</string>
+    <string name="register_tips">请简单的介绍一下你自己</string>
+    <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
+
+    <string name="exsit">退出</string>
+    <string name="my_info">我的信息</string>
+    <string name="next_step">下一步</string>
+    <string name="pre_step">上一步</string>
+    <string name="edit_my_info">编辑我的信息</string>
+    
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="birthday">生日</string>
+    <string name="prompt_birthday">请设置您的生日</string>
+    <string name="high">身高</string>
+    <string name="prompt_high">请设置您的身高</string>
+    <string name="weight">体重</string>
+    <string name="prompt_weight">请设置您的体重</string>
+    
+    <string name="complete">完成</string>
+    
+    <string name="parse_date_exception">很抱歉，程序出现异常</string>
+</resources>

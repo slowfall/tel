@@ -30,7 +30,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_select_login"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
         <service
@@ -108,7 +108,8 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.BLEConnectActivity"
-            android:label="@string/title_activity_bleconnect" >
+            android:label="@string/title_activity_bleconnect"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
