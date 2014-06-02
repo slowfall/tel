@@ -150,7 +150,7 @@ public class RBLService extends Service {
 	}
 
 	public class LocalBinder extends Binder {
-		RBLService getService() {
+		public RBLService getService() {
 			return RBLService.this;
 		}
 	}
@@ -305,6 +305,8 @@ public class RBLService extends Service {
 			return;
 		}
 
+		Util.logD(TAG, "writeCharacteristic : characteristic UUID="
+				+ characteristic.getUuid() + ", characteristic value=" + Util.bytesToHex(characteristic.getValue()));
 		mBluetoothGatt.writeCharacteristic(characteristic);
 	}
 

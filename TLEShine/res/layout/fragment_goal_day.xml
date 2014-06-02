@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/crrent_situation"
+            android:text="@string/current_sleep_situation"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_middle" />
 
@@ -24,6 +24,8 @@
             android:id="@+id/txt_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="80dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_middle" />
     </LinearLayout>
@@ -35,8 +37,8 @@
         android:layout_below="@+id/layout_point"
         android:background="@color/border_square_color_gray" />
 
-    <com.tranway.tleshine.widget.CustomizedHighWheelView
-        android:id="@+id/hight_wheel"
+    <com.tranway.tleshine.widget.CustomizedGoalWheelView
+        android:id="@+id/goal_wheel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"

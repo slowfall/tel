@@ -61,7 +61,8 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsUserHighActivity"
@@ -110,6 +111,10 @@
             android:name="com.tranway.tleshine.viewSettings.SettingsGoalActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.BLEConnectActivity"
+            android:label="@string/title_activity_bleconnect" >
         </activity>
     </application>
 

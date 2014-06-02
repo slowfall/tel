@@ -31,23 +31,29 @@ public class MainTabsActivity extends Activity {
 		actionBar.setDisplayShowTitleEnabled(false);
 
 		Tab menuTab = actionBar.newTab();
-		menuTab.setIcon(R.drawable.ic_launcher);
+		menuTab.setIcon(R.drawable.setting);
 		menuTab.setTag(TAB_TAG_MENU);
 		menuTab.setTabListener(new MyTabListener(new MenuFragment()));
 
 		Tab dayTab = actionBar.newTab();
-		dayTab.setIcon(R.drawable.ic_launcher);
+		dayTab.setIcon(R.drawable.target);
 		dayTab.setTag(TAB_TAG_DAY);
 		dayTab.setTabListener(new MyTabListener(new DayFragment()));
 
 		Tab nightTab = actionBar.newTab();
-		nightTab.setIcon(R.drawable.ic_launcher);
+		nightTab.setIcon(R.drawable.sleep);
 		nightTab.setTag(TAB_TAG_NIGHT);
 		nightTab.setTabListener(new MyTabListener(new NightFragment()));
 
+		Tab friendsTab = actionBar.newTab();
+		friendsTab.setIcon(R.drawable.friends);
+		friendsTab.setTag(TAB_TAG_NIGHT);
+		friendsTab.setTabListener(new MyTabListener(new NightFragment()));
+		
 		actionBar.addTab(menuTab);
 		actionBar.addTab(dayTab);
 		actionBar.addTab(nightTab);
+		actionBar.addTab(friendsTab);
 		actionBar.selectTab(dayTab);
 	}
 

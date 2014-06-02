@@ -26,7 +26,7 @@ public class CustomizedScrollView extends ScrollView {
 		// TODO Auto-generated method stub
 		// return super.onInterceptTouchEvent(ev);
 		// return super.onInterceptTouchEvent(ev) &&
-		// gestureDetector.onTouchEvent(ev);
+		gestureDetector.onTouchEvent(ev);
 		return gestureDetector.onTouchEvent(ev);
 	}
 

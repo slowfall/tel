@@ -16,14 +16,13 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.Exercise.Intensity;
 
 public class ExerciseIntensityView extends GridView {
 	private static final String TAG = ExerciseIntensityView.class.getSimpleName();
 
 	private int position = 0;
 	private Context context;
-	private ArrayList<Intensity> mList;
+	private ArrayList<Integer> mList;
 	private GridViewAdapter mAdapter;
 
 	public ExerciseIntensityView(Context context) {
@@ -44,10 +43,10 @@ public class ExerciseIntensityView extends GridView {
 		if (context == null) {
 			return;
 		}
-		mList = new ArrayList<Intensity>();
-		mList.add(Intensity.LIGHT);
-		mList.add(Intensity.MODERATE);
-		mList.add(Intensity.STRENUOUS);
+		mList = new ArrayList<Integer>();
+		mList.add(R.drawable.icon_achieve_goal_method);
+		mList.add(R.drawable.icon_achieve_goal_method);
+		mList.add(R.drawable.icon_achieve_goal_method);
 		mAdapter = new GridViewAdapter(context, mList);
 		this.setAdapter(mAdapter);
 	}
@@ -75,11 +74,10 @@ public class ExerciseIntensityView extends GridView {
 		}
 	}
 
-	public void setSelectPositon(Intensity intensity) {
-		if (mList == null || !mList.contains(intensity)) {
+	public void setSelectPositon(int index) {
+		if (mList == null || index < mList.size()) {
 			return;
 		}
-		int index = mList.indexOf(intensity);
 		setSelection(index);
 	}
 
@@ -97,21 +95,20 @@ public class ExerciseIntensityView extends GridView {
 	 * 
 	 * @return select intensity or null
 	 */
-	public Intensity getSelectExerciseIntensity() {
+	public int getSelectExerciseIndex() {
 		if (mList == null || mList.size() == 0 || position >= mList.size()) {
-			return null;
+			return 0;
 		}
-		return mList.get(position);
+		return this.position;
 	}
 
 	private class GridViewAdapter extends BaseAdapter {
 		private Context context;
-		private List<Intensity> list = new ArrayList<Intensity>();
+		private List<Integer> list = new ArrayList<Integer>();
 
 		private int selected = 0;
-		private int redId = R.drawable.exercise_bg;
 
-		public GridViewAdapter(Context context, List<Intensity> list) {
+		public GridViewAdapter(Context context, List<Integer> list) {
 			this.context = context;
 			this.list = list;
 		}
@@ -144,8 +141,8 @@ public class ExerciseIntensityView extends GridView {
 			int alpha = 255;
 
 			ImageView imgView = new ImageView(context);
-			imgView.setAdjustViewBounds(false); 
-			imgView.setImageResource(redId);
+			imgView.setAdjustViewBounds(false);
+			imgView.setImageResource(list.get(position));
 			// if (selected == position) {
 			// alpha = 255;
 			// Animation anim = AnimationUtils.loadAnimation(context,
@@ -177,7 +174,7 @@ public class ExerciseIntensityView extends GridView {
 			// imgView.setLayoutParams(new
 			// GridView.LayoutParams(LayoutParams.WRAP_CONTENT,
 			// LayoutParams.WRAP_CONTENT));
-//			imgView.setScaleType(ScaleType.CENTER_INSIDE);
+			// imgView.setScaleType(ScaleType.CENTER_INSIDE);
 
 			return imgView;
 		}

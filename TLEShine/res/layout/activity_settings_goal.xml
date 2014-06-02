@@ -31,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="5dp"
+        android:gravity="center"
         android:orientation="horizontal" >
 
         <RadioButton
@@ -39,19 +39,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:button="@null"
             android:checked="true"
+            android:drawableTop="@drawable/radio_button_day"
             android:gravity="center"
-            android:text="day"
-            android:textColor="@color/black" />
+            android:padding="5dp"
+            android:text="@string/exercise"
+            android:textColor="@drawable/radio_text_color"
+            android:textSize="@dimen/text_size_small" />
 
         <RadioButton
             android:id="@+id/radio_night"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:button="@null"
+            android:drawableTop="@drawable/radio_button_night"
             android:gravity="center"
-            android:text="night"
-            android:textColor="@color/black" />
+            android:padding="5dp"
+            android:text="@string/sleep"
+            android:textColor="@drawable/radio_text_color"
+            android:textSize="@dimen/text_size_small" />
     </RadioGroup>
 
 </RelativeLayout>

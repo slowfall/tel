@@ -11,13 +11,14 @@ import android.annotation.SuppressLint;
 @SuppressLint("SimpleDateFormat")
 public class UserInfoOperation {
 	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
-	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December" };
+	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
+			"September", "October", "November", "December" };
 
 	/**
 	 * convert date[ 1990-08-19 ] to [ September 19, 1990 ]
 	 * 
-	 * @param formatDate format date string, such as [ 1990-08-19 ]
+	 * @param formatDate
+	 *            format date string, such as [ 1990-08-19 ]
 	 * @return such as [ September 19, 1990 ]
 	 * 
 	 * @throws ParseException
@@ -38,7 +39,8 @@ public class UserInfoOperation {
 	/**
 	 * convert date[ 1990-08-19 ] to age
 	 * 
-	 * @param formatDate format date string, such as [ 1990-08-19 ]
+	 * @param formatDate
+	 *            format date string, such as [ 1990-08-19 ]
 	 * @return return age or -1
 	 * @throws ParseException
 	 */
@@ -53,7 +55,8 @@ public class UserInfoOperation {
 	/**
 	 * convert height value to string [ 1.70 米 ]
 	 * 
-	 * @param high 170 cm
+	 * @param high
+	 *            170 cm
 	 * @return 1.70 米
 	 */
 	public static String convertHighToString(int high) {
@@ -65,7 +68,8 @@ public class UserInfoOperation {
 	/**
 	 * convert weight value to string [ 50.4 公斤 ]
 	 * 
-	 * @param weight 504*0.1KG
+	 * @param weight
+	 *            504*0.1KG
 	 * @return 50.4 公斤
 	 */
 	public static String convertWeightToString(int weight) {
@@ -102,4 +106,20 @@ public class UserInfoOperation {
 		return age;
 	}
 
+	/**
+	 * convert minute to hour
+	 * 
+	 * @param min
+	 * 
+	 * @return format hour
+	 */
+	public static String convertMinToHour(int min) {
+		if (min < 60) {
+			return min + " 分钟";
+		} else {
+			float h = (float) min / 60;
+			DecimalFormat df = new DecimalFormat("#.0");
+			return df.format(h) + " 小时";
+		}
+	}
 }

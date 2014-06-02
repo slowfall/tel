@@ -19,11 +19,15 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.DailyExercise;
+import com.tranway.tleshine.model.ExerciseContent;
+import com.tranway.tleshine.model.ExerciseContentAdapter;
+import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
@@ -45,12 +49,15 @@ public class DayFragment extends Fragment {
 	private Button mScrollBtn;
 	private LinearLayout mPagerLayout, mChartLayout;
 	private ScrollView mScrollView;
+	private ListView mListView;
+	private ExerciseContentAdapter mContentAdapter;
 	private boolean isScrolling = false;
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
 
 	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
 
+	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
 
 	@Override
@@ -81,7 +88,7 @@ public class DayFragment extends Fragment {
 	private void initView(View v) {
 		Rect rect = new Rect();
 		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top - 50;
+		int statusHeight = rect.top + (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -90,7 +97,7 @@ public class DayFragment extends Fragment {
 
 		initViewPagerLayout(v, displayWidth, displayHeight);
 		initChatLayout(v, displayWidth, displayHeight, statusHeight);
-
+		initContentLayout(v);
 	}
 
 	private void initViewPagerLayout(View v, int displayWidth, int displayHeight) {
@@ -98,7 +105,7 @@ public class DayFragment extends Fragment {
 		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mList);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
-		mViewPager.setOffscreenPageLimit(mList.size());
+		mViewPager.setOffscreenPageLimit(3);
 		// 设置ViewPager的width和height，width = 屏幕宽度*2/3，height = 屏幕高度*3/5
 		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
@@ -160,7 +167,29 @@ public class DayFragment extends Fragment {
 		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
+	}
 
+	private void initContentLayout(View v) {
+		mListView = (ListView) v.findViewById(R.id.list_content);
+
+		// for test
+		ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK, 200);
+		mContentList.add(content);
+		content = new ExerciseContent(12, 13, Sport.WALK, 400);
+		mContentList.add(content);
+		content = new ExerciseContent(13, 14, Sport.RUN, 500);
+		mContentList.add(content);
+		content = new ExerciseContent(14, 15, Sport.SWIM, 300);
+		mContentList.add(content);
+		content = new ExerciseContent(15, 16, Sport.SWIM, 200);
+		mContentList.add(content);
+		content = new ExerciseContent(16, 17, Sport.SWIM, 200);
+		mContentList.add(content);
+
+		mContentAdapter = new ExerciseContentAdapter(getActivity());
+		mContentAdapter.setContentList(mContentList);
+		mListView.setAdapter(mContentAdapter);
+		mContentAdapter.notifyDataSetChanged();
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {

@@ -14,6 +14,10 @@ import com.tranway.tleshine.R;
 
 public class SettingsGoalActivity extends Activity implements OnClickListener {
 
+	private DayGoalFragment dayFragment;
+	private NightGoalFragment nightFragment;
+	private OnTitleButtonClickListener mListener;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,23 +71,34 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_title_right:
-			saveGoal();
-			finish();
+			if (mListener == null || mListener.onTitleButtonClick(R.id.btn_title_right)) {
+				finish();
+			}
 			break;
 		}
 	}
 
 	private void showDayFragment() {
-		DayGoalFragment fragment = new DayGoalFragment();
-		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, fragment).commit();
+		if (dayFragment == null) {
+			dayFragment = new DayGoalFragment();
+		}
+		if (dayFragment instanceof OnTitleButtonClickListener) {
+			mListener = (OnTitleButtonClickListener) dayFragment;
+		}
+		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, dayFragment).commit();
 	}
 
 	private void showNightFragment() {
-		NightGoalFragment fragment = new NightGoalFragment();
-		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, fragment).commit();
+		if (nightFragment == null) {
+			nightFragment = new NightGoalFragment();
+		}
+		if (nightFragment instanceof OnTitleButtonClickListener) {
+			mListener = (OnTitleButtonClickListener) nightFragment;
+		}
+		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, nightFragment).commit();
 	}
 
-	private void saveGoal() {
-		// TODO..
+	public interface OnTitleButtonClickListener {
+		public boolean onTitleButtonClick(int id);
 	}
 }
