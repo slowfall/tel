@@ -41,7 +41,7 @@ public class TLEHttpRequest {
 	private TLEHttpRequest() {
 		finalHttp = new FinalHttp();
 		finalHttp.configCookieStore(new BasicCookieStore());
-		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/";
+		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/use";
 	}
 
 	public interface OnHttpRequestListener {

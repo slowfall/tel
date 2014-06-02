@@ -6,6 +6,7 @@
     <string name="email_invalid">邮箱格式错误</string>
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>
+    <string name="error_email_used">该邮箱已被使用。</string>
     
     <string name="register_accout_tips">成为一名 TeKit 用户</string>
     <string name="register_tips">请简单的介绍一下你自己</string>

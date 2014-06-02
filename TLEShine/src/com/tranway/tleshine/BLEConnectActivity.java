@@ -186,7 +186,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		byte sequenceMask = (byte) 0xf0;
 		byte typeMask = (byte) 0x0f;
 		int type = data[0] & typeMask;
-		byte sequenceNumber = (byte) ((data[0] & sequenceMask) >> 4);
+		byte sequenceNumber = (byte) (((data[0] & sequenceMask) >> 4) & 0x0f);
 		switch (type) {
 		// User Info command
 		case 0x01:
@@ -210,6 +210,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
 		default:
+			byte[] ack = packet.makeReplyACK(sequenceNumber);
+			characteristicTx.setValue(ack);
+			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
 		}
 	}

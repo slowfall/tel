@@ -63,6 +63,15 @@ public class BLEPacket {
 		buf[6] = checksum(buf, buf.length - 1);
 		return buf;
 	}
+	
+	public byte[] makeReplyACK(byte sequenceNumber) {
+		byte[] buf = new byte[4];
+		buf[0] = (byte) 0xE0;
+		buf[1] = sequenceNumber;
+		buf[2] = (byte) 0x00;
+		buf[3] = checksum(buf, 2);
+		return buf;
+	}
 
 	private byte[] toBytes(int i, int length) {
 		byte[] result = new byte[length];

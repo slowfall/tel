@@ -3,6 +3,9 @@ package com.tranway.tleshine.viewLoginAndRegister;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,16 +15,22 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.MyApplication;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
+import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class RegisterActivity extends Activity implements OnClickListener {
-
 	private static final String TAG = RegisterActivity.class.getSimpleName();
+	private static final String CHECK_EMAIL_END_URL = "/checklogin";
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,9 +87,42 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		}
 		// TODO..
 		// assume register success...
-		saveUserResgiterInfo();
-		Intent intent = new Intent(this, RegisterUserInfoActivity.class);
-		startActivity(intent);
+		checkEmail(email);
+	}
+
+	private void checkEmail(String email) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						int statusCode = data
+								.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							saveUserResgiterInfo();
+							Intent intent = new Intent(RegisterActivity.this,
+									RegisterUserInfoActivity.class);
+							startActivity(intent);
+						} else {
+							ToastHelper.showToast(R.string.error_email_used,
+									Toast.LENGTH_LONG);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return,
+						Toast.LENGTH_SHORT);
+			}
+		});
+		httpRequest.get(CHECK_EMAIL_END_URL + "/" + email, null);
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
@@ -90,7 +132,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			return false;
 		}
 		if (!checkEmailAvailable(email)) {
-			mEmailTxt.setError(getResources().getString(R.string.email_invalid));
+			mEmailTxt
+					.setError(getResources().getString(R.string.email_invalid));
 			mEmailTxt.requestFocus();
 			return false;
 		}
@@ -100,7 +143,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			return false;
 		}
 		if (!checkPasswordAvailable(pwd, cPwd)) {
-			mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
+			mConfirmPwdTxt.setError(getResources().getString(
+					R.string.password_invalid));
 			mConfirmPwdTxt.requestFocus();
 			return false;
 		}
@@ -111,8 +155,10 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
-		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
-		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
+		boolean p = UserInfoKeeper.writeUserinfo(this,
+				UserInfoKeeper.KEY_EMAIL, email);
+		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD,
+				password);
 		return p && e;
 	}
 
