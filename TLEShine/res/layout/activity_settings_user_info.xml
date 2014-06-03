@@ -44,7 +44,7 @@
 
                 <RadioButton
                     android:id="@+id/radio_male"
-                    style="@style/RadioButton"
+                    style="@style/SegmentRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -52,7 +52,7 @@
 
                 <RadioButton
                     android:id="@+id/radio_female"
-                    style="@style/RadioButton"
+                    style="@style/SegmentRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/female" />

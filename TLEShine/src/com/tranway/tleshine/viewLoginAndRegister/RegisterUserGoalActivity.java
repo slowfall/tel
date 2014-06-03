@@ -3,7 +3,6 @@ package com.tranway.tleshine.viewLoginAndRegister;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -14,10 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.Exercise;
-import com.tranway.tleshine.model.Exercise.Intensity;
-import com.tranway.tleshine.model.Exercise.Sport;
-import com.tranway.tleshine.model.UserExerciseKeeper;
+import com.tranway.tleshine.model.ExerciseUtils;
+import com.tranway.tleshine.model.ExerciseUtils.Sport;
+import com.tranway.tleshine.model.UserGoalKeeper;
+import com.tranway.tleshine.util.UserInfoOperation;
 import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 import com.tranway.tleshine.widget.ExerciseIntensityView;
 
@@ -25,8 +24,7 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 	private static final String TAG = RegisterUserGoalActivity.class.getSimpleName();
 
 	private TextView mExerciseTxt, mWalkTimeTxt, mRunTimeTxt, mSwimTimeTxt, mPointTxt;
-
-	private Exercise mExercise = new Exercise();
+	private int selectIndex = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,17 +50,17 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				selectIndex = arg2;
 				mView.setSelectPosition(arg2);
-				mExercise.setIntensity(mView.getSelectExerciseIntensity());
-				updateInstensityText(mExercise.getIntensity());
+				updateInstensityText(arg2);
 			}
 		});
 		mView.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				selectIndex = arg2;
 				mView.setSelectPosition(arg2);
-				mExercise.setIntensity(mView.getSelectExerciseIntensity());
-				updateInstensityText(mExercise.getIntensity());
+				updateInstensityText(arg2);
 			}
 
 			@Override
@@ -72,8 +70,8 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 			}
 		});
 
-		mView.setSelectPositon(mExercise.getIntensity());
-		updateInstensityText(mExercise.getIntensity());
+		mView.setSelectPositon(selectIndex);
+		updateInstensityText(selectIndex);
 	}
 
 	private void initTitleView() {
@@ -89,23 +87,33 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		mTitleTxt.setText(R.string.setting_goal);
 	}
 
-	private void updateInstensityText(Intensity intensity) {
-		if (intensity == null) {
+	private void updateInstensityText(int index) {
+		if (index < 0) {
 			return;
 		}
-		int resId = mExercise.getExerciseIntensityTitle();
+		int point = 0;
+		int resId = -1;
+		if (index == 0) {
+			resId = R.string.intensity_light;
+			point = ExerciseUtils.GOAL_POINT_LIGHT;
+		} else if (index == 1) {
+			resId = R.string.intensity_moderate;
+			point = ExerciseUtils.GOAL_POINT_MODERATE;
+		} else {
+			resId = R.string.intensity_strenuous;
+			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
+		}
 		if (resId != -1) {
 			mExerciseTxt.setText(getResources().getString(resId));
 		}
+		mPointTxt.setText(String.valueOf(point));
 
-		int time = mExercise.getExerciseGoalTime(Sport.WALK);
-		mWalkTimeTxt.setText(minToHour(time));
-		time = mExercise.getExerciseGoalTime(Sport.RUN);
-		mRunTimeTxt.setText(minToHour(time));
-		time = mExercise.getExerciseGoalTime(Sport.SWIM);
-		mSwimTimeTxt.setText(minToHour(time));
-
-		mPointTxt.setText(String.valueOf(mExercise.getExercisePoint()));
+		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
+		mWalkTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
+		mRunTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		time = ExerciseUtils.getAchieveGoalTime(point, Sport.SWIM);
+		mSwimTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
 	}
 
 	@Override
@@ -120,17 +128,16 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		}
 	}
 
-	private String minToHour(int min) {
-		if (min < 60) {
-			return min + " 分钟";
-		} else {
-			float h = (float) min / 60;
-			return h + " 小时";
-		}
-	}
-
 	private void onNextButtonClick() {
-		UserExerciseKeeper.writeExerciseGoal(this, mExercise);
+		int point = 0;
+		if (selectIndex == 0) {
+			point = ExerciseUtils.GOAL_POINT_LIGHT;
+		} else if (selectIndex == 1) {
+			point = ExerciseUtils.GOAL_POINT_MODERATE;
+		} else {
+			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
+		}
+		UserGoalKeeper.writeExerciseGoal(this, point);
 		Intent intent = new Intent(this, MainTabsActivity.class);
 		startActivity(intent);
 		finish();

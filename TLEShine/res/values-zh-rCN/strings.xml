@@ -33,4 +33,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_bleconnect">BLEConnectActivity</string>
 	<string name="error_device_address">无效设备。</string>
+	<string name="click_scan_device">点击搜索设备</string>
+	<string name="scanning">搜索中......</string>
 </resources>

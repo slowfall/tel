@@ -85,7 +85,7 @@ public class NightFragment extends Fragment {
 		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mList);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
-		mViewPager.setOffscreenPageLimit(mList.size());
+		mViewPager.setOffscreenPageLimit(3);
 		// 设置ViewPager的width和height，width = 屏幕宽度*2/3，height = 屏幕高度*3/5
 		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
@@ -137,8 +137,10 @@ public class NightFragment extends Fragment {
 		series.setLineColor(getResources().getColor(R.color.yellow));
 		series.setLineWidth(5);
 		series.addPoint(new LinearPoint(0, 100));
+		series.addPoint(new LinearPoint(3, 110));
 		series.addPoint(new LinearPoint(6, 140));
 		series.addPoint(new LinearPoint(12, 80));
+		series.addPoint(new LinearPoint(14, 100));
 		series.addPoint(new LinearPoint(18, 200));
 		series.addPoint(new LinearPoint(24, 100));
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };

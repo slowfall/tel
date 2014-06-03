@@ -32,5 +32,11 @@
 	<string name="cancel">取消</string>
 	<string name="save">保存</string>
 	<string name="my_goal">我的目标</string>
-	<string name="crrent_situation">每天当前情况： </string>
+	<string name="current_exercise_situation">每天当前情况： </string>
+	<string name="current_sleep_situation">每晚当前情况： </string>
+	
+	<string name="exercise">运动</string>
+	<string name="sleep">睡眠</string>
+	<string name="exercise_goal_cannot_null">目标运动点数不能设置为0</string>
+	<string name="sleep_goal_cannot_null">目标睡眠时间不能设置为0</string>
 </resources>

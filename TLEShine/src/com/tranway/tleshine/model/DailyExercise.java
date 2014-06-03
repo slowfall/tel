@@ -1,5 +1,6 @@
 package com.tranway.tleshine.model;
 
+
 public class DailyExercise {
 	private long date = 0L;
 	private int goal = 0; // goal exercise point

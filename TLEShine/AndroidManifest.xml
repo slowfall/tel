@@ -61,7 +61,8 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsUserHighActivity"

@@ -31,7 +31,7 @@ public class SettingsUserWeightActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_set_user_weight);
+		setContentView(R.layout.layout_set_user_weight);
 
 		initView();
 	}

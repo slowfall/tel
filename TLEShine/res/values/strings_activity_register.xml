@@ -9,7 +9,7 @@
     <string name="error_email_used">该邮箱已被使用。</string>
     
     <string name="register_accout_tips">成为一名 TeKit 用户</string>
-    <string name="register_tips">请简单的介绍一下你自己</string>
+    <string name="register_tips">请简单的介绍一下您自己</string>
     <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 
     <string name="exsit">退出</string>

@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textColor="@color/activity_title_text_color"
+        android:background="@android:color/transparent"
+        android:textColor="@drawable/button_title_text_color"
         android:textSize="@dimen/activity_title_btn_size"
         android:visibility="gone" />
 
@@ -29,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textColor="@color/activity_title_text_color"
+        android:background="@android:color/transparent"
+        android:textColor="@drawable/button_title_text_color"
         android:textSize="@dimen/activity_title_btn_size"
         android:visibility="gone" />
 

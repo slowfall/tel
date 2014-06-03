@@ -30,11 +30,13 @@ import android.widget.Toast;
 
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
+import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.Util;
+import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 
 public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final static String TAG = BLEConnectActivity.class.getSimpleName();
@@ -213,7 +215,12 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			byte[] utc = packet.makeUTCForWrite(true, sequenceNumber, utcTime);
 			characteristicTx.setValue(utc);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
+			Intent intent = new Intent(MyApplication.getAppContext(),
+					MainTabsActivity.class);
+			startActivity(intent);
 			break;
+			//total steps and calories since last sync.
+		case 0x03:
 		default:
 			byte[] ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
@@ -240,6 +247,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		switch (id) {
 		case R.id.btn_ble_connect:
 			scanAndConnectDevice();
+			mConnectBtn.setText(R.string.scanning);
 			mConnectBtn.setEnabled(false);
 			break;
 
@@ -262,6 +270,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
+								mConnectBtn.setText(R.string.click_scan_device);
 								mConnectBtn.setEnabled(true);
 								// Intent intent = new
 								// Intent(MyApplication.getAppContext(),
@@ -309,7 +318,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			});
 		}
 	};
-	
+
 	private void checkDevice(final BluetoothDevice device) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
@@ -323,7 +332,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							mDevice = device;
 						} else {
-							ToastHelper.showToast(R.string.error_device_address,
+							ToastHelper.showToast(
+									R.string.error_device_address,
 									Toast.LENGTH_LONG);
 						}
 					} catch (JSONException e) {
@@ -341,6 +351,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		});
 		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
 	}
+
 	private void scanLeDevice() {
 		new Thread() {
 
