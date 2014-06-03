@@ -3,9 +3,19 @@ package com.tranway.tleshine.viewMainTabs;
 import java.util.ArrayList;
 
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -21,9 +31,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.bluetooth.RBLService;
+import com.tranway.tleshine.model.BLEPacket;
 import com.tranway.tleshine.model.DailyExercise;
 import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
@@ -37,10 +50,11 @@ import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
 public class DayFragment extends Fragment {
-
+	private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
+	private static final int REQUEST_ENABLE_BT = 1;
 
 	private static final float VIEWPAGE_HEIGHT_PERCENT = 0.5f;
 
@@ -59,6 +73,90 @@ public class DayFragment extends Fragment {
 
 	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
+
+	private BluetoothGattCharacteristic characteristicTx = null;
+	private RBLService mBluetoothLeService;
+	private BluetoothAdapter mBluetoothAdapter;
+
+	private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName,
+				IBinder service) {
+			mBluetoothLeService = ((RBLService.LocalBinder) service)
+					.getService();
+			if (!mBluetoothLeService.initialize()) {
+				Log.e(TAG, "Unable to initialize Bluetooth");
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			mBluetoothLeService = null;
+		}
+	};
+
+	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			final String action = intent.getAction();
+
+			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
+				Toast.makeText(MyApplication.getAppContext(), "Disconnected",
+						Toast.LENGTH_SHORT).show();
+				// setButtonDisable();
+			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
+					.equals(action)) {
+				Toast.makeText(MyApplication.getAppContext(), "Connected",
+						Toast.LENGTH_SHORT).show();
+
+				getGattService(mBluetoothLeService.getSupportedGattService());
+			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
+				byte[] data = intent.getByteArrayExtra(RBLService.EXTRA_DATA);
+				handleBLEData(data);
+			} else if (RBLService.ACTION_GATT_RSSI.equals(action)) {
+				// displayData(intent.getStringExtra(RBLService.EXTRA_DATA));
+			}
+		}
+	};
+
+	private void getGattService(BluetoothGattService gattService) {
+		if (gattService == null)
+			return;
+
+		// setButtonEnable();
+		// startReadRssi();
+
+		characteristicTx = gattService
+				.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
+
+		BluetoothGattCharacteristic characteristicRx = gattService
+				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
+		mBluetoothLeService.setCharacteristicNotification(characteristicRx,
+				true);
+		mBluetoothLeService.readCharacteristic(characteristicRx);
+	}
+
+	private void handleBLEData(byte[] data) {
+		BLEPacket packet = new BLEPacket();
+		byte sequenceMask = (byte) 0xf0;
+		byte typeMask = (byte) 0x0f;
+		int type = data[0] & typeMask;
+		byte sequenceNumber = (byte) (((data[0] & sequenceMask) >> 4) & 0x0f);
+		byte[] ack;
+		switch (type) {
+		// step/calories command
+		case 0x03:
+			ack = packet.makeReplyACK(sequenceNumber);
+			characteristicTx.setValue(ack);
+			mBluetoothLeService.writeCharacteristic(characteristicTx);
+		default:
+			ack = packet.makeReplyACK(sequenceNumber);
+			characteristicTx.setValue(ack);
+			mBluetoothLeService.writeCharacteristic(characteristicTx);
+			break;
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +181,46 @@ public class DayFragment extends Fragment {
 		initView(v);
 
 		return v;
+	}
+
+	private static IntentFilter makeGattUpdateIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+
+		intentFilter.addAction(RBLService.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(RBLService.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(RBLService.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(RBLService.ACTION_DATA_AVAILABLE);
+		intentFilter.addAction(RBLService.ACTION_GATT_RSSI);
+
+		return intentFilter;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (!mBluetoothAdapter.isEnabled()) {
+			Intent enableBtIntent = new Intent(
+					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		}
+
+		getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+
+		getActivity().unregisterReceiver(mGattUpdateReceiver);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		if (mServiceConnection != null)
+			getActivity().unbindService(mServiceConnection);
 	}
 
 	private void initView(View v) {

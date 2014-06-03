@@ -1,8 +1,5 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +29,6 @@ import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
-import com.tranway.tleshine.model.UserInfo;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
