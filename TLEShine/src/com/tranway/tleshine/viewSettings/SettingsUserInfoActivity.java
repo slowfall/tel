@@ -150,7 +150,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
-			String birthday = data.getStringExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE);
+			long birthday = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, 0);
 			userInfo.setBirthday(birthday);
 			try {
 				String text = UserInfoOperation.convertDateToBirthday(birthday);

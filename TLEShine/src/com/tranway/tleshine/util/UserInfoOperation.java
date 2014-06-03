@@ -5,14 +5,39 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 
+import com.tranway.tleshine.model.UserInfo;
+
 @SuppressLint("SimpleDateFormat")
 public class UserInfoOperation {
-	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
+	private static final String SIMPLE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
+
+	/**
+	 * convert birthday string to UNIX date
+	 * 
+	 * @param year
+	 * @param month
+	 * @param day
+	 * 
+	 * @return UNIX date
+	 */
+	public static long convertBirthdayToUnixDate(int year, int month, int day) {
+		DecimalFormat df = new DecimalFormat("00");
+		String birthday = year + "-" + df.format(month) + "-" + df.format(day) + " 00:00:00";
+		long date = 0;
+		try {
+			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 
 	/**
 	 * convert date[ 1990-08-19 ] to [ September 19, 1990 ]
@@ -23,10 +48,9 @@ public class UserInfoOperation {
 	 * 
 	 * @throws ParseException
 	 */
-	public static String convertDateToBirthday(String formatDate) throws ParseException {
+	public static String convertDateToBirthday(long time) throws ParseException {
 		DecimalFormat df = new DecimalFormat("00");
-		SimpleDateFormat format = new SimpleDateFormat(SIMPLE_FORMAT);
-		Date date = format.parse(formatDate);
+		Date date = new Date(time);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int year = calendar.get(Calendar.YEAR);
@@ -44,9 +68,9 @@ public class UserInfoOperation {
 	 * @return return age or -1
 	 * @throws ParseException
 	 */
-	public static int convertDateToAge(String formatDate) throws ParseException {
+	public static int convertDateToAge(long time) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(SIMPLE_FORMAT);
-		Date date = format.parse(formatDate);
+		Date date = new Date(time);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		return canculateAgeByCalendar(calendar);
@@ -121,5 +145,20 @@ public class UserInfoOperation {
 			DecimalFormat df = new DecimalFormat("#.0");
 			return df.format(h) + " 小时";
 		}
+	}
+
+	public static Map<String, String> convertUserInfoToParamsMap(UserInfo info) {
+		Map<String, String> data = new HashMap<String, String>();
+		if (info == null) {
+			return data;
+		}
+		data.put(UserInfo.EMAIL, info.getEmail());
+		data.put(UserInfo.PASSWORD, info.getPassword());
+		data.put(UserInfo.BIRTHDAY, String.valueOf(info.getBirthday()));
+		data.put(UserInfo.SEX, String.valueOf(info.getSex()));
+		data.put(UserInfo.HEIGHT, String.valueOf(info.getHeight()));
+		data.put(UserInfo.WEIGHT, String.valueOf(info.getGoal()));
+
+		return data;
 	}
 }

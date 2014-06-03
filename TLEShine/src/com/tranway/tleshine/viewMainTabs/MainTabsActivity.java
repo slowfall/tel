@@ -49,7 +49,7 @@ public class MainTabsActivity extends Activity {
 		friendsTab.setIcon(R.drawable.friends);
 		friendsTab.setTag(TAB_TAG_NIGHT);
 		friendsTab.setTabListener(new MyTabListener(new NightFragment()));
-		
+
 		actionBar.addTab(menuTab);
 		actionBar.addTab(dayTab);
 		actionBar.addTab(nightTab);
@@ -101,5 +101,10 @@ public class MainTabsActivity extends Activity {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		System.exit(0);
 	}
 }

@@ -1,6 +1,5 @@
 package com.tranway.tleshine.widget;
 
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.util.UserInfoOperation;
 
 public class CustomizedBirthdayWheelView extends LinearLayout {
 
@@ -19,8 +19,8 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 	private static final int YEAR_BASE = 1970;
 	// private static final int MONTH_BASE = 1;
 	private static final int DAY_BASE = 1;
-	private String[] monthStrings = { "January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December" };
+	private String[] monthStrings = { "January", "February", "March", "April", "May", "June", "July", "August",
+			"September", "October", "November", "December" };
 	private WheelView mMonthWheel;
 	private WheelView mDayWheel;
 	private WheelView mYearWheel;
@@ -63,7 +63,7 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 		mYearWheel.setCyclic(false);
 		mYearWheel.setCurrentItem(default_year);
 	}
-
+	
 	private void onMonthChanged(int month) {
 		updateDayWheel(getMaxDayInMonth(month));
 	}
@@ -83,16 +83,15 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 	}
 
 	/**
-	 * get birthday string
+	 * get birthday UNIX date
 	 * 
-	 * @return birthday string, such as " 1991-08-17 "
+	 * @return birthday UNIX date
 	 */
-	public String getBirthday() {
-		DecimalFormat df = new DecimalFormat("00");
+	public long getBirthday() {
 		int year = mYearWheel.getCurrentItem() + YEAR_BASE;
-		String month = df.format(mMonthWheel.getCurrentItem() + 1);
-		String day = df.format(mDayWheel.getCurrentItem() + DAY_BASE);
-		return year + "-" + month + "-" + day;
-	}
+		int month = mMonthWheel.getCurrentItem() + 1;
+		int day = mDayWheel.getCurrentItem() + DAY_BASE;
 
+		return UserInfoOperation.convertBirthdayToUnixDate(year, month, day);
+	}
 }

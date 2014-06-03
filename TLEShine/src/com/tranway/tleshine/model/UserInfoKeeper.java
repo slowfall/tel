@@ -21,8 +21,10 @@ public class UserInfoKeeper {
 	/**
 	 * write user information to SharedPreferences
 	 * 
-	 * @param context application context
-	 * @param info user information
+	 * @param context
+	 *            application context
+	 * @param info
+	 *            user information
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean writeUserInfo(Context context, UserInfo info) {
@@ -30,12 +32,11 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putString(KEY_EMAIL, info.getEmail());
 		edit.putString(KEY_PWD, info.getPassword());
-		edit.putString(KEY_BIRTH, info.getBirthday());
+		edit.putLong(KEY_BIRTH, info.getBirthday());
 		edit.putInt(KEY_WEIGHT, info.getWeight());
 		edit.putInt(KEY_AGE, info.getAge());
 		edit.putInt(KEY_HEIGHT, info.getHeight());
@@ -49,9 +50,12 @@ public class UserInfoKeeper {
 	/**
 	 * write user information by SharedPreferences key
 	 * 
-	 * @param context application context
-	 * @param key SharedPreferences key
-	 * @param value write value
+	 * @param context
+	 *            application context
+	 * @param key
+	 *            SharedPreferences key
+	 * @param value
+	 *            write value
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean writeUserinfo(Context context, String key, String value) {
@@ -59,8 +63,7 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putString(key, value);
 
@@ -70,9 +73,12 @@ public class UserInfoKeeper {
 	/**
 	 * write user information by SharedPreferences key
 	 * 
-	 * @param context application context
-	 * @param key SharedPreferences key
-	 * @param value write value
+	 * @param context
+	 *            application context
+	 * @param key
+	 *            SharedPreferences key
+	 * @param value
+	 *            write value
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean writeUserinfo(Context context, String key, int value) {
@@ -80,8 +86,7 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putInt(key, value);
 
@@ -91,7 +96,8 @@ public class UserInfoKeeper {
 	/**
 	 * read user information from SharedPreferences
 	 * 
-	 * @param context application context
+	 * @param context
+	 *            application context
 	 * @return return user information or null
 	 */
 	public static UserInfo readUserInfo(Context context) {
@@ -103,13 +109,14 @@ public class UserInfoKeeper {
 		SharedPreferences sp = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		info.setEmail(sp.getString(KEY_EMAIL, ""));
 		info.setPassword(sp.getString(KEY_PWD, ""));
-		info.setBirthday(sp.getString(KEY_BIRTH, ""));
+		info.setBirthday(sp.getLong(KEY_BIRTH, 0));
 		info.setWeight(sp.getInt(KEY_WEIGHT, 0));
 		info.setAge(sp.getInt(KEY_AGE, 0));
 		info.setHeight(sp.getInt(KEY_HEIGHT, 0));
 		info.setStride(sp.getInt(KEY_STRIDE, 0));
 		info.setSex(sp.getInt(KEY_SEX, 0));
 		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, 0));
+		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
 
 		return info;
 	}

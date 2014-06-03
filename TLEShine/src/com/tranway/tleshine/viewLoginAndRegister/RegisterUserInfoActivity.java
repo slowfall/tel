@@ -4,17 +4,15 @@ import java.text.ParseException;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
 import com.android.segmented.SegmentedGroup;
 import com.tranway.tleshine.R;
@@ -31,7 +29,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 	private TextView mHighTxt, mWeightTxt, mBirthdayTxt;
 	private SegmentedGroup mSexGroup;
-	private RadioButton mMaleRadio, mFemaleRadio;
+	// private RadioButton mMaleRadio, mFemaleRadio;
 
 	private UserInfo userInfo;
 
@@ -43,7 +41,8 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		setContentView(R.layout.activity_register_user_info);
 
 		userInfo = UserInfoKeeper.readUserInfo(this);
-
+		userInfo.setSex(UserInfo.SEX_MALE); // set default sex
+		
 		initView();
 	}
 
@@ -57,8 +56,8 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mBirthdayTxt = (TextView) findViewById(R.id.txt_birthday);
 		mBirthdayTxt.setOnClickListener(this);
 
-		mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
-		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
+		// mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
+		// mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
 		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
 		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
 		mSexGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -66,7 +65,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			@Override
 			public void onCheckedChanged(RadioGroup arg0, int arg1) {
 				// TODO Auto-generated method stub
-				if (arg1 == mFemaleRadio.getId()) {
+				if (arg1 == R.id.radio_female) {
 					userInfo.setSex(UserInfo.SEX_FEMALE);
 				} else {
 					userInfo.setSex(UserInfo.SEX_MALE);
@@ -132,7 +131,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
-			String birthday = data.getStringExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE);
+			long birthday = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, 0L);
 			userInfo.setBirthday(birthday);
 			try {
 				String text = UserInfoOperation.convertDateToBirthday(birthday);
@@ -148,7 +147,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			break;
 		}
 	}
-	
+
 	private void onNextButtonClick() {
 		savedUserInfoToSP();
 		Intent intent = new Intent(this, RegisterUserGoalActivity.class);
@@ -163,20 +162,20 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		return UserInfoKeeper.writeUserInfo(this, userInfo);
 	}
 
-//	private int getUserSelectSex() {
-//		int sex = UserInfo.SEX_FEMALE;
-//		if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
-//			return sex;
-//		}
-//
-//		int check = mSexGroup.getCheckedRadioButtonId();
-//		if (check == mMaleRadio.getId()) {
-//			sex = UserInfo.SEX_MALE;
-//		} else if (check == mFemaleRadio.getId()) {
-//			sex = UserInfo.SEX_FEMALE;
-//		}
-//
-//		return sex;
-//	}
+	// private int getUserSelectSex() {
+	// int sex = UserInfo.SEX_FEMALE;
+	// if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
+	// return sex;
+	// }
+	//
+	// int check = mSexGroup.getCheckedRadioButtonId();
+	// if (check == mMaleRadio.getId()) {
+	// sex = UserInfo.SEX_MALE;
+	// } else if (check == mFemaleRadio.getId()) {
+	// sex = UserInfo.SEX_FEMALE;
+	// }
+	//
+	// return sex;
+	// }
 
 }

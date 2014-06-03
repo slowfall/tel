@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -17,9 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
@@ -27,7 +26,7 @@ import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
-	private static final String CHECK_EMAIL_END_URL = "/checklogin";
+	private static final String CHECK_EMAIL_URL = "/CheckEmail";
 
 	private EditText mEmailTxt, mPwdTxt, mConfirmPwdTxt;
 
@@ -82,35 +81,35 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		String confirmPassword = mConfirmPwdTxt.getText().toString();
 		String password = mPwdTxt.getText().toString();
 
-		if (!checkUserRegisterInfo(email, password, confirmPassword)) {
-			return;
+		if (checkUserRegisterInfo(email, password, confirmPassword)) {
+			checkEmailToServer(email);
 		}
-		// TODO..
-		// assume register success...
-		checkEmail(email);
 	}
 
-	private void checkEmail(String email) {
+	/**
+	 * check user input Email weather is available, goto next Activity if is
+	 * available, else show error tips
+	 * 
+	 * @param email
+	 *            Email address
+	 */
+	private void checkEmailToServer(String email) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
-
 			@Override
 			public void onSuccess(String url, JSONObject data) {
 				if (data.has(TLEHttpRequest.STATUS_CODE)) {
 					try {
-						int statusCode = data
-								.getInt(TLEHttpRequest.STATUS_CODE);
+						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							saveUserResgiterInfo();
-							Intent intent = new Intent(RegisterActivity.this,
-									RegisterUserInfoActivity.class);
+							Intent intent = new Intent(RegisterActivity.this, RegisterUserInfoActivity.class);
 							startActivity(intent);
 						} else {
-							ToastHelper.showToast(R.string.error_email_used,
-									Toast.LENGTH_LONG);
+							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);
+							Log.e(TAG, "email is not available");
 						}
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -118,11 +117,10 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				ToastHelper.showToast(R.string.error_server_return,
-						Toast.LENGTH_SHORT);
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
 		});
-		httpRequest.get(CHECK_EMAIL_END_URL + "/" + email, null);
+		httpRequest.get(CHECK_EMAIL_URL + "/" + email, null);
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
@@ -132,8 +130,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			return false;
 		}
 		if (!checkEmailAvailable(email)) {
-			mEmailTxt
-					.setError(getResources().getString(R.string.email_invalid));
+			mEmailTxt.setError(getResources().getString(R.string.email_invalid));
 			mEmailTxt.requestFocus();
 			return false;
 		}
@@ -143,8 +140,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			return false;
 		}
 		if (!checkPasswordAvailable(pwd, cPwd)) {
-			mConfirmPwdTxt.setError(getResources().getString(
-					R.string.password_invalid));
+			mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
 			mConfirmPwdTxt.requestFocus();
 			return false;
 		}
@@ -155,10 +151,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
-		boolean p = UserInfoKeeper.writeUserinfo(this,
-				UserInfoKeeper.KEY_EMAIL, email);
-		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD,
-				password);
+		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
+		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
 		return p && e;
 	}
 

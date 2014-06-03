@@ -18,11 +18,11 @@ import android.util.Log;
 public class TLEHttpRequest {
 	private static final String LOG_CAT = TLEHttpRequest.class.getSimpleName();
 	private static final String SERVER_ADDRESS = "http://113.105.115.30";
-	private static final int SERVER_PORT = 5520;	
+	private static final int SERVER_PORT = 5520;
 
-	public static final String STATUS = "status";
-	public static final String STATUS_CODE = "statusCode";
-	public static final String MSG = "msg";
+	public static final String STATUS = "Status";
+	public static final String STATUS_CODE = "StatusCode";
+	public static final String MSG = "Msg";
 	public static final int STATE_SUCCESS = 0;
 	public static final int STATE_FAILED = 1;
 
@@ -41,7 +41,7 @@ public class TLEHttpRequest {
 	private TLEHttpRequest() {
 		finalHttp = new FinalHttp();
 		finalHttp.configCookieStore(new BasicCookieStore());
-		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/use";
+		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/user";
 	}
 
 	public interface OnHttpRequestListener {
@@ -89,24 +89,26 @@ public class TLEHttpRequest {
 
 		@Override
 		public void onFailure(Throwable t, int errorNo, String strMsg) {
+			super.onFailure(t, errorNo, strMsg);
 			Log.e(LOG_CAT, t.toString());
 			if (mListener != null) {
 				mListener.onFailure(myUrl, errorNo, strMsg);
 			}
-			super.onFailure(t, errorNo, strMsg);
 		}
 
 		@Override
 		public void onSuccess(String t) {
+			super.onSuccess(t);
 			Log.d(LOG_CAT, t);
 			try {
-				JSONObject json = new JSONObject(t);
-				mListener.onSuccess(myUrl, json);
+				if (mListener != null) {
+					JSONObject json = new JSONObject(t);
+					mListener.onSuccess(myUrl, json);
+				}
 			} catch (JSONException e) {
 				mListener.onFailure(myUrl, STATE_FAILED, "failed");
 				e.printStackTrace();
 			}
-			super.onSuccess(t);
 		}
 	}
 }

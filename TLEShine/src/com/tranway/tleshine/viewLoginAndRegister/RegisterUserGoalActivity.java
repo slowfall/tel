@@ -1,8 +1,14 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -11,17 +17,25 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
+import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
+import com.tranway.tleshine.model.UserInfo;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoOperation;
 import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 import com.tranway.tleshine.widget.ExerciseIntensityView;
 
 public class RegisterUserGoalActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserGoalActivity.class.getSimpleName();
+
+	private static final String CHECK_REGISTER_USER_URL = "/add";
 
 	private TextView mExerciseTxt, mWalkTimeTxt, mRunTimeTxt, mSwimTimeTxt, mPointTxt;
 	private int selectIndex = 0;
@@ -138,9 +152,49 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
 		}
 		UserGoalKeeper.writeExerciseGoal(this, point);
-		Intent intent = new Intent(this, MainTabsActivity.class);
-		startActivity(intent);
-		finish();
+		syncUserInfoToServer(UserInfoKeeper.readUserInfo(this));
 	}
 
+	/**
+	 * Synchronous user information to the server
+	 * 
+	 * @param userInfo
+	 *            User detail information
+	 */
+	private void syncUserInfoToServer(UserInfo userInfo) {
+		if (userInfo == null) {
+			return;
+		}
+		Map<String, String> params = UserInfoOperation.convertUserInfoToParamsMap(userInfo);
+		
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
+							Intent intent = new Intent(RegisterUserGoalActivity.this, MainTabsActivity.class);
+							startActivity(intent);
+							finish();
+						} else {
+							ToastHelper.showToast(R.string.failed_register_user, Toast.LENGTH_LONG);
+							Log.e(TAG, "register failed");
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+		});
+		
+		httpRequest.post(CHECK_REGISTER_USER_URL + "/", params);
+	}
 }

@@ -11,11 +11,17 @@ public class UserInfo {
 	public static final int USER_INFO_BYTES_LENGTH_NEED_UPDATE = 12;
 	public static final byte NOT_NEED_UPDATE_FLAG = (byte) 0xE0;
 	public static final byte NEED_UPDATE_FLAG = (byte) 0xE1;
-	
-	public static final int SEX_FEMALE = 0x00;
-	public static final int SEX_MALE = 0x01;
-	public static final String PASSWORD = "password";
-	public static final String EMAIL = "email";
+
+	public static final int SEX_FEMALE = 0x01;
+	public static final int SEX_MALE = 0x00;
+	public static final String PASSWORD = "Password";
+	public static final String EMAIL = "Email";
+	public static final String BIRTHDAY = "BirthDay";
+	public static final String SEX = "Gender";
+	public static final String HEIGHT = "Height";
+	public static final String WEIGHT = "Weight";
+	public static final String GOAL = "Goal";
+
 	private int weight; // Weight(Unit: 0.1Kg); 2byte
 	private int age; // Age; 1byte
 	private int height; // Height(Unit: 1cm); 1byte
@@ -24,7 +30,8 @@ public class UserInfo {
 	private int stepsTarget; // Steps target; 3 byte
 	private String email; // User register Email
 	private String password; // User register Password
-	private String birthday; // User register Birthday
+	private long birthday; // User register Birthday
+	private int goal; // Exercise Goal Point
 
 	public UserInfo() {
 
@@ -49,7 +56,8 @@ public class UserInfo {
 	}
 
 	/**
-	 * @param weight (Unit: 0.1Kg); 2byte
+	 * @param weight
+	 *            (Unit: 0.1Kg); 2byte
 	 */
 	public void setWeight(int weight) {
 		this.weight = weight;
@@ -78,7 +86,8 @@ public class UserInfo {
 	}
 
 	/**
-	 * @param height (Unit: 1cm);
+	 * @param height
+	 *            (Unit: 1cm);
 	 */
 	public void setHeight(int height) {
 		this.height = height;
@@ -94,7 +103,8 @@ public class UserInfo {
 	}
 
 	/**
-	 * @param stride (Unit: 1cm); 1byte
+	 * @param stride
+	 *            (Unit: 1cm); 1byte
 	 */
 	public void setStride(int stride) {
 		this.stride = stride;
@@ -110,7 +120,8 @@ public class UserInfo {
 	}
 
 	/**
-	 * @param sex 0x00:Female 0x01:Male; 1 byte
+	 * @param sex
+	 *            0x00:Female 0x01:Male; 1 byte
 	 */
 	public void setSex(int sex) {
 		this.sex = sex;
@@ -150,12 +161,19 @@ public class UserInfo {
 		this.password = password;
 	}
 
-
-	public String getBirthday() {
+	public long getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(String birthday) {
+	public void setBirthday(long birthday) {
 		this.birthday = birthday;
+	}
+
+	public int getGoal() {
+		return goal;
+	}
+
+	public void setGoal(int goal) {
+		this.goal = goal;
 	}
 }
