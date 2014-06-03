@@ -3,6 +3,9 @@ package com.tranway.tleshine;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -27,15 +30,17 @@ import android.widget.Toast;
 
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
-import com.tranway.tleshine.model.MyApplication;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
+import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 
 public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final static String TAG = BLEConnectActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
-	private static final long SCAN_PERIOD = 10000;
+	private static final long SCAN_PERIOD = 20000;
+	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 
 	private Button mConnectBtn = null;
 	private boolean connState = false;
@@ -299,24 +304,43 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					// byte[] serviceUuidBytes = new byte[16];
-					// String serviceUuid = "";
-					// for (int i = 32, j = 0; i >= 17; i--, j++) {
-					// serviceUuidBytes[j] = scanRecord[i];
-					// }
-					// serviceUuid = bytesToHex(serviceUuidBytes);
-					// if (stringToUuidString(serviceUuid).equals(
-					// RBLGattAttributes.BLE_SHIELD_SERVICE.toUpperCase(Locale.ENGLISH)))
-					// {
-					// mDevice = device;
-					// }
-					// TODO check device address
-					mDevice = device;
+					checkDevice(device);
 				}
 			});
 		}
 	};
+	
+	private void checkDevice(final BluetoothDevice device) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						int statusCode = data
+								.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							mDevice = device;
+						} else {
+							ToastHelper.showToast(R.string.error_device_address,
+									Toast.LENGTH_LONG);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return,
+						Toast.LENGTH_SHORT);
+			}
+		});
+		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
+	}
 	private void scanLeDevice() {
 		new Thread() {
 
