@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,7 +52,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private void initTitleView() {
 		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
-		mExsitBtn.setText(R.string.exsit);
+		mExsitBtn.setText(R.string.pre_step);
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
 		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
@@ -119,12 +120,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			public void onFailure(String url, int errorNo, String errorMsg) {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
-		});
+		}, this);
 		httpRequest.get(CHECK_EMAIL_URL + "/" + email, null);
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
-		if (email.equals("")) {
+		if (TextUtils.isEmpty(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_empty));
 			mEmailTxt.requestFocus();
 			return false;
@@ -134,8 +135,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mEmailTxt.requestFocus();
 			return false;
 		}
-		if (pwd.equals("")) {
+		if (TextUtils.isEmpty(pwd)) {
 			mPwdTxt.setError(getResources().getString(R.string.password_empty));
+			mPwdTxt.requestFocus();
+			return false;
+		}
+		if (pwd.length() < 4) {
+			mPwdTxt.setError(getResources().getString(R.string.error_invalid_password));
 			mPwdTxt.requestFocus();
 			return false;
 		}
@@ -151,8 +157,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
-		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
-		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
+		boolean p = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_EMAIL, email);
+		boolean e = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_PWD, password);
 		return p && e;
 	}
 
@@ -174,7 +180,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		if (!confirmPwd.equals(pwd)) {
 			return false;
 		}
-		if (pwd.equals("")) {
+		if (TextUtils.isEmpty(pwd)) {
 			return false;
 		}
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
-import com.tranway.tleshine.util.UserInfoOperation;
+import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
@@ -29,7 +30,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 	private TextView mHighTxt, mWeightTxt, mBirthdayTxt;
 	private SegmentedGroup mSexGroup;
-	// private RadioButton mMaleRadio, mFemaleRadio;
+	private RadioButton mMaleRadio, mFemaleRadio;
 
 	private UserInfo userInfo;
 
@@ -42,8 +43,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 		userInfo = UserInfoKeeper.readUserInfo(this);
 		userInfo.setSex(UserInfo.SEX_MALE); // set default sex
-		
+
 		initView();
+		updateUserInfoUI(userInfo);
 	}
 
 	private void initView() {
@@ -56,8 +58,8 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mBirthdayTxt = (TextView) findViewById(R.id.txt_birthday);
 		mBirthdayTxt.setOnClickListener(this);
 
-		// mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
-		// mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
+		mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
+		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
 		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
 		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
 		mSexGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -76,7 +78,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 	private void initTitleView() {
 		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
-		mExsitBtn.setText(R.string.exsit);
+		mExsitBtn.setText(R.string.pre_step);
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
 		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
@@ -85,6 +87,33 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		mNextBtn.setVisibility(View.VISIBLE);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.my_info);
+	}
+
+	private void updateUserInfoUI(UserInfo userInfo) {
+		if (userInfo == null) {
+			return;
+		}
+		try {
+			if (userInfo.getBirthday() >= 0) {
+				String birth = UserInfoUtils.convertDateToBirthday(userInfo.getBirthday());
+				mBirthdayTxt.setText(birth);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if (userInfo.getHeight() >= 0) {
+			mHighTxt.setText(UserInfoUtils.convertHighToString(userInfo.getHeight()));
+		}
+		if (userInfo.getWeight() >= 0) {
+			mWeightTxt.setText(UserInfoUtils.convertWeightToString(userInfo.getWeight()));
+		}
+		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
+			mFemaleRadio.setChecked(true);
+			mMaleRadio.setChecked(false);
+		} else {
+			mMaleRadio.setChecked(true);
+			mFemaleRadio.setChecked(false);
+		}
 	}
 
 	@Override
@@ -120,24 +149,25 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		}
 		switch (requestCode) {
 		case SettingsUserHighActivity.REQUEST_CODE:
-			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
+			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, -1);
 			Log.d(TAG, "get wheel view high=" + high);
 			userInfo.setHeight(high);
-			mHighTxt.setText(UserInfoOperation.convertHighToString(high));
+			mHighTxt.setText(UserInfoUtils.convertHighToString(high));
 			break;
 		case SettingsUserWeightActivity.REQUEST_CODE:
-			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
+			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, -1);
 			userInfo.setWeight(weight);
-			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
+			mWeightTxt.setText(UserInfoUtils.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
-			long birthday = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, 0L);
-			userInfo.setBirthday(birthday);
+			long time = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, -1L);
+			userInfo.setBirthday(time);
 			try {
-				String text = UserInfoOperation.convertDateToBirthday(birthday);
+				String text = UserInfoUtils.convertDateToBirthday(time);
 				mBirthdayTxt.setText(text);
-				int age = UserInfoOperation.convertDateToAge(birthday);
+				int age = UserInfoUtils.convertDateToAge(time);
 				userInfo.setAge(age);
+				Log.d(TAG, "-------dirthday time: " + time + "; age: " + age);
 			} catch (ParseException e) {
 				e.printStackTrace();
 				ToastHelper.showToast(R.string.parse_date_exception);
@@ -149,17 +179,23 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	}
 
 	private void onNextButtonClick() {
-		savedUserInfoToSP();
-		Intent intent = new Intent(this, RegisterUserGoalActivity.class);
-		startActivity(intent);
-	}
-
-	private boolean savedUserInfoToSP() {
 		if (userInfo == null) {
-			return false;
+			return;
 		}
-
-		return UserInfoKeeper.writeUserInfo(this, userInfo);
+		if (userInfo.getBirthday() < 0) {
+			ToastHelper.showToast(R.string.prompt_birthday);
+			return;
+		} else if (userInfo.getHeight() < 0) {
+			ToastHelper.showToast(R.string.prompt_high);
+			return;
+		} else if (userInfo.getWeight() < 0) {
+			ToastHelper.showToast(R.string.prompt_weight);
+			return;
+		} else {
+			UserInfoKeeper.writeUserInfo(this, userInfo);
+			Intent intent = new Intent(this, RegisterUserGoalActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	// private int getUserSelectSex() {

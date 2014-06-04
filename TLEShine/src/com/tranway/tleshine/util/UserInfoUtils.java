@@ -9,12 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.tranway.tleshine.model.UserInfo;
 
 @SuppressLint("SimpleDateFormat")
-public class UserInfoOperation {
-	private static final String SIMPLE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+public class UserInfoUtils {
+	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
 	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
 
@@ -28,11 +29,10 @@ public class UserInfoOperation {
 	 * @return UNIX date
 	 */
 	public static long convertBirthdayToUnixDate(int year, int month, int day) {
-		DecimalFormat df = new DecimalFormat("00");
-		String birthday = year + "-" + df.format(month) + "-" + df.format(day) + " 00:00:00";
+		String birthday = year + "-" + month + "-" + day;
 		long date = 0;
 		try {
-			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime();
+			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime() / 1000L;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class UserInfoOperation {
 	 */
 	public static String convertDateToBirthday(long time) throws ParseException {
 		DecimalFormat df = new DecimalFormat("00");
-		Date date = new Date(time);
+		Date date = new Date(time * 1000L);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int year = calendar.get(Calendar.YEAR);
@@ -69,8 +69,7 @@ public class UserInfoOperation {
 	 * @throws ParseException
 	 */
 	public static int convertDateToAge(long time) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat(SIMPLE_FORMAT);
-		Date date = new Date(time);
+		Date date = new Date(time * 1000L);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		return canculateAgeByCalendar(calendar);
@@ -152,12 +151,12 @@ public class UserInfoOperation {
 		if (info == null) {
 			return data;
 		}
-		data.put(UserInfo.EMAIL, info.getEmail());
-		data.put(UserInfo.PASSWORD, info.getPassword());
-		data.put(UserInfo.BIRTHDAY, String.valueOf(info.getBirthday()));
-		data.put(UserInfo.SEX, String.valueOf(info.getSex()));
-		data.put(UserInfo.HEIGHT, String.valueOf(info.getHeight()));
-		data.put(UserInfo.WEIGHT, String.valueOf(info.getGoal()));
+		data.put(UserInfo.SEVER_KEY_EMAIL, info.getEmail());
+		data.put(UserInfo.SEVER_KEY_PASSWORD, info.getPassword());
+		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
+		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
+		data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight()));
+		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getGoal()));
 
 		return data;
 	}

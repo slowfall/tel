@@ -2,6 +2,7 @@ package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -49,6 +50,8 @@ import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
 import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
+@SuppressLint("NewApi")
+// !!!!!!!!!!!!!!!!!!
 public class DayFragment extends Fragment {
 	private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
@@ -81,10 +84,8 @@ public class DayFragment extends Fragment {
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
-		public void onServiceConnected(ComponentName componentName,
-				IBinder service) {
-			mBluetoothLeService = ((RBLService.LocalBinder) service)
-					.getService();
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 			}
@@ -102,13 +103,12 @@ public class DayFragment extends Fragment {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Disconnected",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(MyApplication.getAppContext(), "Disconnected", Toast.LENGTH_SHORT)
+						.show();
 				// setButtonDisable();
-			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
-					.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Connected",
-						Toast.LENGTH_SHORT).show();
+			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+				Toast.makeText(MyApplication.getAppContext(), "Connected", Toast.LENGTH_SHORT)
+						.show();
 
 				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -127,13 +127,11 @@ public class DayFragment extends Fragment {
 		// setButtonEnable();
 		// startReadRssi();
 
-		characteristicTx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
+		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
 		BluetoothGattCharacteristic characteristicRx = gattService
 				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
-		mBluetoothLeService.setCharacteristicNotification(characteristicRx,
-				true);
+		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
 
@@ -194,14 +192,13 @@ public class DayFragment extends Fragment {
 
 		return intentFilter;
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 
 		if (!mBluetoothAdapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
 
@@ -226,7 +223,8 @@ public class DayFragment extends Fragment {
 	private void initView(View v) {
 		Rect rect = new Rect();
 		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top + (int) getResources().getDimension(R.dimen.activity_title_height);
+		int statusHeight = rect.top
+				+ (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
@@ -28,16 +29,18 @@ import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
-import com.tranway.tleshine.util.UserInfoOperation;
-import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
+import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.widget.ExerciseIntensityView;
 
-public class RegisterUserGoalActivity extends Activity implements OnClickListener {
+public class RegisterUserGoalActivity extends Activity implements OnClickListener, OnHttpRequestListener {
 	private static final String TAG = RegisterUserGoalActivity.class.getSimpleName();
 
 	private static final String CHECK_REGISTER_USER_URL = "/add";
+	private static final String GET_USER_INFO_URL = "/Get";
 
+	private TLEHttpRequest httpRequest;
 	private TextView mExerciseTxt, mWalkTimeTxt, mRunTimeTxt, mSwimTimeTxt, mPointTxt;
+	private String userEmail = null;
 	private int selectIndex = 0;
 
 	@Override
@@ -48,6 +51,7 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		setContentView(R.layout.activity_register_user_goal);
 
 		initView();
+		httpRequest = TLEHttpRequest.instance();
 	}
 
 	private void initView() {
@@ -123,11 +127,11 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		mPointTxt.setText(String.valueOf(point));
 
 		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
-		mWalkTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
-		mRunTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mRunTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.SWIM);
-		mSwimTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mSwimTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 	}
 
 	@Override
@@ -152,6 +156,7 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
 		}
 		UserGoalKeeper.writeExerciseGoal(this, point);
+
 		syncUserInfoToServer(UserInfoKeeper.readUserInfo(this));
 	}
 
@@ -165,36 +170,38 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		if (userInfo == null) {
 			return;
 		}
-		Map<String, String> params = UserInfoOperation.convertUserInfoToParamsMap(userInfo);
-		
-		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
-		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
-			@Override
-			public void onSuccess(String url, JSONObject data) {
-				if (data.has(TLEHttpRequest.STATUS_CODE)) {
-					try {
-						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
-						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
-							Intent intent = new Intent(RegisterUserGoalActivity.this, MainTabsActivity.class);
-							startActivity(intent);
-							finish();
-						} else {
-							ToastHelper.showToast(R.string.failed_register_user, Toast.LENGTH_LONG);
-							Log.e(TAG, "register failed");
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+		userEmail = userInfo.getEmail();
+		Map<String, String> params = UserInfoUtils.convertUserInfoToParamsMap(userInfo);
 
-			@Override
-			public void onFailure(String url, int errorNo, String errorMsg) {
-				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
-			}
-		});
-		
+		httpRequest.setOnHttpRequestListener(this, this);
 		httpRequest.post(CHECK_REGISTER_USER_URL + "/", params);
+	}
+
+	@Override
+	public void onFailure(String url, int errorNo, String errorMsg) {
+		// TODO Auto-generated method stub
+		ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+	}
+
+	@Override
+	public void onSuccess(String url, JSONObject data) {
+		// TODO Auto-generated method stub
+		try {
+			int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+			if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+				ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
+				Intent intent = new Intent(RegisterUserGoalActivity.this, BLEConnectActivity.class);
+				startActivity(intent);
+				finish();
+			} else {
+				// ToastHelper.showToast(R.string.failed_register_user,
+				// Toast.LENGTH_LONG);
+				String errorMsg = data.getString(TLEHttpRequest.MSG);
+				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+				Log.e(TAG, "register failed");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }

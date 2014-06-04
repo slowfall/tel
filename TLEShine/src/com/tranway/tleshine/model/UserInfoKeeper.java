@@ -8,6 +8,7 @@ public class UserInfoKeeper {
 
 	private static final String PREFERENCES_NAME = "com_tle_user_info";
 
+	public static final String KEY_ID = "userId";
 	public static final String KEY_EMAIL = "email";
 	public static final String KEY_PWD = "password";
 	public static final String KEY_BIRTH = "birthday";
@@ -34,6 +35,7 @@ public class UserInfoKeeper {
 
 		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
+		edit.putLong(KEY_ID, info.getId());
 		edit.putString(KEY_EMAIL, info.getEmail());
 		edit.putString(KEY_PWD, info.getPassword());
 		edit.putLong(KEY_BIRTH, info.getBirthday());
@@ -58,7 +60,7 @@ public class UserInfoKeeper {
 	 *            write value
 	 * @return return true if succeed, else return false
 	 */
-	public static boolean writeUserinfo(Context context, String key, String value) {
+	public static boolean writeUserInfo(Context context, String key, String value) {
 		if (null == context || null == key || null == value) {
 			return false;
 		}
@@ -81,7 +83,7 @@ public class UserInfoKeeper {
 	 *            write value
 	 * @return return true if succeed, else return false
 	 */
-	public static boolean writeUserinfo(Context context, String key, int value) {
+	public static boolean writeUserInfo(Context context, String key, int value) {
 		if (null == context || null == key) {
 			return false;
 		}
@@ -89,6 +91,29 @@ public class UserInfoKeeper {
 		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putInt(key, value);
+
+		return edit.commit();
+	}
+	
+	/**
+	 * write user information by SharedPreferences key
+	 * 
+	 * @param context
+	 *            application context
+	 * @param key
+	 *            SharedPreferences key
+	 * @param value
+	 *            write value
+	 * @return return true if succeed, else return false
+	 */
+	public static boolean writeUserInfo(Context context, String key, long value) {
+		if (null == context || null == key) {
+			return false;
+		}
+
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		Editor edit = preferences.edit();
+		edit.putLong(key, value);
 
 		return edit.commit();
 	}
@@ -108,17 +133,31 @@ public class UserInfoKeeper {
 		UserInfo info = new UserInfo();
 		SharedPreferences sp = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		info.setEmail(sp.getString(KEY_EMAIL, ""));
+		info.setId(sp.getLong(KEY_ID, -1));
 		info.setPassword(sp.getString(KEY_PWD, ""));
-		info.setBirthday(sp.getLong(KEY_BIRTH, 0));
-		info.setWeight(sp.getInt(KEY_WEIGHT, 0));
-		info.setAge(sp.getInt(KEY_AGE, 0));
-		info.setHeight(sp.getInt(KEY_HEIGHT, 0));
-		info.setStride(sp.getInt(KEY_STRIDE, 0));
-		info.setSex(sp.getInt(KEY_SEX, 0));
-		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, 0));
+		info.setBirthday(sp.getLong(KEY_BIRTH, -1));
+		info.setWeight(sp.getInt(KEY_WEIGHT, -1));
+		info.setAge(sp.getInt(KEY_AGE, -1));
+		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
+		info.setStride(sp.getInt(KEY_STRIDE, -1));
+		info.setSex(sp.getInt(KEY_SEX, -1));
+		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, -1));
 		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
 
 		return info;
 	}
 
+	/**
+	 * clear user information SharedPreferences
+	 * 
+	 * @param context
+	 * 
+	 * @return return true if succeed, else return false
+	 */
+	public static boolean clearUserInfo(Context context) {
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		Editor edit = preferences.edit();
+		edit.clear();
+		return edit.commit();
+	}
 }

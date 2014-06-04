@@ -8,6 +8,7 @@
     <string name="password_empty">请输入密码</string>
     <string name="error_email_used">该邮箱已被使用</string>
     <string name="success_register_user">恭喜你，注册成功</string>
+    <string name="get_register_info_failed">获取注册信息失败</string>
     <string name="failed_register_user">很抱歉，注册失败</string>
     
     <string name="register_accout_tips">成为一名 TeKit 用户</string>

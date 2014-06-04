@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.util.UserInfoOperation;
+import com.tranway.tleshine.util.UserInfoUtils;
 
 public class CustomizedBirthdayWheelView extends LinearLayout {
 
@@ -92,6 +92,6 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 		int month = mMonthWheel.getCurrentItem() + 1;
 		int day = mDayWheel.getCurrentItem() + DAY_BASE;
 
-		return UserInfoOperation.convertBirthdayToUnixDate(year, month, day);
+		return UserInfoUtils.convertBirthdayToUnixDate(year, month, day);
 	}
 }

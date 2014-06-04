@@ -206,7 +206,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 							startActivity(intent);
 							finish();
 						} else {
-							ToastHelper.showToast(R.string.error_incorrect_email_passowrd, Toast.LENGTH_LONG);
+							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,
+							// Toast.LENGTH_LONG);
+							String errorMsg = data.getString(TLEHttpRequest.MSG);
+							ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -222,7 +225,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				showProgress(false);
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
-		});
+		}, this);
 		// Map<String, String> data = new TreeMap<String, String>();
 		// data.put(UserInfo.PASSWORD, password);
 		httpRequest.get(LOGIN_END_URL + "/" + email + "/?password=" + password, null);

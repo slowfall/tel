@@ -20,7 +20,7 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
-import com.tranway.tleshine.util.UserInfoOperation;
+import com.tranway.tleshine.util.UserInfoUtils;
 
 public class SettingsUserInfoActivity extends Activity implements OnClickListener {
 	private static final String TAG = SettingsUserInfoActivity.class.getSimpleName();
@@ -76,19 +76,18 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 	private void updateUserInfoUI(UserInfo userInfo) {
 		if (userInfo == null) {
 			ToastHelper.showToast(R.string.read_user_info_exception);
-			finish();
 			return;
 		}
 		mEmailTxt.setText(userInfo.getEmail());
 		try {
-			String birth = UserInfoOperation.convertDateToBirthday(userInfo.getBirthday());
+			String birth = UserInfoUtils.convertDateToBirthday(userInfo.getBirthday());
 			mBirthdayTxt.setText(birth);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mHighTxt.setText(UserInfoOperation.convertHighToString(userInfo.getHeight()));
-		mWeightTxt.setText(UserInfoOperation.convertWeightToString(userInfo.getWeight()));
+		mHighTxt.setText(UserInfoUtils.convertHighToString(userInfo.getHeight()));
+		mWeightTxt.setText(UserInfoUtils.convertWeightToString(userInfo.getWeight()));
 		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
 			mFemaleRadio.setChecked(true);
 			mMaleRadio.setChecked(false);
@@ -96,7 +95,6 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 			mMaleRadio.setChecked(true);
 			mFemaleRadio.setChecked(false);
 		}
-
 	}
 
 	private void initTitleView() {
@@ -142,20 +140,20 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
 			userInfo.setHeight(high);
 			Log.d(TAG, "get wheel view high=" + high);
-			mHighTxt.setText(UserInfoOperation.convertHighToString(high));
+			mHighTxt.setText(UserInfoUtils.convertHighToString(high));
 			break;
 		case SettingsUserWeightActivity.REQUEST_CODE:
 			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
 			userInfo.setWeight(weight);
-			mWeightTxt.setText(UserInfoOperation.convertWeightToString(weight));
+			mWeightTxt.setText(UserInfoUtils.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
 			long birthday = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, 0);
 			userInfo.setBirthday(birthday);
 			try {
-				String text = UserInfoOperation.convertDateToBirthday(birthday);
+				String text = UserInfoUtils.convertDateToBirthday(birthday);
 				mBirthdayTxt.setText(text);
-				int age = UserInfoOperation.convertDateToAge(birthday);
+				int age = UserInfoUtils.convertDateToAge(birthday);
 				userInfo.setAge(age);
 			} catch (ParseException e) {
 				e.printStackTrace();

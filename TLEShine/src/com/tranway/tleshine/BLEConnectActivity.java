@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -32,17 +33,20 @@ import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
 import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 
+@SuppressLint("NewApi")
 public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final static String TAG = BLEConnectActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final long SCAN_PERIOD = 20000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
+	private static final String GET_INFO_END_URL = "/Get";
 
 	private Button mConnectBtn = null;
 	private boolean connState = false;
@@ -56,10 +60,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
-		public void onServiceConnected(ComponentName componentName,
-				IBinder service) {
-			mBluetoothLeService = ((RBLService.LocalBinder) service)
-					.getService();
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				finish();
@@ -78,13 +80,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Disconnected",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
 				// setButtonDisable();
-			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
-					.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Connected",
-						Toast.LENGTH_SHORT).show();
+			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+				Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
 
 				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -102,6 +101,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_bleconnect);
 
 		setup();
+
+		checkUserId();
+
 		checkBLE();
 	}
 
@@ -110,8 +112,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		super.onResume();
 
 		if (!mBluetoothAdapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
 
@@ -136,8 +137,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// User chose not to enable Bluetooth.
-		if (requestCode == REQUEST_ENABLE_BT
-				&& resultCode == Activity.RESULT_CANCELED) {
+		if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
 			finish();
 			return;
 		}
@@ -150,19 +150,54 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		mConnectBtn.setOnClickListener(this);
 	}
 
+	private void checkUserId() {
+		// TODO Auto-generated method stub
+		UserInfo info = UserInfoKeeper.readUserInfo(this);
+		if (info.getId() < 0) {
+			getUserIdFromServer(info.getEmail());
+		}
+	}
+
+	private void getUserIdFromServer(String email) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						long id = data.getLong(UserInfo.SEVER_KEY_ID);
+						if (id >= 0) {
+							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_ID, id);
+						} else {
+							ToastHelper.showToast(R.string.get_register_info_failed);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						ToastHelper.showToast(R.string.get_register_info_failed);
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+		}, this);
+		httpRequest.get(GET_INFO_END_URL + "/" + email, null);
+	}
+
 	private void checkBLE() {
-		if (!getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT)
-					.show();
+		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			finish();
 		}
 
 		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = mBluetoothManager.getAdapter();
 		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
@@ -178,13 +213,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		// setButtonEnable();
 		// startReadRssi();
 
-		characteristicTx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
+		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
-		BluetoothGattCharacteristic characteristicRx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
-		mBluetoothLeService.setCharacteristicNotification(characteristicRx,
-				true);
+		BluetoothGattCharacteristic characteristicRx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
+		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
 
@@ -204,8 +236,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			userInfo.setStride(90);
 			userInfo.setSex(0);
 			userInfo.setStepsTarget(1000);
-			byte[] info = packet.makeUserInfoForWrite(false, sequenceNumber,
-					null);
+			byte[] info = packet.makeUserInfoForWrite(false, sequenceNumber, null);
 			characteristicTx.setValue(info);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
@@ -215,11 +246,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			byte[] utc = packet.makeUTCForWrite(true, sequenceNumber, utcTime);
 			characteristicTx.setValue(utc);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent intent = new Intent(MyApplication.getAppContext(),
-					MainTabsActivity.class);
+			Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
 			startActivity(intent);
 			break;
-			//total steps and calories since last sync.
+		// total steps and calories since last sync.
 		case 0x03:
 		default:
 			byte[] ack = packet.makeReplyACK(sequenceNumber);
@@ -282,9 +312,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 				} else {
 					runOnUiThread(new Runnable() {
 						public void run() {
-							Toast toast = Toast.makeText(
-									BLEConnectActivity.this,
-									"Couldn't search Ble Shiled device!",
+							Toast toast = Toast.makeText(BLEConnectActivity.this, "Couldn't search Ble Shiled device!",
 									Toast.LENGTH_SHORT);
 							toast.setGravity(0, 0, Gravity.CENTER);
 							toast.show();
@@ -306,10 +334,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
-		public void onLeScan(final BluetoothDevice device, final int rssi,
-				final byte[] scanRecord) {
-			Log.i(TAG, "device address:" + device.getAddress()
-					+ ", scanRecord=" + Util.bytesToHex(scanRecord));
+		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+			Log.i(TAG, "device address:" + device.getAddress() + ", scanRecord=" + Util.bytesToHex(scanRecord));
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -327,14 +353,11 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			public void onSuccess(String url, JSONObject data) {
 				if (data.has(TLEHttpRequest.STATUS_CODE)) {
 					try {
-						int statusCode = data
-								.getInt(TLEHttpRequest.STATUS_CODE);
+						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							mDevice = device;
 						} else {
-							ToastHelper.showToast(
-									R.string.error_device_address,
-									Toast.LENGTH_LONG);
+							ToastHelper.showToast(R.string.error_device_address, Toast.LENGTH_LONG);
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -345,10 +368,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
-				ToastHelper.showToast(R.string.error_server_return,
-						Toast.LENGTH_SHORT);
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
-		});
+		}, this);
 		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
 	}
 

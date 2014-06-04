@@ -9,7 +9,7 @@
     <include
         android:id="@+id/include_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_title_height"
+        android:layout_height="wrap_content"
         layout="@layout/title_control" />
 
     <!-- Login progress -->
@@ -36,8 +36,8 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-light"
             android:text="@string/login_progress_signing_in"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <!-- Login form -->
@@ -68,7 +68,8 @@
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textCursorDrawable="@null" />
 
             <EditText
                 android:id="@+id/password"
@@ -78,19 +79,8 @@
                 android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
-                android:inputType="textPassword" />
-
-            <!--
-                 <Button
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="@string/action_sign_in_short" />
-            -->
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
         </LinearLayout>
     </ScrollView>
 

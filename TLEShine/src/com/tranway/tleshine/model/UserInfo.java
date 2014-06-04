@@ -14,24 +14,26 @@ public class UserInfo {
 
 	public static final int SEX_FEMALE = 0x01;
 	public static final int SEX_MALE = 0x00;
-	public static final String PASSWORD = "Password";
-	public static final String EMAIL = "Email";
-	public static final String BIRTHDAY = "BirthDay";
-	public static final String SEX = "Gender";
-	public static final String HEIGHT = "Height";
-	public static final String WEIGHT = "Weight";
-	public static final String GOAL = "Goal";
+	public static final String SEVER_KEY_PASSWORD = "Password";
+	public static final String SEVER_KEY_EMAIL = "Email";
+	public static final String SEVER_KEY_BIRTHDAY = "BirthDay";
+	public static final String SEVER_KEY_SEX = "Gender";
+	public static final String SEVER_KEY_HEIGHT = "Height";
+	public static final String SEVER_KEY_WEIGHT = "Weight";
+	public static final String SEVER_KEY_GOAL = "Goal";
+	public static final String SEVER_KEY_ID = "ID";
 
-	private int weight; // Weight(Unit: 0.1Kg); 2byte
-	private int age; // Age; 1byte
-	private int height; // Height(Unit: 1cm); 1byte
-	private int stride; // Stride(Unit: 1cm); 1byte
-	private int sex; // Sex 0x00:Female 0x01:Male; 1 byte
-	private int stepsTarget; // Steps target; 3 byte
+	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
+	private int age = -1; // Age; 1byte
+	private int height = -1; // Height(Unit: 1cm); 1byte
+	private int stride = -1; // Stride(Unit: 1cm); 1byte
+	private int sex = -1; // Sex 0x00:Female 0x01:Male; 1 byte
+	private int stepsTarget = -1; // Steps target; 3 byte
 	private String email; // User register Email
 	private String password; // User register Password
-	private long birthday; // User register Birthday
-	private int goal; // Exercise Goal Point
+	private long birthday = -1; // User register Birthday
+	private int goal = -1; // Exercise Goal Point
+	private long id = -1; //user id
 
 	public UserInfo() {
 
@@ -176,4 +178,13 @@ public class UserInfo {
 	public void setGoal(int goal) {
 		this.goal = goal;
 	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 }
