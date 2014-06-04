@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import com.tranway.tleshine.model.Util;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -40,6 +41,7 @@ import android.util.Log;
  * Service for managing connection and data communication with a GATT server
  * hosted on a given Bluetooth LE device.
  */
+@SuppressLint("NewApi") // !!!!!!!!!!!!!!!
 public class RBLService extends Service {
 	private final static String TAG = RBLService.class.getSimpleName();
 

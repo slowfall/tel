@@ -9,14 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.tranway.tleshine.model.UserInfo;
 
 @SuppressLint("SimpleDateFormat")
-public class UserInfoOperation {
-	private static final String SIMPLE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December" };
+public class UserInfoUtils {
+	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
+	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" };
 
 	/**
 	 * convert birthday string to UNIX date
@@ -28,8 +29,7 @@ public class UserInfoOperation {
 	 * @return UNIX date
 	 */
 	public static long convertBirthdayToUnixDate(int year, int month, int day) {
-		DecimalFormat df = new DecimalFormat("00");
-		String birthday = year + "-" + df.format(month) + "-" + df.format(day) + " 00:00:00";
+		String birthday = year + "-" + month + "-" + day;
 		long date = 0;
 		try {
 			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime();
@@ -42,8 +42,7 @@ public class UserInfoOperation {
 	/**
 	 * convert date[ 1990-08-19 ] to [ September 19, 1990 ]
 	 * 
-	 * @param formatDate
-	 *            format date string, such as [ 1990-08-19 ]
+	 * @param formatDate format date string, such as [ 1990-08-19 ]
 	 * @return such as [ September 19, 1990 ]
 	 * 
 	 * @throws ParseException
@@ -63,13 +62,11 @@ public class UserInfoOperation {
 	/**
 	 * convert date[ 1990-08-19 ] to age
 	 * 
-	 * @param formatDate
-	 *            format date string, such as [ 1990-08-19 ]
+	 * @param formatDate format date string, such as [ 1990-08-19 ]
 	 * @return return age or -1
 	 * @throws ParseException
 	 */
 	public static int convertDateToAge(long time) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat(SIMPLE_FORMAT);
 		Date date = new Date(time);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -79,8 +76,7 @@ public class UserInfoOperation {
 	/**
 	 * convert height value to string [ 1.70 米 ]
 	 * 
-	 * @param high
-	 *            170 cm
+	 * @param high 170 cm
 	 * @return 1.70 米
 	 */
 	public static String convertHighToString(int high) {
@@ -92,8 +88,7 @@ public class UserInfoOperation {
 	/**
 	 * convert weight value to string [ 50.4 公斤 ]
 	 * 
-	 * @param weight
-	 *            504*0.1KG
+	 * @param weight 504*0.1KG
 	 * @return 50.4 公斤
 	 */
 	public static String convertWeightToString(int weight) {
@@ -155,6 +150,7 @@ public class UserInfoOperation {
 		data.put(UserInfo.EMAIL, info.getEmail());
 		data.put(UserInfo.PASSWORD, info.getPassword());
 		data.put(UserInfo.BIRTHDAY, String.valueOf(info.getBirthday()));
+		Log.d("---------", "To server birthday: " + info.getBirthday());
 		data.put(UserInfo.SEX, String.valueOf(info.getSex()));
 		data.put(UserInfo.HEIGHT, String.valueOf(info.getHeight()));
 		data.put(UserInfo.WEIGHT, String.valueOf(info.getGoal()));

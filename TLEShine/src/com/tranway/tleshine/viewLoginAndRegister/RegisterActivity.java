@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,7 +52,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private void initTitleView() {
 		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
-		mExsitBtn.setText(R.string.exsit);
+		mExsitBtn.setText(R.string.pre_step);
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
 		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
@@ -87,11 +88,10 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * check user input Email weather is available, goto next Activity if is
-	 * available, else show error tips
+	 * check user input Email weather is available, goto next Activity if is available, else show
+	 * error tips
 	 * 
-	 * @param email
-	 *            Email address
+	 * @param email Email address
 	 */
 	private void checkEmailToServer(String email) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
@@ -103,7 +103,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							saveUserResgiterInfo();
-							Intent intent = new Intent(RegisterActivity.this, RegisterUserInfoActivity.class);
+							Intent intent = new Intent(RegisterActivity.this,
+									RegisterUserInfoActivity.class);
 							startActivity(intent);
 						} else {
 							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);
@@ -124,7 +125,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String cPwd) {
-		if (email.equals("")) {
+		if (TextUtils.isEmpty(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_empty));
 			mEmailTxt.requestFocus();
 			return false;
@@ -134,8 +135,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mEmailTxt.requestFocus();
 			return false;
 		}
-		if (pwd.equals("")) {
+		if (TextUtils.isEmpty(pwd)) {
 			mPwdTxt.setError(getResources().getString(R.string.password_empty));
+			mPwdTxt.requestFocus();
+			return false;
+		}
+		if (pwd.length() < 4) {
+			mPwdTxt.setError(getResources().getString(R.string.error_invalid_password));
 			mPwdTxt.requestFocus();
 			return false;
 		}
@@ -174,7 +180,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		if (!confirmPwd.equals(pwd)) {
 			return false;
 		}
-		if (pwd.equals("")) {
+		if (TextUtils.isEmpty(pwd)) {
 			return false;
 		}
 

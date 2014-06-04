@@ -12,7 +12,7 @@ import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
-import com.tranway.tleshine.util.UserInfoOperation;
+import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsGoalActivity.OnTitleButtonClickListener;
 import com.tranway.tleshine.widget.CustomizedGoalWheelView;
 import com.tranway.tleshine.widget.OnWheelScrollListener;
@@ -88,11 +88,11 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 		}
 		mPointTxt.setText(point + " 点");
 		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
-		mWalkTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
-		mRunTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mRunTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.SWIM);
-		mSwimTimeTxt.setText(UserInfoOperation.convertMinToHour(time));
+		mSwimTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 	}
 
 	private boolean saveUserGoalSettings() {
