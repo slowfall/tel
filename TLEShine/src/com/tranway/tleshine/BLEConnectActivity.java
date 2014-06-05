@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tranway.tleshine.bluetooth.RBLService;
@@ -112,6 +113,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		checkUserId();
 
 		checkBLE();
+
+		initTitleView();
 	}
 
 	@Override
@@ -293,10 +296,22 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		return intentFilter;
 	}
 
+	private void initTitleView() {
+		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
+		mPreBtn.setText(R.string.pre_step);
+		mPreBtn.setVisibility(View.VISIBLE);
+		mPreBtn.setOnClickListener(this);
+		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		mTitleTxt.setText(R.string.connect_device);
+	}
+
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
+		case R.id.btn_title_left:
+			finish();
+			break;
 		case R.id.btn_ble_connect:
 			scanAndConnectDevice();
 			mConnectBtn.setText(R.string.scanning);
@@ -325,6 +340,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 									R.string.couldnot_search_ble_device,
 									Toast.LENGTH_SHORT);
 							toast.show();
+							mConnectBtn.setText(R.string.click_scan_device);
 							mConnectBtn.setEnabled(true);
 						}
 					});
@@ -367,22 +383,24 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 						int statusCode = data
 								.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							ToastHelper.showToast(
-									R.string.error_device_address,
-									Toast.LENGTH_LONG);
+							String msg = getString(R.string.error_device_address);
+							if (data.has(TLEHttpRequest.MSG)) {
+								msg = data.getString(TLEHttpRequest.MSG);
+							}
+							ToastHelper.showToast(msg, Toast.LENGTH_LONG);
 						} else {
 							mDevice = device;
 							mDeviceAddress = mDevice.getAddress();
-							if (mBluetoothLeService.connect(mDeviceAddress)) {
-								mConnectBtn.setText(R.string.click_scan_device);
-								mConnectBtn.setEnabled(true);
-							}
+							mBluetoothLeService.connect(mDeviceAddress);
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
+				mConnectBtn.setText(R.string.click_scan_device);
+				mConnectBtn.setEnabled(true);
+				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 			}
 
 			@Override
@@ -390,12 +408,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return,
 						Toast.LENGTH_SHORT);
 			}
-
 		}, this);
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put("DeviceID", device.getAddress());
 		httpRequest.post(CHECK_DEVICE_END_URL, data);
-		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
 	}
 
 	private void scanLeDevice() {

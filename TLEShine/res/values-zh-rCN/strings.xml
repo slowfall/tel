@@ -35,5 +35,8 @@
 	<string name="error_device_address">无效设备。</string>
 	<string name="click_scan_device">点击搜索设备</string>
 	<string name="scanning">搜索中......</string>
+	<string name="connect_device">连接设备</string>
 	<string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
+	<string name="today">今天</string>
+	<string name="yestoday">昨天</string>
 </resources>

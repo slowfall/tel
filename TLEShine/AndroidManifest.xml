@@ -45,7 +45,7 @@
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.bluetooth.SimpleControls"
