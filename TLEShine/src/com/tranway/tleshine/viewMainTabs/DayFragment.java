@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -57,7 +56,6 @@ public class DayFragment extends Fragment {
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
-	private static final int REQUEST_ENABLE_BT = 1;
 
 	private static final float VIEWPAGE_HEIGHT_PERCENT = 0.5f;
 
@@ -79,13 +77,14 @@ public class DayFragment extends Fragment {
 
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
-	private BluetoothAdapter mBluetoothAdapter;
 
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
-		public void onServiceConnected(ComponentName componentName, IBinder service) {
-			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
+		public void onServiceConnected(ComponentName componentName,
+				IBinder service) {
+			mBluetoothLeService = ((RBLService.LocalBinder) service)
+					.getService();
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 			}
@@ -103,15 +102,16 @@ public class DayFragment extends Fragment {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Disconnected", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(MyApplication.getAppContext(), "Disconnected",
+						Toast.LENGTH_SHORT).show();
 				// setButtonDisable();
-			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Connected", Toast.LENGTH_SHORT)
-						.show();
+			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
+					.equals(action)) {
+				Toast.makeText(MyApplication.getAppContext(), "Connected",
+						Toast.LENGTH_SHORT).show();
 
-				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
+				getGattService(mBluetoothLeService.getSupportedGattService());
 				byte[] data = intent.getByteArrayExtra(RBLService.EXTRA_DATA);
 				handleBLEData(data);
 			} else if (RBLService.ACTION_GATT_RSSI.equals(action)) {
@@ -127,12 +127,16 @@ public class DayFragment extends Fragment {
 		// setButtonEnable();
 		// startReadRssi();
 
-		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
+		if (characteristicTx == null) {
+			characteristicTx = gattService
+					.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
-		BluetoothGattCharacteristic characteristicRx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
-		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
-		mBluetoothLeService.readCharacteristic(characteristicRx);
+			BluetoothGattCharacteristic characteristicRx = gattService
+					.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
+			mBluetoothLeService.setCharacteristicNotification(characteristicRx,
+					true);
+			mBluetoothLeService.readCharacteristic(characteristicRx);
+		}
 	}
 
 	private void handleBLEData(byte[] data) {
@@ -157,7 +161,8 @@ public class DayFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_day, container, false);
 		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		for (int i = 0; i <= 6; i++) {
@@ -178,6 +183,8 @@ public class DayFragment extends Fragment {
 
 		initView(v);
 
+		Intent gattServiceIntent = new Intent(getActivity(), RBLService.class);
+		getActivity().bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
 		return v;
 	}
 
@@ -197,12 +204,8 @@ public class DayFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 
-		if (!mBluetoothAdapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		}
-
-		getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+		getActivity().registerReceiver(mGattUpdateReceiver,
+				makeGattUpdateIntentFilter());
 	}
 
 	@Override
@@ -222,9 +225,11 @@ public class DayFragment extends Fragment {
 
 	private void initView(View v) {
 		Rect rect = new Rect();
-		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+		getActivity().getWindow().getDecorView()
+				.getWindowVisibleDisplayFrame(rect);
 		int statusHeight = rect.top
-				+ (int) getResources().getDimension(R.dimen.activity_title_height);
+				+ (int) getResources().getDimension(
+						R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -243,7 +248,8 @@ public class DayFragment extends Fragment {
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(3);
 		// 设置ViewPager的width和height，width = 屏幕宽度*2/3，height = 屏幕高度*3/5
-		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
+		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(
+				displayWidth * 2 / 3,
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
 		mViewPager.setLayoutParams(params);
 		mViewPager.setCurrentItem(mList.size() - 1);
@@ -259,7 +265,8 @@ public class DayFragment extends Fragment {
 		});
 	}
 
-	private void initChatLayout(View v, int displayWidth, int displayHeight, int statusHeight) {
+	private void initChatLayout(View v, int displayWidth, int displayHeight,
+			int statusHeight) {
 		mChartLayout = (LinearLayout) v.findViewById(R.id.layout_chart);
 		mScrollBtn = (Button) v.findViewById(R.id.btn_scroll);
 		mScrollBtn.setOnClickListener(new OnClickListener() {
@@ -276,7 +283,8 @@ public class DayFragment extends Fragment {
 			}
 		});
 
-		ViewGroup.LayoutParams chartLayoutParams = mChartLayout.getLayoutParams();
+		ViewGroup.LayoutParams chartLayoutParams = mChartLayout
+				.getLayoutParams();
 		chartLayoutParams.width = displayWidth;
 		chartLayoutParams.height = displayHeight - statusHeight;
 		mChartLayout.setLayoutParams(chartLayoutParams);
@@ -300,7 +308,8 @@ public class DayFragment extends Fragment {
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
 		// Add chart view data
 		chartView.addSeries(series);
-		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
+		LabelAdapter mAdapter = new LabelAdapter(getActivity(),
+				LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
 	}
@@ -335,7 +344,8 @@ public class DayFragment extends Fragment {
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
 			// to refresh frameLayout
 			if (mPagerLayout != null) {
 				mPagerLayout.invalidate();

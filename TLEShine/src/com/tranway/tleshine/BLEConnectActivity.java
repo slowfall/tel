@@ -1,7 +1,9 @@
 package com.tranway.tleshine;
 
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,7 +43,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final static String TAG = BLEConnectActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final long SCAN_PERIOD = 20000;
-	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
+	private static final String CHECK_DEVICE_END_URL = "/CheckDevice/";
 
 	private Button mConnectBtn = null;
 	private boolean connState = false;
@@ -264,29 +265,13 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void run() {
-				if (mDevice != null) {
-					mDeviceAddress = mDevice.getAddress();
-					if (mBluetoothLeService.connect(mDeviceAddress)) {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								mConnectBtn.setText(R.string.click_scan_device);
-								mConnectBtn.setEnabled(true);
-								// Intent intent = new
-								// Intent(MyApplication.getAppContext(),
-								// MainTabsActivity.class);
-								// startActivity(intent);
-							}
-						});
-					}
-				} else {
+				if (mDevice == null)  {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							Toast toast = Toast.makeText(
 									BLEConnectActivity.this,
-									"Couldn't search Ble Shiled device!",
+									R.string.couldnot_search_ble_device,
 									Toast.LENGTH_SHORT);
-							toast.setGravity(0, 0, Gravity.CENTER);
 							toast.show();
 							mConnectBtn.setEnabled(true);
 						}
@@ -330,11 +315,16 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 						int statusCode = data
 								.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							mDevice = device;
-						} else {
 							ToastHelper.showToast(
 									R.string.error_device_address,
 									Toast.LENGTH_LONG);
+						} else {
+							mDevice = device;
+							mDeviceAddress = mDevice.getAddress();
+							if (mBluetoothLeService.connect(mDeviceAddress)) {
+								mConnectBtn.setText(R.string.click_scan_device);
+								mConnectBtn.setEnabled(true);
+							}
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -349,7 +339,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 						Toast.LENGTH_SHORT);
 			}
 		});
-		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put("DeviceID", device.getAddress());
+		httpRequest.post(CHECK_DEVICE_END_URL, data);
 	}
 
 	private void scanLeDevice() {
