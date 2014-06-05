@@ -88,10 +88,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * check user input Email weather is available, goto next Activity if is available, else show
-	 * error tips
+	 * check user input Email weather is available, goto next Activity if is
+	 * available, else show error tips
 	 * 
-	 * @param email Email address
+	 * @param email
+	 *            Email address
 	 */
 	private void checkEmailToServer(String email) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
@@ -103,8 +104,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							saveUserResgiterInfo();
-							Intent intent = new Intent(RegisterActivity.this,
-									RegisterUserInfoActivity.class);
+							Intent intent = new Intent(RegisterActivity.this, RegisterUserInfoActivity.class);
 							startActivity(intent);
 						} else {
 							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);
@@ -120,7 +120,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			public void onFailure(String url, int errorNo, String errorMsg) {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
-		});
+		}, this);
 		httpRequest.get(CHECK_EMAIL_URL + "/" + email, null);
 	}
 
@@ -157,8 +157,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
-		boolean p = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_EMAIL, email);
-		boolean e = UserInfoKeeper.writeUserinfo(this, UserInfoKeeper.KEY_PWD, password);
+		boolean p = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_EMAIL, email);
+		boolean e = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_PWD, password);
 		return p && e;
 	}
 

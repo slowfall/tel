@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -33,17 +34,21 @@ import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
 import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
 
+@SuppressLint("NewApi")
 public class BLEConnectActivity extends Activity implements OnClickListener {
 	private final static String TAG = BLEConnectActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final long SCAN_PERIOD = 20000;
-	private static final String CHECK_DEVICE_END_URL = "/CheckDevice/";
+
+	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
+	private static final String GET_INFO_END_URL = "/Get";
 
 	private Button mConnectBtn = null;
 	private boolean connState = false;
@@ -103,6 +108,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_bleconnect);
 
 		setup();
+
+		checkUserId();
+
 		checkBLE();
 	}
 
@@ -149,6 +157,49 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private void setup() {
 		mConnectBtn = (Button) findViewById(R.id.btn_ble_connect);
 		mConnectBtn.setOnClickListener(this);
+	}
+
+	private void checkUserId() {
+		// TODO Auto-generated method stub
+		UserInfo info = UserInfoKeeper.readUserInfo(this);
+		if (info.getId() < 0) {
+			getUserIdFromServer(info.getEmail());
+		}
+	}
+
+	private void getUserIdFromServer(String email) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, JSONObject data) {
+				if (data.has(TLEHttpRequest.STATUS_CODE)) {
+					try {
+						long id = data.getLong(UserInfo.SEVER_KEY_ID);
+						if (id >= 0) {
+							UserInfoKeeper.writeUserInfo(
+									getApplicationContext(),
+									UserInfoKeeper.KEY_ID, id);
+						} else {
+							ToastHelper
+									.showToast(R.string.get_register_info_failed);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						ToastHelper
+								.showToast(R.string.get_register_info_failed);
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return,
+						Toast.LENGTH_SHORT);
+			}
+		}, this);
+		httpRequest.get(GET_INFO_END_URL + "/" + email, null);
 	}
 
 	private void checkBLE() {
@@ -220,7 +271,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 					MainTabsActivity.class);
 			startActivity(intent);
 			break;
-			//total steps and calories since last sync.
+		// total steps and calories since last sync.
 		case 0x03:
 		default:
 			byte[] ack = packet.makeReplyACK(sequenceNumber);
@@ -265,9 +316,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void run() {
-				if (mDevice == null)  {
+				if (mDevice == null) {
 					runOnUiThread(new Runnable() {
 						public void run() {
+
 							Toast toast = Toast.makeText(
 									BLEConnectActivity.this,
 									R.string.couldnot_search_ble_device,
@@ -338,10 +390,12 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return,
 						Toast.LENGTH_SHORT);
 			}
-		});
+
+		}, this);
 		Map<String, String> data = new TreeMap<String, String>();
 		data.put("DeviceID", device.getAddress());
 		httpRequest.post(CHECK_DEVICE_END_URL, data);
+		httpRequest.get(CHECK_DEVICE_END_URL + "/" + device.getAddress(), null);
 	}
 
 	private void scanLeDevice() {

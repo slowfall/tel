@@ -11,6 +11,10 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.widget.CustomizedProgressDialog;
+
+import android.content.Context;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.util.Log;
@@ -29,7 +33,12 @@ public class TLEHttpRequest {
 	private String mainUrl;
 	private OnHttpRequestListener mListener;
 	private FinalHttp finalHttp;
+	private CustomizedProgressDialog dialog;
 	private static TLEHttpRequest singleInstance;
+
+//	public enum HttpRequestType {
+//		CHECK_LOGIN, CHECK_REGISTION, CHECK_EMAIL, CHECK_DEVICE, GET_USERINFO;
+//	}
 
 	public static TLEHttpRequest instance() {
 		if (singleInstance == null) {
@@ -50,11 +59,18 @@ public class TLEHttpRequest {
 		public void onSuccess(String url, JSONObject data);
 	}
 
-	public void setOnHttpRequestListener(OnHttpRequestListener listener) {
+	// public void setOnHttpRequestListener(OnHttpRequestListener listener) {
+	// mListener = listener;
+	// }
+
+	public void setOnHttpRequestListener(OnHttpRequestListener listener, Context context) {
 		mListener = listener;
+		dialog = new CustomizedProgressDialog(context, R.string.is_loading);
 	}
 
 	public void get(String endUrl, Map<String, String> data) {
+		dialog.show();
+
 		String url = mainUrl + endUrl;
 		Uri uri = Uri.parse(url);
 		Builder builder = uri.buildUpon();
@@ -70,9 +86,13 @@ public class TLEHttpRequest {
 	}
 
 	public void post(String endUrl, Map<String, String> data) {
+		dialog.show();
+
 		AjaxParams params = new AjaxParams();
-		for (Entry<String, String> entry : data.entrySet()) {
-			params.put(entry.getKey(), entry.getValue());
+		if (data != null) {
+			for (Entry<String, String> entry : data.entrySet()) {
+				params.put(entry.getKey(), entry.getValue());
+			}
 		}
 		String url = mainUrl + endUrl;
 		// String encodedUrl = URLEncoder.encode(url, HTTP.UTF_8);
@@ -91,6 +111,7 @@ public class TLEHttpRequest {
 		public void onFailure(Throwable t, int errorNo, String strMsg) {
 			super.onFailure(t, errorNo, strMsg);
 			Log.e(LOG_CAT, t.toString());
+			dialog.dismiss();
 			if (mListener != null) {
 				mListener.onFailure(myUrl, errorNo, strMsg);
 			}
@@ -100,6 +121,7 @@ public class TLEHttpRequest {
 		public void onSuccess(String t) {
 			super.onSuccess(t);
 			Log.d(LOG_CAT, t);
+			dialog.dismiss();
 			try {
 				if (mListener != null) {
 					JSONObject json = new JSONObject(t);

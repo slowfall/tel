@@ -90,18 +90,23 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	}
 
 	private void updateUserInfoUI(UserInfo userInfo) {
-		if (userInfo == null || userInfo.getBirthday() == 0 || userInfo.getHeight() == 0
-				|| userInfo.getWeight() == 0) {
+		if (userInfo == null) {
 			return;
 		}
 		try {
-			String birth = UserInfoUtils.convertDateToBirthday(userInfo.getBirthday());
-			mBirthdayTxt.setText(birth);
+			if (userInfo.getBirthday() >= 0) {
+				String birth = UserInfoUtils.convertDateToBirthday(userInfo.getBirthday());
+				mBirthdayTxt.setText(birth);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		mHighTxt.setText(UserInfoUtils.convertHighToString(userInfo.getHeight()));
-		mWeightTxt.setText(UserInfoUtils.convertWeightToString(userInfo.getWeight()));
+		if (userInfo.getHeight() >= 0) {
+			mHighTxt.setText(UserInfoUtils.convertHighToString(userInfo.getHeight()));
+		}
+		if (userInfo.getWeight() >= 0) {
+			mWeightTxt.setText(UserInfoUtils.convertWeightToString(userInfo.getWeight()));
+		}
 		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
 			mFemaleRadio.setChecked(true);
 			mMaleRadio.setChecked(false);
@@ -144,18 +149,18 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		}
 		switch (requestCode) {
 		case SettingsUserHighActivity.REQUEST_CODE:
-			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, 0);
+			int high = data.getIntExtra(SettingsUserHighActivity.RESPONSE_NAME_VALUE, -1);
 			Log.d(TAG, "get wheel view high=" + high);
 			userInfo.setHeight(high);
 			mHighTxt.setText(UserInfoUtils.convertHighToString(high));
 			break;
 		case SettingsUserWeightActivity.REQUEST_CODE:
-			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, 0);
+			int weight = data.getIntExtra(SettingsUserWeightActivity.RESPONSE_NAME_VALUE, -1);
 			userInfo.setWeight(weight);
 			mWeightTxt.setText(UserInfoUtils.convertWeightToString(weight));
 			break;
 		case SettingsUserBirthdayActivity.REQUEST_CODE:
-			long time = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, 0L);
+			long time = data.getLongExtra(SettingsUserBirthdayActivity.RESPONSE_NAME_VALUE, -1L);
 			userInfo.setBirthday(time);
 			try {
 				String text = UserInfoUtils.convertDateToBirthday(time);
@@ -177,13 +182,13 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		if (userInfo == null) {
 			return;
 		}
-		if (userInfo.getBirthday() == 0) {
+		if (userInfo.getBirthday() < 0) {
 			ToastHelper.showToast(R.string.prompt_birthday);
 			return;
-		} else if (userInfo.getHeight() == 0) {
+		} else if (userInfo.getHeight() < 0) {
 			ToastHelper.showToast(R.string.prompt_high);
 			return;
-		} else if (userInfo.getWeight() == 0) {
+		} else if (userInfo.getWeight() < 0) {
 			ToastHelper.showToast(R.string.prompt_weight);
 			return;
 		} else {

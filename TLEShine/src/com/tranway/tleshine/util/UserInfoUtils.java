@@ -16,8 +16,8 @@ import com.tranway.tleshine.model.UserInfo;
 @SuppressLint("SimpleDateFormat")
 public class UserInfoUtils {
 	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
-	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December" };
+	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
+			"September", "October", "November", "December" };
 
 	/**
 	 * convert birthday string to UNIX date
@@ -32,7 +32,7 @@ public class UserInfoUtils {
 		String birthday = year + "-" + month + "-" + day;
 		long date = 0;
 		try {
-			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime();
+			date = new SimpleDateFormat(SIMPLE_FORMAT).parse(birthday).getTime() / 1000L;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -42,14 +42,15 @@ public class UserInfoUtils {
 	/**
 	 * convert date[ 1990-08-19 ] to [ September 19, 1990 ]
 	 * 
-	 * @param formatDate format date string, such as [ 1990-08-19 ]
+	 * @param formatDate
+	 *            format date string, such as [ 1990-08-19 ]
 	 * @return such as [ September 19, 1990 ]
 	 * 
 	 * @throws ParseException
 	 */
 	public static String convertDateToBirthday(long time) throws ParseException {
 		DecimalFormat df = new DecimalFormat("00");
-		Date date = new Date(time);
+		Date date = new Date(time * 1000L);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int year = calendar.get(Calendar.YEAR);
@@ -62,12 +63,13 @@ public class UserInfoUtils {
 	/**
 	 * convert date[ 1990-08-19 ] to age
 	 * 
-	 * @param formatDate format date string, such as [ 1990-08-19 ]
+	 * @param formatDate
+	 *            format date string, such as [ 1990-08-19 ]
 	 * @return return age or -1
 	 * @throws ParseException
 	 */
 	public static int convertDateToAge(long time) throws ParseException {
-		Date date = new Date(time);
+		Date date = new Date(time * 1000L);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		return canculateAgeByCalendar(calendar);
@@ -76,7 +78,8 @@ public class UserInfoUtils {
 	/**
 	 * convert height value to string [ 1.70 米 ]
 	 * 
-	 * @param high 170 cm
+	 * @param high
+	 *            170 cm
 	 * @return 1.70 米
 	 */
 	public static String convertHighToString(int high) {
@@ -88,7 +91,8 @@ public class UserInfoUtils {
 	/**
 	 * convert weight value to string [ 50.4 公斤 ]
 	 * 
-	 * @param weight 504*0.1KG
+	 * @param weight
+	 *            504*0.1KG
 	 * @return 50.4 公斤
 	 */
 	public static String convertWeightToString(int weight) {
@@ -147,13 +151,12 @@ public class UserInfoUtils {
 		if (info == null) {
 			return data;
 		}
-		data.put(UserInfo.EMAIL, info.getEmail());
-		data.put(UserInfo.PASSWORD, info.getPassword());
-		data.put(UserInfo.BIRTHDAY, String.valueOf(info.getBirthday()));
-		Log.d("---------", "To server birthday: " + info.getBirthday());
-		data.put(UserInfo.SEX, String.valueOf(info.getSex()));
-		data.put(UserInfo.HEIGHT, String.valueOf(info.getHeight()));
-		data.put(UserInfo.WEIGHT, String.valueOf(info.getGoal()));
+		data.put(UserInfo.SEVER_KEY_EMAIL, info.getEmail());
+		data.put(UserInfo.SEVER_KEY_PASSWORD, info.getPassword());
+		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
+		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
+		data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight()));
+		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getGoal()));
 
 		return data;
 	}

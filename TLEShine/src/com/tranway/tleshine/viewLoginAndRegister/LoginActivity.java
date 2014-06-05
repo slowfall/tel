@@ -31,15 +31,15 @@ import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 
 /**
- * Activity which displays a login screen to the user, offering registration as well.
+ * Activity which displays a login screen to the user, offering registration as
+ * well.
  */
 public class LoginActivity extends Activity implements OnClickListener {
 	/**
-	 * A dummy authentication store containing known user names and passwords. TODO: remove after
-	 * connecting to a real authentication system.
+	 * A dummy authentication store containing known user names and passwords.
+	 * TODO: remove after connecting to a real authentication system.
 	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] { "foo@example.com:hello",
-			"bar@example.com:world" };
+	private static final String[] DUMMY_CREDENTIALS = new String[] { "foo@example.com:hello", "bar@example.com:world" };
 	private static final String LOGIN_END_URL = "/checklogin";
 	/**
 	 * The default email to populate the email field with.
@@ -136,9 +136,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Attempts to sign in or register the account specified by the login form. If there are form
-	 * errors (invalid email, missing fields, etc.), the errors are presented and no actual login
-	 * attempt is made.
+	 * Attempts to sign in or register the account specified by the login form.
+	 * If there are form errors (invalid email, missing fields, etc.), the
+	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
 		if (mAuthTask != null) {
@@ -202,8 +202,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					try {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							Intent intent = new Intent(MyApplication.getAppContext(),
-									BLEConnectActivity.class);
+							Intent intent = new Intent(MyApplication.getAppContext(), BLEConnectActivity.class);
 							startActivity(intent);
 							finish();
 						} else {
@@ -226,7 +225,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				showProgress(false);
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
-		});
+		}, this);
 		// Map<String, String> data = new TreeMap<String, String>();
 		// data.put(UserInfo.PASSWORD, password);
 		httpRequest.get(LOGIN_END_URL + "/" + email + "/?password=" + password, null);
@@ -269,7 +268,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Represents an asynchronous login/registration task used to authenticate the user.
+	 * Represents an asynchronous login/registration task used to authenticate
+	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
