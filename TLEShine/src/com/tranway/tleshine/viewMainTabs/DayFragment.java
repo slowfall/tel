@@ -1,6 +1,7 @@
 package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -37,6 +38,7 @@ import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.BLEPacket;
+import com.tranway.tleshine.model.CurrentActivityInfo;
 import com.tranway.tleshine.model.DailyExercise;
 import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
@@ -74,6 +76,8 @@ public class DayFragment extends Fragment {
 
 	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
+
+	private List<CurrentActivityInfo> mActivityInfos = new ArrayList<CurrentActivityInfo>();
 
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
@@ -148,10 +152,14 @@ public class DayFragment extends Fragment {
 		byte[] ack;
 		switch (type) {
 		// step/calories command
-		case 0x03:
-			ack = packet.makeReplyACK(sequenceNumber);
-			characteristicTx.setValue(ack);
-			mBluetoothLeService.writeCharacteristic(characteristicTx);
+		case CurrentActivityInfo.COMMAND:
+			if (packet.checkChecksum(data)) {
+				mActivityInfos.add(packet.resolveCurrentActivityInfo(data));
+				ack = packet.makeReplyACK(sequenceNumber);
+				characteristicTx.setValue(ack);
+				mBluetoothLeService.writeCharacteristic(characteristicTx);
+			}
+			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
@@ -184,7 +192,8 @@ public class DayFragment extends Fragment {
 		initView(v);
 
 		Intent gattServiceIntent = new Intent(getActivity(), RBLService.class);
-		getActivity().bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+		getActivity().bindService(gattServiceIntent, mServiceConnection,
+				Context.BIND_AUTO_CREATE);
 		return v;
 	}
 

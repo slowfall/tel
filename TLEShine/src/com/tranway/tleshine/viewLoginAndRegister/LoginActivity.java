@@ -29,6 +29,7 @@ import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfoKeeper;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -190,7 +191,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void request(String email, String password) {
+	private void request(final String email, final String password) {
 		showProgress(true);
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
@@ -202,9 +203,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 					try {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_EMAIL, email);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_PWD, password);
 							Intent intent = new Intent(MyApplication.getAppContext(), BLEConnectActivity.class);
 							startActivity(intent);
-							finish();
 						} else {
 							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,
 							// Toast.LENGTH_LONG);
@@ -215,9 +217,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
-
 			}
 
 			@Override

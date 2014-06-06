@@ -7,7 +7,8 @@ public class BLEPacket {
 		// TODO Auto-generated constructor stub
 	}
 
-	public byte[] makeUserInfoForWrite(boolean isNeedUpdate, byte sequenceNumber, UserInfo userInfo) {
+	public byte[] makeUserInfoForWrite(boolean isNeedUpdate,
+			byte sequenceNumber, UserInfo userInfo) {
 		byte[] buf;
 		if (isNeedUpdate) {
 			if (userInfo == null) {
@@ -45,10 +46,11 @@ public class BLEPacket {
 	 * @param utcTime
 	 *            UTC time in second
 	 * @param sequenceNumber
-	 * 			  sequence number
+	 *            sequence number
 	 * @return UTC time byte array
 	 */
-	public byte[] makeUTCForWrite(boolean isNeedUpdate, byte sequenceNumber, long utcTime) {
+	public byte[] makeUTCForWrite(boolean isNeedUpdate, byte sequenceNumber,
+			long utcTime) {
 		byte[] buf = new byte[7];
 		if (isNeedUpdate) {
 			buf[0] = (byte) 0xE2;
@@ -63,7 +65,31 @@ public class BLEPacket {
 		buf[6] = checksum(buf, buf.length - 1);
 		return buf;
 	}
-	
+
+	public CurrentActivityInfo resolveCurrentActivityInfo(byte[] byteActivityInfo) {
+		CurrentActivityInfo activityInfo = new CurrentActivityInfo();
+
+		byte[] utcBytes = new byte[4];
+		System.arraycopy(byteActivityInfo, 1, utcBytes, 0, utcBytes.length);
+		activityInfo.setCurrentUTC(bytesToInt(utcBytes));
+
+		byte[] stepsBytes = new byte[3];
+		System.arraycopy(byteActivityInfo, 5, stepsBytes, 0, stepsBytes.length);
+		activityInfo.setSteps(bytesToInt(stepsBytes));
+
+		byte[] distanceBytes = new byte[3];
+		System.arraycopy(byteActivityInfo, 8, distanceBytes, 0,
+				distanceBytes.length);
+		activityInfo.setDistance(bytesToInt(distanceBytes));
+
+		byte[] calorieBytes = new byte[3];
+		System.arraycopy(byteActivityInfo, 11, calorieBytes, 0,
+				calorieBytes.length);
+		activityInfo.setCalorie(bytesToInt(calorieBytes));
+
+		return activityInfo;
+	}
+
 	public byte[] makeReplyACK(byte sequenceNumber) {
 		byte[] buf = new byte[4];
 		buf[0] = (byte) 0xE0;
@@ -93,6 +119,17 @@ public class BLEPacket {
 		return result;
 	}
 
+	public int bytesToInt(byte[] buf) {
+		int result = 0;
+		byte mask = (byte) 0xFF;
+		for (int i = 0; i < buf.length; i++) {
+			int offset = 8 * (buf.length - 1 - i);
+			result = result | (mask >> offset);
+		}
+
+		return result;
+	}
+
 	public byte checksum(byte[] bytes, int length) {
 		int sum = 0;
 		for (int i = 0; i < length; i++) {
@@ -100,6 +137,12 @@ public class BLEPacket {
 		}
 		int checksum = (sum % 0xFF);
 		return (byte) checksum;
+	}
+
+	public boolean checkChecksum(byte[] bytes) {
+		byte checksum = checksum(bytes, bytes.length - 1);
+
+		return checksum == bytes[bytes.length - 1];
 	}
 
 	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6',

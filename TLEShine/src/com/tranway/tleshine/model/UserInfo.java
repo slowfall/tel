@@ -1,13 +1,11 @@
 package com.tranway.tleshine.model;
 
+/**
+ * @author ZhaHui
+ * more information please read Protocol 9.1
+ */
 public class UserInfo {
-	/**
-	 * more information please read Protocol 9.7 and 9.8
-	 */
 	public static final int USER_INFO_BYTES_LENGTH_NOT_NEED_UPDATE = 4;
-	/**
-	 * more information please read Protocol 9.7 and 9.8
-	 */
 	public static final int USER_INFO_BYTES_LENGTH_NEED_UPDATE = 12;
 	public static final byte NOT_NEED_UPDATE_FLAG = (byte) 0xE0;
 	public static final byte NEED_UPDATE_FLAG = (byte) 0xE1;

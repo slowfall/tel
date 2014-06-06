@@ -1,6 +1,9 @@
 package com.tranway.tleshine.model;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -19,7 +22,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 	private ArrayList<DailyExercise> mList;
 	private int position;
 
-	public ViewPagerAdapter(Context context, ViewPager mPager, ArrayList<DailyExercise> mList) {
+	public ViewPagerAdapter(Context context, ViewPager mPager,
+			ArrayList<DailyExercise> mList) {
 		mInflater = LayoutInflater.from(context);
 		this.mList = mList;
 	}
@@ -39,7 +43,10 @@ public class ViewPagerAdapter extends PagerAdapter {
 
 		DailyExercise ex = mList.get(position);
 		holder.mProgress.setProgress(ex.getAchieve(), ex.getGoal());
-		holder.mTimeTxt.setText(String.valueOf(ex.getDate()));
+
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.CHINA);
+		Date date = new Date(ex.getDate() * 1000);
+		holder.mTimeTxt.setText(df.format(date));
 
 		container.addView(view);
 		return view;
