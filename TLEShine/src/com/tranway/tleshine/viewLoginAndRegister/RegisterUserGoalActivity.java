@@ -88,7 +88,7 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 			}
 		});
 
-		mView.setSelectPositon(selectIndex);
+		mView.setSelectPosition(selectIndex);
 		updateInstensityText(selectIndex);
 	}
 

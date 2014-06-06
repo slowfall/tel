@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal" >
 
@@ -27,22 +27,22 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icon_achieve_goal_method" />
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_exercise_walk" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icon_achieve_goal_method" />
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_exercise_run" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icon_achieve_goal_method" />
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_exercise_swim" />
     </LinearLayout>
 
     <FrameLayout

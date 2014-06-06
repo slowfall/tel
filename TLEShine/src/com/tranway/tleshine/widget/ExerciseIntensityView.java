@@ -44,9 +44,9 @@ public class ExerciseIntensityView extends GridView {
 			return;
 		}
 		mList = new ArrayList<Integer>();
-		mList.add(R.drawable.icon_achieve_goal_method);
-		mList.add(R.drawable.icon_achieve_goal_method);
-		mList.add(R.drawable.icon_achieve_goal_method);
+		mList.add(R.drawable.icon_exercise_goal_select);
+		mList.add(R.drawable.icon_exercise_goal_select);
+		mList.add(R.drawable.icon_exercise_goal_select);
 		mAdapter = new GridViewAdapter(context, mList);
 		this.setAdapter(mAdapter);
 	}
@@ -72,13 +72,6 @@ public class ExerciseIntensityView extends GridView {
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged(position);
 		}
-	}
-
-	public void setSelectPositon(int index) {
-		if (mList == null || index < mList.size()) {
-			return;
-		}
-		setSelection(index);
 	}
 
 	/**
@@ -143,38 +136,23 @@ public class ExerciseIntensityView extends GridView {
 			ImageView imgView = new ImageView(context);
 			imgView.setAdjustViewBounds(false);
 			imgView.setImageResource(list.get(position));
-			// if (selected == position) {
-			// alpha = 255;
-			// Animation anim = AnimationUtils.loadAnimation(context,
-			// R.anim.scale);
-			// imgView.setLayoutParams(new GridView.LayoutParams(150, 200));
-			// imgView.startAnimation(anim);
-			// } else {
-			// alpha = 80;
-			// imgView.setLayoutParams(new GridView.LayoutParams(100, 150));
-			// ` }
 
-			// if(selected == position) {
-			// // the special one.Scale Large
-			// imgView.setScaleType(ScaleType.CENTER_CROP);
-			// } else {
-			// // the rest.Scale small
-			// imgView.setScaleType(ScaleType.CENTER_INSIDE);
-			// }
+			int animId = R.anim.scale_left;
+			if (selected == 1) {
+				animId = R.anim.scale_middle;
+			} else if (selected == 2) {
+				animId = R.anim.scale_right;
+			}
 
 			if (selected == position) {
 				alpha = 255;
-				Animation testAnim = AnimationUtils.loadAnimation(context, R.anim.scale);
+				Animation testAnim = AnimationUtils.loadAnimation(context, animId);
 				imgView.startAnimation(testAnim);
 			} else {
 				alpha = 100;
-				imgView.setScaleType(ScaleType.CENTER_INSIDE);
 			}
 			imgView.setImageAlpha(alpha);
-			// imgView.setLayoutParams(new
-			// GridView.LayoutParams(LayoutParams.WRAP_CONTENT,
-			// LayoutParams.WRAP_CONTENT));
-			// imgView.setScaleType(ScaleType.CENTER_INSIDE);
+			imgView.setScaleType(ScaleType.CENTER_INSIDE);
 
 			return imgView;
 		}

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="18"
+        android:minSdkVersion="16"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -45,7 +45,7 @@
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.bluetooth.SimpleControls"
@@ -62,7 +62,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
@@ -100,8 +101,8 @@
         <activity
             android:name="com.tranway.tleshine.viewMainTabs.MainTabsActivity"
             android:label="@string/title_activity_main_tabs"
-            android:theme="@style/Theme.AndroidDevelopers"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidDevelopers" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
