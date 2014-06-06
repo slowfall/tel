@@ -32,11 +32,16 @@
     <string name="title_activity_main_tabs">MainTabsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_bleconnect">BLEConnectActivity</string>
-	<string name="error_device_address">无效设备。</string>
-	<string name="click_scan_device">点击搜索设备</string>
-	<string name="scanning">搜索中......</string>
-	<string name="connect_device">连接设备</string>
-	<string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
-	<string name="today">今天</string>
-	<string name="yestoday">昨天</string>
+    <string name="error_device_address">无效设备。</string>
+    <string name="click_scan_device">点击搜索设备</string>
+    <string name="scanning">搜索中......</string>
+    <string name="connect_device">连接设备</string>
+    <string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
+    <string name="today">今天</string>
+    <string name="yestoday">昨天</string>
+    <string name="day_string_of_user_login">于%1$s使用</string>
+	<string name="cycle1_text">连续达标：1</string>
+	<string name="cycle2_text">最高分：1124</string>
+	<string name="cycle3_text">达标次数：1</string>
+	<string name="friends">好友</string>
 </resources>

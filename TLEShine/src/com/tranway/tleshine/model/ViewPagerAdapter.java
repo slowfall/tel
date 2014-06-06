@@ -2,7 +2,7 @@ package com.tranway.tleshine.model;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
@@ -19,13 +19,15 @@ import com.tranway.tleshine.widget.RoundProgressBar;
 public class ViewPagerAdapter extends PagerAdapter {
 
 	private LayoutInflater mInflater;
-	private ArrayList<DailyExercise> mList;
+	// private ArrayList<DailyExercise> mList;
+	private List<ActivityInfo> mActivityInfos;
 	private int position;
 
 	public ViewPagerAdapter(Context context, ViewPager mPager,
-			ArrayList<DailyExercise> mList) {
+	// ArrayList<DailyExercise> mList) {
+			List<ActivityInfo> mList) {
 		mInflater = LayoutInflater.from(context);
-		this.mList = mList;
+		this.mActivityInfos = mList;
 	}
 
 	class ViewHolder {
@@ -41,13 +43,26 @@ public class ViewPagerAdapter extends PagerAdapter {
 		holder.mProgress = (RoundProgressBar) view.findViewById(R.id.progress);
 		holder.mTimeTxt = (TextView) view.findViewById(R.id.txt_date);
 
-		DailyExercise ex = mList.get(position);
-		holder.mProgress.setProgress(ex.getAchieve(), ex.getGoal());
-
-		SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.CHINA);
-		Date date = new Date(ex.getDate() * 1000);
-		holder.mTimeTxt.setText(df.format(date));
-
+		// DailyExercise ex = mList.get(position);
+		// holder.mProgress.setProgress(ex.getAchieve(), ex.getGoal());
+		//
+		// SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.CHINA);
+		// Date date = new Date(ex.getDate() * 1000);
+		// holder.mTimeTxt.setText(df.format(date));
+		ActivityInfo info = mActivityInfos.get(position);
+		holder.mProgress.setProgress(info.getSteps(), UserInfoKeeper.readUserInfo(
+				MyApplication.getAppContext(), UserInfoKeeper.KEY_STEPSTARGET));
+		long todayUtcTime = System.currentTimeMillis() / 1000 / 3600 / 24;
+		long utcTime = info.getUtcTime();
+		if (todayUtcTime == utcTime) {
+			holder.mTimeTxt.setText(R.string.today);
+		} else if (todayUtcTime - utcTime == 1) {
+			holder.mTimeTxt.setText(R.string.yestoday);
+		} else {
+			SimpleDateFormat df = new SimpleDateFormat("mm-dd", Locale.getDefault());
+			Date date = new Date(utcTime * 1000 * 3600 * 24);
+			holder.mTimeTxt.setText(df.format(date));
+		}
 		container.addView(view);
 		return view;
 	}
@@ -55,7 +70,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mList.size();
+		return mActivityInfos.size();
 	}
 
 	@Override

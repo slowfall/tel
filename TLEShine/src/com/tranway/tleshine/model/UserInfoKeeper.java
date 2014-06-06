@@ -117,6 +117,16 @@ public class UserInfoKeeper {
 
 		return edit.commit();
 	}
+	
+	public static int readUserInfo(Context context, String key) {
+		int value = 0;
+		if (context == null || key == null) {
+			return value;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		value = preferences.getInt(key, 0);
+		return value;
+	}
 
 	/**
 	 * read user information from SharedPreferences

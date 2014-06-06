@@ -33,12 +33,12 @@ public class TLEHttpRequest {
 	private String mainUrl;
 	private OnHttpRequestListener mListener;
 	private FinalHttp finalHttp;
-	private CustomizedProgressDialog dialog;
+	public CustomizedProgressDialog dialog;
 	private static TLEHttpRequest singleInstance;
 
-//	public enum HttpRequestType {
-//		CHECK_LOGIN, CHECK_REGISTION, CHECK_EMAIL, CHECK_DEVICE, GET_USERINFO;
-//	}
+	// public enum HttpRequestType {
+	// CHECK_LOGIN, CHECK_REGISTION, CHECK_EMAIL, CHECK_DEVICE, GET_USERINFO;
+	// }
 
 	public static TLEHttpRequest instance() {
 		if (singleInstance == null) {
@@ -63,13 +63,20 @@ public class TLEHttpRequest {
 	// mListener = listener;
 	// }
 
-	public void setOnHttpRequestListener(OnHttpRequestListener listener, Context context) {
+	public void setOnHttpRequestListener(OnHttpRequestListener listener,
+			Context context) {
 		mListener = listener;
-		dialog = new CustomizedProgressDialog(context, R.string.is_loading);
+		if (context != null) {
+			dialog = new CustomizedProgressDialog(context, R.string.is_loading);
+		} else {
+			dialog = null;
+		}
 	}
 
 	public void get(String endUrl, Map<String, String> data) {
-		dialog.show();
+		if (dialog != null) {
+			dialog.show();
+		}
 
 		String url = mainUrl + endUrl;
 		Uri uri = Uri.parse(url);
@@ -86,8 +93,9 @@ public class TLEHttpRequest {
 	}
 
 	public void post(String endUrl, Map<String, String> data) {
-		dialog.show();
-
+		if (dialog != null) {
+			dialog.show();
+		}
 		AjaxParams params = new AjaxParams();
 		if (data != null) {
 			for (Entry<String, String> entry : data.entrySet()) {
@@ -111,7 +119,9 @@ public class TLEHttpRequest {
 		public void onFailure(Throwable t, int errorNo, String strMsg) {
 			super.onFailure(t, errorNo, strMsg);
 			Log.e(LOG_CAT, t.toString());
-			dialog.dismiss();
+			if (dialog != null) {
+				dialog.dismiss();
+			}
 			if (mListener != null) {
 				mListener.onFailure(myUrl, errorNo, strMsg);
 			}
@@ -121,7 +131,10 @@ public class TLEHttpRequest {
 		public void onSuccess(String t) {
 			super.onSuccess(t);
 			Log.d(LOG_CAT, t);
-			dialog.dismiss();
+
+			if (dialog != null) {
+				dialog.dismiss();
+			}
 			try {
 				if (mListener != null) {
 					JSONObject json = new JSONObject(t);

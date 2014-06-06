@@ -65,13 +65,21 @@ public class BLEPacket {
 		buf[6] = checksum(buf, buf.length - 1);
 		return buf;
 	}
+	
+	public int resolveUTCTime(byte[] utcSyncBytes) {
+		int utcTime = 0;
+		byte[] utcBytes = new byte[4];
+		System.arraycopy(utcSyncBytes, 1, utcBytes, 0, utcBytes.length);
+		utcTime = bytesToInt(utcBytes);
+		return utcTime;
+	}
 
-	public CurrentActivityInfo resolveCurrentActivityInfo(byte[] byteActivityInfo) {
-		CurrentActivityInfo activityInfo = new CurrentActivityInfo();
+	public ActivityInfo resolveCurrentActivityInfo(byte[] byteActivityInfo) {
+		ActivityInfo activityInfo = new ActivityInfo();
 
 		byte[] utcBytes = new byte[4];
 		System.arraycopy(byteActivityInfo, 1, utcBytes, 0, utcBytes.length);
-		activityInfo.setCurrentUTC(bytesToInt(utcBytes));
+		activityInfo.setUtcTime(bytesToInt(utcBytes));
 
 		byte[] stepsBytes = new byte[3];
 		System.arraycopy(byteActivityInfo, 5, stepsBytes, 0, stepsBytes.length);
@@ -86,7 +94,8 @@ public class BLEPacket {
 		System.arraycopy(byteActivityInfo, 11, calorieBytes, 0,
 				calorieBytes.length);
 		activityInfo.setCalorie(bytesToInt(calorieBytes));
-
+		Util.logD(TAG, "byte activity info:" + bytesToHex(byteActivityInfo));
+		Util.logD(TAG, activityInfo.toString());
 		return activityInfo;
 	}
 
@@ -124,7 +133,7 @@ public class BLEPacket {
 		byte mask = (byte) 0xFF;
 		for (int i = 0; i < buf.length; i++) {
 			int offset = 8 * (buf.length - 1 - i);
-			result = result | (mask >> offset);
+			result = result & (mask >> offset);
 		}
 
 		return result;
@@ -136,6 +145,7 @@ public class BLEPacket {
 			sum += bytes[i];
 		}
 		int checksum = (sum % 0xFF);
+		
 		return (byte) checksum;
 	}
 

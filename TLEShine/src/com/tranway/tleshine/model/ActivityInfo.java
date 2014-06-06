@@ -1,18 +1,18 @@
 package com.tranway.tleshine.model;
 
-public class CurrentActivityInfo {
+public class ActivityInfo {
 	public static final byte COMMAND = (byte) 0x03;
-	private long currentUTC;
+	private long utcTime;
 	private int steps;
 	private int distance;
 	private int calorie;
 
-	public long getCurrentUTC() {
-		return currentUTC;
+	public long getUtcTime() {
+		return utcTime;
 	}
 
-	public void setCurrentUTC(long currentUTC) {
-		this.currentUTC = currentUTC;
+	public void setUtcTime(long utcTime) {
+		this.utcTime = utcTime;
 	}
 
 	public int getSteps() {
@@ -37,6 +37,13 @@ public class CurrentActivityInfo {
 
 	public void setCalorie(int calorie) {
 		this.calorie = calorie;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + ", utcTime:" + this.utcTime + ", steps:"
+				+ this.steps + ", distance:" + this.distance + ", calorie:"
+				+ this.calorie;
 	}
 
 }

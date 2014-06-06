@@ -26,29 +26,33 @@
 
             <Button
                 android:id="@+id/btn_login"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/login" />
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register" />
 
             <com.facebook.widget.LoginButton
                 android:id="@+id/btn_facebook_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/com_facebook_button_blue" />
+                android:background="@drawable/com_facebook_button_blue"
+                android:visibility="gone" />
             <!-- android:background="@drawable/com_facebook_button_blue" /> -->
 
             <com.sina.weibo.sdk.widget.LoginButton
                 android:id="@+id/btn_weibo_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/com_sina_weibo_sdk_login_button_with_account_text" />
+                android:background="@drawable/com_sina_weibo_sdk_login_button_with_account_text"
+                android:visibility="gone" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
     </LinearLayout>
 
     <LinearLayout

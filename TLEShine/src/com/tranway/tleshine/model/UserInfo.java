@@ -20,6 +20,7 @@ public class UserInfo {
 	public static final String SEVER_KEY_WEIGHT = "Weight";
 	public static final String SEVER_KEY_GOAL = "Goal";
 	public static final String SEVER_KEY_ID = "ID";
+	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";
 
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
 	private int age = -1; // Age; 1byte

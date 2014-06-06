@@ -5,18 +5,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -32,18 +23,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.bluetooth.RBLService;
-import com.tranway.tleshine.model.BLEPacket;
-import com.tranway.tleshine.model.CurrentActivityInfo;
-import com.tranway.tleshine.model.DailyExercise;
+import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
-import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -54,7 +40,7 @@ import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!
 public class DayFragment extends Fragment {
-	private static final String TAG = DayFragment.class.getSimpleName();
+//	private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
@@ -72,173 +58,44 @@ public class DayFragment extends Fragment {
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
 
-	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
+//	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
 
 	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
-	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
+	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
 
-	private List<CurrentActivityInfo> mActivityInfos = new ArrayList<CurrentActivityInfo>();
-
-	private BluetoothGattCharacteristic characteristicTx = null;
-	private RBLService mBluetoothLeService;
-
-	private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-		@Override
-		public void onServiceConnected(ComponentName componentName,
-				IBinder service) {
-			mBluetoothLeService = ((RBLService.LocalBinder) service)
-					.getService();
-			if (!mBluetoothLeService.initialize()) {
-				Log.e(TAG, "Unable to initialize Bluetooth");
-			}
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName componentName) {
-			mBluetoothLeService = null;
-		}
-	};
-
-	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			final String action = intent.getAction();
-
-			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Disconnected",
-						Toast.LENGTH_SHORT).show();
-				// setButtonDisable();
-			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED
-					.equals(action)) {
-				Toast.makeText(MyApplication.getAppContext(), "Connected",
-						Toast.LENGTH_SHORT).show();
-
-			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
-				getGattService(mBluetoothLeService.getSupportedGattService());
-				byte[] data = intent.getByteArrayExtra(RBLService.EXTRA_DATA);
-				handleBLEData(data);
-			} else if (RBLService.ACTION_GATT_RSSI.equals(action)) {
-				// displayData(intent.getStringExtra(RBLService.EXTRA_DATA));
-			}
-		}
-	};
-
-	private void getGattService(BluetoothGattService gattService) {
-		if (gattService == null)
-			return;
-
-		// setButtonEnable();
-		// startReadRssi();
-
-		if (characteristicTx == null) {
-			characteristicTx = gattService
-					.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
-
-			BluetoothGattCharacteristic characteristicRx = gattService
-					.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
-			mBluetoothLeService.setCharacteristicNotification(characteristicRx,
-					true);
-			mBluetoothLeService.readCharacteristic(characteristicRx);
-		}
-	}
-
-	private void handleBLEData(byte[] data) {
-		BLEPacket packet = new BLEPacket();
-		byte sequenceMask = (byte) 0xf0;
-		byte typeMask = (byte) 0x0f;
-		int type = data[0] & typeMask;
-		byte sequenceNumber = (byte) (((data[0] & sequenceMask) >> 4) & 0x0f);
-		byte[] ack;
-		switch (type) {
-		// step/calories command
-		case CurrentActivityInfo.COMMAND:
-			if (packet.checkChecksum(data)) {
-				mActivityInfos.add(packet.resolveCurrentActivityInfo(data));
-				ack = packet.makeReplyACK(sequenceNumber);
-				characteristicTx.setValue(ack);
-				mBluetoothLeService.writeCharacteristic(characteristicTx);
-			}
-			break;
-		default:
-			ack = packet.makeReplyACK(sequenceNumber);
-			characteristicTx.setValue(ack);
-			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			break;
-		}
-	}
+	private List<ActivityInfo> mActivityInfos = new ArrayList<ActivityInfo>();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_day, container, false);
-		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
-		for (int i = 0; i <= 6; i++) {
-			DailyExercise mExercise = new DailyExercise();
-			mExercise.setDate(83834387L); // !!!
-			mExercise.setGoal(1000);
-			mExercise.setAchieve(800);
-			exList.add(mExercise);
-		}
+		// ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
+		// for (int i = 0; i <= 6; i++) {
+		// DailyExercise mExercise = new DailyExercise();
+		// mExercise.setDate(83834387L); // !!!
+		// mExercise.setGoal(1000);
+		// mExercise.setAchieve(800);
+		// exList.add(mExercise);
+		// }
+		//
+		// long ret = dbManager.addDailyExerciseInfo(exList);
+		// if (ret != -1) {
+		// mList.addAll(dbManager.queryDailyExerciseInfo());
+		// // for (DailyExercise ex : mList) {
+		// // Log.d("------", "date : " + ex.getDate());
+		// // }
+		// }
 
-		long ret = dbManager.addDailyExerciseInfo(exList);
-		if (ret != -1) {
-			mList.addAll(dbManager.queryDailyExerciseInfo());
-			for (DailyExercise ex : mList) {
-				Log.d("------", "date : " + ex.getDate());
-			}
-		}
-
+		mActivityInfos = DBManager.queryActivityInfo();
 		initView(v);
 
-		Intent gattServiceIntent = new Intent(getActivity(), RBLService.class);
-		getActivity().bindService(gattServiceIntent, mServiceConnection,
-				Context.BIND_AUTO_CREATE);
 		return v;
-	}
-
-	private static IntentFilter makeGattUpdateIntentFilter() {
-		final IntentFilter intentFilter = new IntentFilter();
-
-		intentFilter.addAction(RBLService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(RBLService.ACTION_GATT_DISCONNECTED);
-		intentFilter.addAction(RBLService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(RBLService.ACTION_DATA_AVAILABLE);
-		intentFilter.addAction(RBLService.ACTION_GATT_RSSI);
-
-		return intentFilter;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		getActivity().registerReceiver(mGattUpdateReceiver,
-				makeGattUpdateIntentFilter());
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-
-		getActivity().unregisterReceiver(mGattUpdateReceiver);
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-		if (mServiceConnection != null)
-			getActivity().unbindService(mServiceConnection);
 	}
 
 	private void initView(View v) {
 		Rect rect = new Rect();
-		getActivity().getWindow().getDecorView()
-				.getWindowVisibleDisplayFrame(rect);
+		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
 		int statusHeight = rect.top
-				+ (int) getResources().getDimension(
-						R.dimen.activity_title_height);
+				+ (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -252,16 +109,15 @@ public class DayFragment extends Fragment {
 
 	private void initViewPagerLayout(View v, int displayWidth, int displayHeight) {
 		mViewPager = (ViewPager) v.findViewById(R.id.viewpager);
-		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mList);
+		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mActivityInfos);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(3);
 		// 设置ViewPager的width和height，width = 屏幕宽度*2/3，height = 屏幕高度*3/5
-		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(
-				displayWidth * 2 / 3,
+		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
 		mViewPager.setLayoutParams(params);
-		mViewPager.setCurrentItem(mList.size() - 1);
+		mViewPager.setCurrentItem(mActivityInfos.size() - 1);
 		mPagerLayout = (LinearLayout) v.findViewById(R.id.layout_viewpager);
 		MyOnPageChangeListener pageChangeListener = new MyOnPageChangeListener();
 		mViewPager.setOnPageChangeListener(pageChangeListener);
@@ -274,8 +130,7 @@ public class DayFragment extends Fragment {
 		});
 	}
 
-	private void initChatLayout(View v, int displayWidth, int displayHeight,
-			int statusHeight) {
+	private void initChatLayout(View v, int displayWidth, int displayHeight, int statusHeight) {
 		mChartLayout = (LinearLayout) v.findViewById(R.id.layout_chart);
 		mScrollBtn = (Button) v.findViewById(R.id.btn_scroll);
 		mScrollBtn.setOnClickListener(new OnClickListener() {
@@ -292,8 +147,7 @@ public class DayFragment extends Fragment {
 			}
 		});
 
-		ViewGroup.LayoutParams chartLayoutParams = mChartLayout
-				.getLayoutParams();
+		ViewGroup.LayoutParams chartLayoutParams = mChartLayout.getLayoutParams();
 		chartLayoutParams.width = displayWidth;
 		chartLayoutParams.height = displayHeight - statusHeight;
 		mChartLayout.setLayoutParams(chartLayoutParams);
@@ -317,8 +171,7 @@ public class DayFragment extends Fragment {
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
 		// Add chart view data
 		chartView.addSeries(series);
-		LabelAdapter mAdapter = new LabelAdapter(getActivity(),
-				LabelOrientation.HORIZONTAL);
+		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
 	}
@@ -353,8 +206,7 @@ public class DayFragment extends Fragment {
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			// to refresh frameLayout
 			if (mPagerLayout != null) {
 				mPagerLayout.invalidate();

@@ -1,7 +1,9 @@
 package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,10 +21,15 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.DailyExercise;
+import com.tranway.tleshine.model.ActivityInfo;
+import com.tranway.tleshine.model.ExerciseContent;
+import com.tranway.tleshine.model.ExerciseContentAdapter;
+import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -30,8 +37,10 @@ import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
 import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
+@SuppressLint("NewApi")
+// !!!!!!!!!!!!!!!!!!
 public class NightFragment extends Fragment {
-
+//	private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
@@ -43,23 +52,40 @@ public class NightFragment extends Fragment {
 	private Button mScrollBtn;
 	private LinearLayout mPagerLayout, mChartLayout;
 	private ScrollView mScrollView;
+	private ListView mListView;
+	private ExerciseContentAdapter mContentAdapter;
 	private boolean isScrolling = false;
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
-	private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
+
+//	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
+
+	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
+	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
+
+	private List<ActivityInfo> mActivityInfos = new ArrayList<ActivityInfo>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_day, container, false);
-		mList.clear();
-		for (int i = 0; i <= 6; i++) {
-			DailyExercise mExercise = new DailyExercise();
-			mExercise.setDate(83834387L); // !!!
-			mExercise.setGoal(1000);
-			mExercise.setAchieve(800);
-			mList.add(mExercise);
-		}
+		// ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
+		// for (int i = 0; i <= 6; i++) {
+		// DailyExercise mExercise = new DailyExercise();
+		// mExercise.setDate(83834387L); // !!!
+		// mExercise.setGoal(1000);
+		// mExercise.setAchieve(800);
+		// exList.add(mExercise);
+		// }
+		//
+		// long ret = dbManager.addDailyExerciseInfo(exList);
+		// if (ret != -1) {
+		// mList.addAll(dbManager.queryDailyExerciseInfo());
+		// // for (DailyExercise ex : mList) {
+		// // Log.d("------", "date : " + ex.getDate());
+		// // }
+		// }
 
+		mActivityInfos = DBManager.queryActivityInfo();
 		initView(v);
 
 		return v;
@@ -68,7 +94,8 @@ public class NightFragment extends Fragment {
 	private void initView(View v) {
 		Rect rect = new Rect();
 		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top - 50;
+		int statusHeight = rect.top
+				+ (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -77,12 +104,12 @@ public class NightFragment extends Fragment {
 
 		initViewPagerLayout(v, displayWidth, displayHeight);
 		initChatLayout(v, displayWidth, displayHeight, statusHeight);
-
+		initContentLayout(v);
 	}
 
 	private void initViewPagerLayout(View v, int displayWidth, int displayHeight) {
 		mViewPager = (ViewPager) v.findViewById(R.id.viewpager);
-		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mList);
+		mAdapter = new ViewPagerAdapter(getActivity(), mViewPager, mActivityInfos);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(3);
@@ -90,7 +117,7 @@ public class NightFragment extends Fragment {
 		ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(displayWidth * 2 / 3,
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
 		mViewPager.setLayoutParams(params);
-		mViewPager.setCurrentItem(mList.size() - 1);
+		mViewPager.setCurrentItem(mActivityInfos.size() - 1);
 		mPagerLayout = (LinearLayout) v.findViewById(R.id.layout_viewpager);
 		MyOnPageChangeListener pageChangeListener = new MyOnPageChangeListener();
 		mViewPager.setOnPageChangeListener(pageChangeListener);
@@ -137,10 +164,8 @@ public class NightFragment extends Fragment {
 		series.setLineColor(getResources().getColor(R.color.yellow));
 		series.setLineWidth(5);
 		series.addPoint(new LinearPoint(0, 100));
-		series.addPoint(new LinearPoint(3, 110));
 		series.addPoint(new LinearPoint(6, 140));
 		series.addPoint(new LinearPoint(12, 80));
-		series.addPoint(new LinearPoint(14, 100));
 		series.addPoint(new LinearPoint(18, 200));
 		series.addPoint(new LinearPoint(24, 100));
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
@@ -149,7 +174,29 @@ public class NightFragment extends Fragment {
 		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
+	}
 
+	private void initContentLayout(View v) {
+		mListView = (ListView) v.findViewById(R.id.list_content);
+
+		// for test
+		ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK, 200);
+		mContentList.add(content);
+		content = new ExerciseContent(12, 13, Sport.WALK, 400);
+		mContentList.add(content);
+		content = new ExerciseContent(13, 14, Sport.RUN, 500);
+		mContentList.add(content);
+		content = new ExerciseContent(14, 15, Sport.SWIM, 300);
+		mContentList.add(content);
+		content = new ExerciseContent(15, 16, Sport.SWIM, 200);
+		mContentList.add(content);
+		content = new ExerciseContent(16, 17, Sport.SWIM, 200);
+		mContentList.add(content);
+
+		mContentAdapter = new ExerciseContentAdapter(getActivity());
+		mContentAdapter.setContentList(mContentList);
+		mListView.setAdapter(mContentAdapter);
+		mContentAdapter.notifyDataSetChanged();
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {
