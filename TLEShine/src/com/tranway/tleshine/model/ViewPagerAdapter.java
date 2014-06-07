@@ -54,12 +54,13 @@ public class ViewPagerAdapter extends PagerAdapter {
 				MyApplication.getAppContext(), UserInfoKeeper.KEY_STEPSTARGET));
 		long todayUtcTime = System.currentTimeMillis() / 1000 / 3600 / 24;
 		long utcTime = info.getUtcTime();
+		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
 		if (todayUtcTime == utcTime) {
 			holder.mTimeTxt.setText(R.string.today);
 		} else if (todayUtcTime - utcTime == 1) {
 			holder.mTimeTxt.setText(R.string.yestoday);
 		} else {
-			SimpleDateFormat df = new SimpleDateFormat("mm-dd", Locale.getDefault());
+			SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.getDefault());
 			Date date = new Date(utcTime * 1000 * 3600 * 24);
 			holder.mTimeTxt.setText(df.format(date));
 		}

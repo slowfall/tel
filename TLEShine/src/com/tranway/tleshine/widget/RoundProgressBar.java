@@ -7,10 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+
 import com.tranway.tleshine.R;
 
 @SuppressLint("DrawAllocation")
@@ -212,7 +211,12 @@ public class RoundProgressBar extends View {
 	public synchronized void setProgress(int current, int total) {
 		textCurrent = String.valueOf(current);
 		textTotal = "共 " + total + " 点";
-		float progress = (float) current / (float) total * 100;
+		float progress = 0;
+		if (current > 0 && total > 0) {
+			progress = (float) current / (float) total * 100;
+		} else if (total == 0) {
+			progress = max;
+		}
 		setProgress((int) progress);
 	}
 

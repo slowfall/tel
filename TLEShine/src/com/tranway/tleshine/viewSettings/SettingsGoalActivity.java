@@ -1,5 +1,6 @@
 package com.tranway.tleshine.viewSettings;
 
+import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,9 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	private DayGoalFragment dayFragment;
 	private NightGoalFragment nightFragment;
 	private OnTitleButtonClickListener mListener;
-
+	private static int SHOW_DAY_GOAL_FRAGMENT = 1;
+	private static int SHOW_SLEEP_GOAL_FRAGMENT = 2;
+	private int showWhichFragment = SHOW_DAY_GOAL_FRAGMENT;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +82,7 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	}
 
 	private void showDayFragment() {
+		showWhichFragment = SHOW_DAY_GOAL_FRAGMENT;
 		if (dayFragment == null) {
 			dayFragment = new DayGoalFragment();
 		}
@@ -89,6 +93,7 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	}
 
 	private void showNightFragment() {
+		showWhichFragment = SHOW_SLEEP_GOAL_FRAGMENT;
 		if (nightFragment == null) {
 			nightFragment = new NightGoalFragment();
 		}

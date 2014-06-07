@@ -1,5 +1,8 @@
 package com.tranway.tleshine.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -19,6 +22,24 @@ public class UserInfoKeeper {
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_STEPSTARGET = "stepsTarget";
 
+	public static void writeUserInfo(Context context, JSONObject data) throws JSONException {
+		UserInfo info = new UserInfo();
+		info.setId(data.getLong(UserInfo.SEVER_KEY_ID));
+		info.setEmail(data.getString(UserInfo.SEVER_KEY_EMAIL));
+		info.setPassword(data.getString(UserInfo.SEVER_KEY_PASSWORD));
+		info.setSex(data.getInt(UserInfo.SEVER_KEY_SEX));
+		info.setBirthday(data.getLong(UserInfo.SEVER_KEY_BIRTHDAY));
+		info.setHeight(data.getInt(UserInfo.SEVER_KEY_HEIGHT));
+		info.setWeight(data.getInt(UserInfo.SEVER_KEY_WEIGHT));
+		if (data.isNull(UserInfo.SEVER_KEY_GOAL)) {
+			info.setStepsTarget(0);
+		} else {
+			info.setStepsTarget(data.getInt(UserInfo.SEVER_KEY_GOAL));
+		}
+		info.setStride(readUserInfo(context, KEY_STRIDE));
+		writeUserInfo(context, info);
+	}
+
 	/**
 	 * write user information to SharedPreferences
 	 * 
@@ -33,7 +54,8 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(KEY_ID, info.getId());
 		edit.putString(KEY_EMAIL, info.getEmail());
@@ -65,7 +87,8 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putString(key, value);
 
@@ -88,13 +111,14 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putInt(key, value);
 
 		return edit.commit();
 	}
-	
+
 	/**
 	 * write user information by SharedPreferences key
 	 * 
@@ -111,19 +135,21 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(key, value);
 
 		return edit.commit();
 	}
-	
+
 	public static int readUserInfo(Context context, String key) {
 		int value = 0;
 		if (context == null || key == null) {
 			return value;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
 		value = preferences.getInt(key, 0);
 		return value;
 	}
@@ -143,15 +169,15 @@ public class UserInfoKeeper {
 		UserInfo info = new UserInfo();
 		SharedPreferences sp = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		info.setEmail(sp.getString(KEY_EMAIL, ""));
-		info.setId(sp.getLong(KEY_ID, -1));
+		info.setId(sp.getLong(KEY_ID, 0));
 		info.setPassword(sp.getString(KEY_PWD, ""));
-		info.setBirthday(sp.getLong(KEY_BIRTH, -1));
-		info.setWeight(sp.getInt(KEY_WEIGHT, -1));
-		info.setAge(sp.getInt(KEY_AGE, -1));
-		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
-		info.setStride(sp.getInt(KEY_STRIDE, -1));
-		info.setSex(sp.getInt(KEY_SEX, -1));
-		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, -1));
+		info.setBirthday(sp.getLong(KEY_BIRTH, 0));
+		info.setWeight(sp.getInt(KEY_WEIGHT, 0));
+		info.setAge(sp.getInt(KEY_AGE, 0));
+		info.setHeight(sp.getInt(KEY_HEIGHT, 0));
+		info.setStride(sp.getInt(KEY_STRIDE, 0));
+		info.setSex(sp.getInt(KEY_SEX, 0));
+		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, 0));
 		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
 
 		return info;
@@ -165,7 +191,8 @@ public class UserInfoKeeper {
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean clearUserInfo(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.clear();
 		return edit.commit();

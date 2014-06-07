@@ -156,8 +156,8 @@ public class UserInfoUtils {
 		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
 		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
 		data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight()));
-		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getGoal()));
-
+		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight()));
+		data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
 		return data;
 	}
 }

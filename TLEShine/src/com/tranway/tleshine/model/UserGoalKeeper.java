@@ -58,7 +58,7 @@ public class UserGoalKeeper {
 	 * 
 	 * @param context
 	 *            application context
-	 * @return return user settings goal or -1
+	 * @return return user settings goal or 0
 	 */
 	public static int readExerciseGoalPoint(Context context) {
 		if (null == context) {
@@ -66,7 +66,7 @@ public class UserGoalKeeper {
 		}
 
 		SharedPreferences sp = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-		return sp.getInt(KEY_GOAL_POINT, -1);
+		return sp.getInt(KEY_GOAL_POINT, 0);
 	}
 
 	/**

@@ -175,24 +175,11 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onSuccess(String url, JSONObject data) {
-				if (data.has(TLEHttpRequest.STATUS_CODE)) {
-					try {
-						long id = data.getLong(UserInfo.SEVER_KEY_ID);
-						if (id >= 0) {
-							UserInfoKeeper.writeUserInfo(getApplicationContext(),
-									UserInfoKeeper.KEY_ID, id);
-							String createDate = data.getString(UserInfo.SEVER_KEY_CREATE_DATE);
-							UserInfoKeeper.writeUserInfo(getApplicationContext(),
-									UserInfo.SEVER_KEY_CREATE_DATE, createDate.substring(0,
-											createDate.length() > 10 ? 10 : createDate.length()));
-						} else {
-							ToastHelper.showToast(R.string.get_register_info_failed);
-						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						ToastHelper.showToast(R.string.get_register_info_failed);
-					}
+				try {
+					UserInfoKeeper.writeUserInfo(getApplicationContext(), data);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.get_register_info_failed);
 				}
 			}
 
@@ -259,9 +246,12 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			if (packet.checkChecksum(data)) {
 				long getUtcTime = packet.resolveUTCTime(data);
 				long utcTime = System.currentTimeMillis() / 1000;
-				boolean isUpdateUtc = (Math.abs(getUtcTime - utcTime) > 5);
+//				boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
+				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
 				characteristicTx.setValue(utc);
+				Util.logD(TAG, "isUpdateUtc:" + isUpdateUtc + ", getUtcTime:" + getUtcTime
+						+ ", utcTime:" + utcTime);
 				mBluetoothLeService.writeCharacteristic(characteristicTx);
 			}
 			break;
@@ -290,6 +280,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			break;
 		case 0x06:
+			ack = packet.makeReplyACK(sequenceNumber);
+			characteristicTx.setValue(ack);
+			mBluetoothLeService.writeCharacteristic(characteristicTx);
 			Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
 			startActivity(intent);
 			break;
@@ -307,6 +300,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private void saveActivityInfo(List<ActivityInfo> currentActivityInfos) {
 		ActivityInfo info = new ActivityInfo();
 		for (ActivityInfo activityInfo : currentActivityInfos) {
+			info.setUtcTime(activityInfo.getUtcTime());
 			info.setSteps(activityInfo.getSteps() + info.getSteps());
 			info.setDistance(activityInfo.getDistance() + info.getDistance());
 			info.setCalorie(activityInfo.getCalorie() + info.getCalorie());

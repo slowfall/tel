@@ -7,8 +7,7 @@ public class BLEPacket {
 		// TODO Auto-generated constructor stub
 	}
 
-	public byte[] makeUserInfoForWrite(boolean isNeedUpdate,
-			byte sequenceNumber, UserInfo userInfo) {
+	public byte[] makeUserInfoForWrite(boolean isNeedUpdate, byte sequenceNumber, UserInfo userInfo) {
 		byte[] buf;
 		if (isNeedUpdate) {
 			if (userInfo == null) {
@@ -49,8 +48,7 @@ public class BLEPacket {
 	 *            sequence number
 	 * @return UTC time byte array
 	 */
-	public byte[] makeUTCForWrite(boolean isNeedUpdate, byte sequenceNumber,
-			long utcTime) {
+	public byte[] makeUTCForWrite(boolean isNeedUpdate, byte sequenceNumber, long utcTime) {
 		byte[] buf = new byte[7];
 		if (isNeedUpdate) {
 			buf[0] = (byte) 0xE2;
@@ -65,7 +63,7 @@ public class BLEPacket {
 		buf[6] = checksum(buf, buf.length - 1);
 		return buf;
 	}
-	
+
 	public int resolveUTCTime(byte[] utcSyncBytes) {
 		int utcTime = 0;
 		byte[] utcBytes = new byte[4];
@@ -86,13 +84,11 @@ public class BLEPacket {
 		activityInfo.setSteps(bytesToInt(stepsBytes));
 
 		byte[] distanceBytes = new byte[3];
-		System.arraycopy(byteActivityInfo, 8, distanceBytes, 0,
-				distanceBytes.length);
+		System.arraycopy(byteActivityInfo, 8, distanceBytes, 0, distanceBytes.length);
 		activityInfo.setDistance(bytesToInt(distanceBytes));
 
 		byte[] calorieBytes = new byte[3];
-		System.arraycopy(byteActivityInfo, 11, calorieBytes, 0,
-				calorieBytes.length);
+		System.arraycopy(byteActivityInfo, 11, calorieBytes, 0, calorieBytes.length);
 		activityInfo.setCalorie(bytesToInt(calorieBytes));
 		Util.logD(TAG, "byte activity info:" + bytesToHex(byteActivityInfo));
 		Util.logD(TAG, activityInfo.toString());
@@ -130,12 +126,16 @@ public class BLEPacket {
 
 	public int bytesToInt(byte[] buf) {
 		int result = 0;
-		byte mask = (byte) 0xFF;
-		for (int i = 0; i < buf.length; i++) {
-			int offset = 8 * (buf.length - 1 - i);
-			result = result & (mask >> offset);
+		byte[] newBuf = new byte[] { 0x00, 0x00, 0x00, 0x00 };
+		if (buf.length < 4) {
+			for (int i = 0; i < buf.length; i++) {
+				newBuf[newBuf.length - buf.length + i] = buf[i];
+			}
+		} else {
+			newBuf = buf;
 		}
-
+		result = newBuf[3] & 0xFF | (newBuf[2] & 0xFF) << 8 | (newBuf[1] & 0xFF) << 16
+				| (newBuf[0] & 0xFF) << 24;
 		return result;
 	}
 
@@ -145,7 +145,7 @@ public class BLEPacket {
 			sum += bytes[i];
 		}
 		int checksum = (sum % 0xFF);
-		
+
 		return (byte) checksum;
 	}
 
@@ -155,8 +155,8 @@ public class BLEPacket {
 		return checksum == bytes[bytes.length - 1];
 	}
 
-	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	final private static char[] hexArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+			'b', 'c', 'd', 'e', 'f' };
 
 	public String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
