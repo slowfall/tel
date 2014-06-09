@@ -12,7 +12,6 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,16 +30,14 @@ import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ViewPagerAdapter;
-import com.tranway.tleshine.widget.chartview.ChartView;
-import com.tranway.tleshine.widget.chartview.LabelAdapter;
-import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
-import com.tranway.tleshine.widget.chartview.LinearSeries;
-import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
+import com.tranway.tleshine.widget.chartview.BarAdapter;
+import com.tranway.tleshine.widget.chartview.BarChartView;
+import com.tranway.tleshine.widget.chartview.BarData;
 
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!
 public class NightFragment extends Fragment {
-//	private static final String TAG = DayFragment.class.getSimpleName();
+	// private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
@@ -58,7 +55,13 @@ public class NightFragment extends Fragment {
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
 
-//	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
+	private BarChartView mBarChart;
+	private BarAdapter myAdapter;
+	private List<BarData> data;
+	private int pencent[];
+
+	// private DBManager dbManager = new
+	// DBManager(MyApplication.getAppContext());
 
 	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
@@ -84,7 +87,6 @@ public class NightFragment extends Fragment {
 		// // Log.d("------", "date : " + ex.getDate());
 		// // }
 		// }
-
 		mActivityInfos = DBManager.queryActivityInfo();
 //		initView(v);
 
@@ -94,8 +96,7 @@ public class NightFragment extends Fragment {
 	private void initView(View v) {
 		Rect rect = new Rect();
 		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top
-				+ (int) getResources().getDimension(R.dimen.activity_title_height);
+		int statusHeight = rect.top + (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -132,6 +133,7 @@ public class NightFragment extends Fragment {
 
 	private void initChatLayout(View v, int displayWidth, int displayHeight, int statusHeight) {
 		mChartLayout = (LinearLayout) v.findViewById(R.id.layout_chart);
+		mBarChart = (BarChartView) v.findViewById(R.id.barchart);
 		mScrollBtn = (Button) v.findViewById(R.id.btn_scroll);
 		mScrollBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -152,28 +154,34 @@ public class NightFragment extends Fragment {
 		chartLayoutParams.height = displayHeight - statusHeight;
 		mChartLayout.setLayoutParams(chartLayoutParams);
 
-		ChartView chartView = (ChartView) v.findViewById(R.id.chart_view);
-		ViewGroup.LayoutParams chartParams = chartView.getLayoutParams();
+		int charHeight = 0;
+		ViewGroup.LayoutParams chartParams = mBarChart.getLayoutParams();
 		chartParams.width = displayWidth - 40;
-		chartParams.height = displayHeight / 4 + 20;
-		Log.d("-----------", "height = " + chartParams.height);
-		chartView.setLayoutParams(chartParams);
-		chartView.setGridLinesHorizontal(3);
-		chartView.setGridLinesVertical(0);
-		LinearSeries series = new LinearSeries();
-		series.setLineColor(getResources().getColor(R.color.yellow));
-		series.setLineWidth(5);
-		series.addPoint(new LinearPoint(0, 100));
-		series.addPoint(new LinearPoint(6, 140));
-		series.addPoint(new LinearPoint(12, 80));
-		series.addPoint(new LinearPoint(18, 200));
-		series.addPoint(new LinearPoint(24, 100));
-		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
-		// Add chart view data
-		chartView.addSeries(series);
-		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
-		mAdapter.setLabelValues(labels);
-		chartView.setBottomLabelAdapter(mAdapter);
+		charHeight = displayHeight / 4 + 20;
+		chartParams.height = charHeight;
+		mBarChart.setLayoutParams(chartParams);
+
+		myAdapter = new BarAdapter(getActivity(), displayWidth - 20, charHeight, 12 * 4);
+		pencent = new int[24 * 12];
+		for (int i = 0; i < 24 * 12; i++) {
+			if (i > 200) {
+				pencent[i] = 100;
+			} else if (i > 80 && i <= 200) {
+				pencent[i] = 240;
+			} else if (i > 20 && i <= 80) {
+				pencent[i] = 140;
+			} else {
+				pencent[i] = 250;
+			}
+		}
+		data = new ArrayList<BarData>();
+		for (int i = 0; i < pencent.length; i++) {
+			BarData model = new BarData();
+			model.setPencent(((float) pencent[i] / (float) (256)));
+			data.add(model);
+		}
+		myAdapter.setData(data);
+		mBarChart.setAdapter(myAdapter);
 	}
 
 	private void initContentLayout(View v) {
