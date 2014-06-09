@@ -20,6 +20,7 @@ public class UserInfo {
 	public static final String SEVER_KEY_WEIGHT = "Weight";
 	public static final String SEVER_KEY_GOAL = "Goal";
 	public static final String SEVER_KEY_ID = "ID";
+	public static final String SEVER_KEY_NAME = "Name";
 	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";
 
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
@@ -29,6 +30,7 @@ public class UserInfo {
 	private int sex = -1; // Sex 0x00:Female 0x01:Male; 1 byte
 	private int stepsTarget = -1; // Steps target; 3 byte
 	private String email; // User register Email
+	private String name; // User register Name
 	private String password; // User register Password
 	private long birthday = -1; // User register Birthday
 	private int goal = -1; // Exercise Goal Point
@@ -154,6 +156,14 @@ public class UserInfo {
 		this.email = email;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getPassword() {
 		return password;
 	}

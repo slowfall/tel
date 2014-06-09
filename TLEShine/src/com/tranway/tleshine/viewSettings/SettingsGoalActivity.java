@@ -1,6 +1,5 @@
 package com.tranway.tleshine.viewSettings;
 
-import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;

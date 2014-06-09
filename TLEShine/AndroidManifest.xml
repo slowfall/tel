@@ -106,6 +106,12 @@
             android:theme="@style/Theme.AndroidDevelopers" >
         </activity>
         <activity
+            android:name="com.tranway.tleshine.viewMainTabs.AddFriendActivity"
+            android:label="@string/search"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait" >

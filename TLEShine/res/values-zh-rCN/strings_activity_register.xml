@@ -12,7 +12,7 @@
     <string name="register_tips">请简单的介绍一下你自己</string>
     <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 
-    <string name="exsit">退出</string>
+    <string name="exit">退出</string>
     <string name="my_info">我的信息</string>
     <string name="next_step">下一步</string>
     <string name="pre_step">上一步</string>

@@ -184,9 +184,9 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 	}
 
 	@Override
-	public void onSuccess(String url, JSONObject data) {
-		// TODO Auto-generated method stub
+	public void onSuccess(String url, String result) {
 		try {
+			JSONObject data = new JSONObject(result);
 			int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 			if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 				ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);

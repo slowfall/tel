@@ -8,16 +8,14 @@ import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
 import org.apache.http.impl.client.BasicCookieStore;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.tranway.tleshine.R;
-import com.tranway.tleshine.widget.CustomizedProgressDialog;
 
 import android.content.Context;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.util.Log;
+
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.widget.CustomizedProgressDialog;
 
 public class TLEHttpRequest {
 	private static final String LOG_CAT = TLEHttpRequest.class.getSimpleName();
@@ -56,15 +54,15 @@ public class TLEHttpRequest {
 	public interface OnHttpRequestListener {
 		public void onFailure(String url, int errorNo, String errorMsg);
 
-		public void onSuccess(String url, JSONObject data);
+		// public void onSuccess(String url, JSONObject data);
+		public void onSuccess(String url, String result);
 	}
 
 	// public void setOnHttpRequestListener(OnHttpRequestListener listener) {
 	// mListener = listener;
 	// }
 
-	public void setOnHttpRequestListener(OnHttpRequestListener listener,
-			Context context) {
+	public void setOnHttpRequestListener(OnHttpRequestListener listener, Context context) {
 		mListener = listener;
 		if (context != null) {
 			dialog = new CustomizedProgressDialog(context, R.string.is_loading);
@@ -135,15 +133,15 @@ public class TLEHttpRequest {
 			if (dialog != null) {
 				dialog.dismiss();
 			}
-			try {
-				if (mListener != null) {
-					JSONObject json = new JSONObject(t);
-					mListener.onSuccess(myUrl, json);
-				}
-			} catch (JSONException e) {
-				mListener.onFailure(myUrl, STATE_FAILED, "failed");
-				e.printStackTrace();
+			// try {
+			if (mListener != null) {
+				// JSONObject json = new JSONObject(t);
+				mListener.onSuccess(myUrl, t);
 			}
+			// } catch (JSONException e) {
+			// mListener.onFailure(myUrl, STATE_FAILED, "failed");
+			// e.printStackTrace();
+			// }
 		}
 	}
 }

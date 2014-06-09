@@ -42,6 +42,14 @@
                 android:textCursorDrawable="@null" />
 
             <EditText
+                android:id="@+id/name"
+                style="@style/edittext_userinfo"
+                android:layout_marginTop="20dp"
+                android:hint="@string/prompt_name"
+                android:imeOptions="actionNext"
+                android:textCursorDrawable="@null" />
+
+            <EditText
                 android:id="@+id/password"
                 style="@style/edittext_userinfo"
                 android:layout_marginTop="20dp"

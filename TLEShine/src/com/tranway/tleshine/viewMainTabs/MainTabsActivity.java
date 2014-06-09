@@ -14,6 +14,7 @@ public class MainTabsActivity extends Activity {
 	private static final int TAB_TAG_MENU = 0;
 	private static final int TAB_TAG_DAY = 1;
 	private static final int TAB_TAG_NIGHT = 2;
+	private static final int TAB_TAG_SOCIAL = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +46,15 @@ public class MainTabsActivity extends Activity {
 		nightTab.setTag(TAB_TAG_NIGHT);
 		nightTab.setTabListener(new MyTabListener(new NightFragment()));
 
-		Tab friendsTab = actionBar.newTab();
-		friendsTab.setIcon(R.drawable.friends);
-		friendsTab.setTag(TAB_TAG_NIGHT);
-		friendsTab.setTabListener(new MyTabListener(new NightFragment()));
-
+		Tab socialTab = actionBar.newTab();
+		socialTab.setIcon(R.drawable.friends);
+		socialTab.setTag(TAB_TAG_SOCIAL);
+		socialTab.setTabListener(new MyTabListener(new SocialFragment()));
+		
 		actionBar.addTab(menuTab);
 		actionBar.addTab(dayTab);
 		actionBar.addTab(nightTab);
-		actionBar.addTab(friendsTab);
+		actionBar.addTab(socialTab);
 		actionBar.selectTab(dayTab);
 	}
 
@@ -81,6 +82,8 @@ public class MainTabsActivity extends Activity {
 			case TAB_TAG_NIGHT:
 				ft.replace(R.id.fl_fragment_replace, mFragment);
 				break;
+			case TAB_TAG_SOCIAL:
+				ft.replace(R.id.fl_fragment_replace, mFragment);
 			default:
 				break;
 			}
@@ -95,6 +98,9 @@ public class MainTabsActivity extends Activity {
 				break;
 			case TAB_TAG_DAY:
 			case TAB_TAG_NIGHT:
+				ft.remove(mFragment);
+				break;
+			case TAB_TAG_SOCIAL:
 				ft.remove(mFragment);
 				break;
 			default:

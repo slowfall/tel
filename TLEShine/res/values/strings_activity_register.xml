@@ -4,6 +4,9 @@
     <!-- Strings related to register -->
     <string name="email_empty">请输入有效的邮箱地址</string>
     <string name="email_invalid">邮箱格式错误</string>
+    <string name="name_invalid">用户名只能包含汉字、数字、字母和下划线</string>
+    <string name="name_length_invalid">用户名长度需在4~20个字符之间</string>
+    <string name="name_empty">请设置一个用户名</string>
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>
     <string name="error_email_used">该邮箱已被使用</string>
@@ -15,7 +18,7 @@
     <string name="register_tips">请简单的介绍一下您自己</string>
     <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 
-    <string name="exsit">退出</string>
+    <string name="exit">退出</string>
     <string name="my_info">我的信息</string>
     <string name="next_step">下一步</string>
     <string name="pre_step">上一步</string>
