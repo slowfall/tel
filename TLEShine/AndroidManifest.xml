@@ -102,6 +102,7 @@
             android:name="com.tranway.tleshine.viewMainTabs.MainTabsActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AndroidDevelopers" >
         </activity>
         <activity

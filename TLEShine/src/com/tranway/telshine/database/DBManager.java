@@ -2,6 +2,8 @@ package com.tranway.telshine.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.DailyExercise;
@@ -249,5 +251,73 @@ public class DBManager {
 		}
 		db.close();
 		return activityInfos;
+	}
+
+	public static long addEvery15MinData(Map<String, Object> every15MinData) {
+		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
+				MyApplication.getAppContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
+		if (every15MinData == null || every15MinData.size() != 3 || db == null) {
+			return -1;
+		}
+
+		long ret = 0;
+		db.beginTransaction();
+		try {
+			ContentValues mValues = new ContentValues();
+			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_UTC_TIME)) {
+				mValues.put(DBEvery15MinPacketHelper.KEY_UTC_TIME,
+						(Long) every15MinData.get(DBEvery15MinPacketHelper.KEY_UTC_TIME));
+			}
+			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_STEPS)) {
+				mValues.put(DBEvery15MinPacketHelper.KEY_STEPS,
+						(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_STEPS));
+			}
+			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_CAOLRIE)) {
+				mValues.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
+						(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_CAOLRIE));
+			}
+			ret = db.replace(DBEvery15MinPacketHelper.TABLE_NAME, null, mValues);
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
+		db.close();
+		return ret;
+	}
+
+	public static List<Map<String, Object>> queryEvery15MinPackets(long fromUTC, long toUTC) {
+		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
+				MyApplication.getAppContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
+		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
+		if (db == null) {
+			return every15MinPackets;
+		}
+
+		db.beginTransaction();
+		try {
+			Cursor cursor = db.rawQuery("select * from " + DBEvery15MinPacketHelper.TABLE_NAME
+					+ " where " + DBEvery15MinPacketHelper.KEY_UTC_TIME + " > ? and "
+					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " < ? " + " order by "
+					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " DESC",
+					new String[] { String.valueOf(fromUTC), String.valueOf(toUTC) });
+
+			while (cursor.moveToNext()) {
+				Map<String, Object> data = new TreeMap<String, Object>();
+				data.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, cursor.getLong(cursor
+						.getColumnIndex(DBEvery15MinPacketHelper.KEY_UTC_TIME)));
+				data.put(DBEvery15MinPacketHelper.KEY_STEPS,
+						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_STEPS)));
+				data.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
+						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_CAOLRIE)));
+				every15MinPackets.add(data);
+			}
+			cursor.close();
+		} finally {
+			db.endTransaction();
+		}
+		db.close();
+		return every15MinPackets;
 	}
 }

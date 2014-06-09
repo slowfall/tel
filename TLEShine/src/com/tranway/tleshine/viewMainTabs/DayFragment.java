@@ -2,6 +2,7 @@ package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -29,7 +30,6 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
-import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -40,11 +40,11 @@ import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!
 public class DayFragment extends Fragment {
-//	private static final String TAG = DayFragment.class.getSimpleName();
+	// private static final String TAG = DayFragment.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
-
+	private static final long ONE_DAY_SECONDS = 2400 * 36;
 	private static final float VIEWPAGE_HEIGHT_PERCENT = 0.5f;
 
 	// private JazzyViewPager mPager;
@@ -58,7 +58,8 @@ public class DayFragment extends Fragment {
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
 
-//	private DBManager dbManager = new DBManager(MyApplication.getAppContext());
+	// private DBManager dbManager = new
+	// DBManager(MyApplication.getAppContext());
 
 	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
@@ -179,22 +180,27 @@ public class DayFragment extends Fragment {
 	private void initContentLayout(View v) {
 		mListView = (ListView) v.findViewById(R.id.list_content);
 
-		// for test
-		ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK, 200);
-		mContentList.add(content);
-		content = new ExerciseContent(12, 13, Sport.WALK, 400);
-		mContentList.add(content);
-		content = new ExerciseContent(13, 14, Sport.RUN, 500);
-		mContentList.add(content);
-		content = new ExerciseContent(14, 15, Sport.SWIM, 300);
-		mContentList.add(content);
-		content = new ExerciseContent(15, 16, Sport.SWIM, 200);
-		mContentList.add(content);
-		content = new ExerciseContent(16, 17, Sport.SWIM, 200);
-		mContentList.add(content);
-
+		// // for test
+		// ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK,
+		// 200);
+		// mContentList.add(content);
+		// content = new ExerciseContent(12, 13, Sport.WALK, 400);
+		// mContentList.add(content);
+		// content = new ExerciseContent(13, 14, Sport.RUN, 500);
+		// mContentList.add(content);
+		// content = new ExerciseContent(14, 15, Sport.SWIM, 300);
+		// mContentList.add(content);
+		// content = new ExerciseContent(15, 16, Sport.SWIM, 200);
+		// mContentList.add(content);
+		// content = new ExerciseContent(16, 17, Sport.SWIM, 200);
+		// mContentList.add(content);
+		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
+		long utcTime = System.currentTimeMillis() / 1000;
+		long dayUtc = utcTime / ONE_DAY_SECONDS;
+		every15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
+				* ONE_DAY_SECONDS);
 		mContentAdapter = new ExerciseContentAdapter(getActivity());
-		mContentAdapter.setContentList(mContentList);
+		mContentAdapter.setContentList(every15MinPackets);
 		mListView.setAdapter(mContentAdapter);
 		mContentAdapter.notifyDataSetChanged();
 	}

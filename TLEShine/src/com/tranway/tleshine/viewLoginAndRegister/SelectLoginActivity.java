@@ -293,9 +293,9 @@ public class SelectLoginActivity extends Activity {
 		View view = LayoutInflater.from(getApplicationContext()).inflate(
 				R.layout.item_guide, null);
 		ImageView imageView = (ImageView) view.findViewById(R.id.iguide_img);
-		ImageView textview = (ImageView) view.findViewById(R.id.iguide_text);
+//		ImageView textview = (ImageView) view.findViewById(R.id.iguide_text);
 		imageView.setImageResource(res);
-		textview.setImageResource(text);
+//		textview.setImageResource(text);
 		return view;
 	}
 

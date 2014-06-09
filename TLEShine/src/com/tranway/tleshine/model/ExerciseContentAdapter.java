@@ -1,7 +1,11 @@
 package com.tranway.tleshine.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,17 +15,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tranway.telshine.database.DBEvery15MinPacketHelper;
 import com.tranway.tleshine.R;
 
 public class ExerciseContentAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
-	private List<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
+	private List<Map<String, Object>> mContentList = new ArrayList<Map<String, Object>>();
 
 	public ExerciseContentAdapter(Context context) {
 		this.mInflater = LayoutInflater.from(context);
 	}
 
-	public void setContentList(List<ExerciseContent> contentList) {
+	public void setContentList(List<Map<String, Object>> contentList) {
 		mContentList = contentList;
 	}
 
@@ -65,11 +70,15 @@ public class ExerciseContentAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		final ExerciseContent content = mContentList.get(position);
+		final Map<String, Object> content = mContentList.get(position);
 		// holder.exerciseIcon.setImageDrawable();
 		holder.exerciseIntensit.setText("轻微运动");
-		holder.exerciseTime.setText(content.getFromTime() + "~" + content.getToTime());
-		holder.exercisePoint.setText(content.getPoint() + "点");
+		long utcTime = (Long) content.get(DBEvery15MinPacketHelper.KEY_UTC_TIME);
+		SimpleDateFormat format = new SimpleDateFormat("HH:MM:SS", Locale.getDefault());
+		String fromTime = format.format(new Date(utcTime * 1000));
+		String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
+		holder.exerciseTime.setText(fromTime + "~" + toTime);
+		holder.exercisePoint.setText(content.get(DBEvery15MinPacketHelper.KEY_STEPS) + "点");
 
 		return convertView;
 	}

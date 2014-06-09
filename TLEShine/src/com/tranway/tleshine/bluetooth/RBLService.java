@@ -332,9 +332,10 @@ public class RBLService extends Service {
 			BluetoothGattDescriptor descriptor = characteristic
 					.getDescriptor(UUID
 							.fromString(RBLGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-			descriptor
-					.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-			mBluetoothGatt.writeDescriptor(descriptor);
+			if (descriptor != null) {
+				descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+				mBluetoothGatt.writeDescriptor(descriptor);
+			}
 		}
 	}
 

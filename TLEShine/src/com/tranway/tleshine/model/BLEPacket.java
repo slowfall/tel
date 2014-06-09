@@ -1,5 +1,11 @@
 package com.tranway.tleshine.model;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.tranway.telshine.database.DBEvery15MinPacketHelper;
+
 public class BLEPacket {
 	private static final String TAG = BLEPacket.class.getSimpleName();
 
@@ -95,6 +101,55 @@ public class BLEPacket {
 		return activityInfo;
 	}
 
+	public static final int EVERY_15_MIN_PACKET_DATA_LENGHT = 15 * 2;
+
+	public Map<String, Object> resovleEvery15MinPacket(List<byte[]> every15MinPacket) {
+		Map<String, Object> every15MinData = new TreeMap<String, Object>();
+		byte[] stepsAndCalorie = new byte[EVERY_15_MIN_PACKET_DATA_LENGHT];
+		long utcTime = 0;
+		for (int i = 0; i < 3; i++) {
+			byte[] packetData = every15MinPacket.get(i);
+			if (packetData.length != 20) {
+				return every15MinData;
+			}
+			byte packetIndex = packetData[1];
+			switch (packetIndex) {
+			case 0x01:
+				byte[] utcTimeBytes = new byte[4];
+				System.arraycopy(packetData, 2, utcTimeBytes, 0, utcTimeBytes.length);
+				utcTime = bytesToInt(utcTimeBytes);
+				// first packet data length is 13
+				System.arraycopy(packetData, 6, stepsAndCalorie, 0, 13);
+				break;
+			case 0x02:
+				// second packet data length is 17
+				System.arraycopy(packetData, 2, stepsAndCalorie, 13, 17);
+				break;
+			case 0x03:
+				// check total packets number
+				break;
+			default:
+				break;
+			}
+		}
+		int steps = 0;
+		int calories = 0;
+		for (int i = 0; i < stepsAndCalorie.length; i++) {
+			// even is step, odd is calorie
+			if ((i % 2) == 0) {
+				steps += bytesToInt(new byte[] { stepsAndCalorie[i] });
+			} else {
+				calories = bytesToInt(new byte[] { stepsAndCalorie[i] });
+			}
+		}
+
+		every15MinData.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime);
+		every15MinData.put(DBEvery15MinPacketHelper.KEY_STEPS, steps);
+		every15MinData.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, calories);
+		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps + ", calories:" + calories);
+		return every15MinData;
+	}
+
 	public byte[] makeReplyACK(byte sequenceNumber) {
 		byte[] buf = new byte[4];
 		buf[0] = (byte) 0xE0;
@@ -142,10 +197,9 @@ public class BLEPacket {
 	public byte checksum(byte[] bytes, int length) {
 		int sum = 0;
 		for (int i = 0; i < length; i++) {
-			sum += bytes[i];
+			sum += bytesToInt(new byte[]{bytes[i]});
 		}
-		int checksum = (sum % 0xFF);
-
+		int checksum = (sum % 256);
 		return (byte) checksum;
 	}
 

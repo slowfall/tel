@@ -64,7 +64,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mDevice = null;
 	private String mDeviceAddress;
-	private List<ActivityInfo> mActivityInfos = new ArrayList<ActivityInfo>();
+	private List<byte[]> mPacketForEvery15Min = new ArrayList<byte[]>();
 
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -116,6 +116,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		checkBLE();
 
 		initTitleView();
+		mPacketForEvery15Min.add(new byte[1]);
+		mPacketForEvery15Min.add(new byte[1]);
+		mPacketForEvery15Min.add(new byte[1]);
+		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
 	@Override
@@ -126,21 +130,18 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-
-		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-
-		unregisterReceiver(mGattUpdateReceiver);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 
+		unregisterReceiver(mGattUpdateReceiver);
 		if (mServiceConnection != null)
 			unbindService(mServiceConnection);
 	}
@@ -246,7 +247,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			if (packet.checkChecksum(data)) {
 				long getUtcTime = packet.resolveUTCTime(data);
 				long utcTime = System.currentTimeMillis() / 1000;
-//				boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
+				// boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
 				characteristicTx.setValue(utc);
@@ -258,7 +259,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		// total steps and calories since last sync.
 		case ActivityInfo.COMMAND:
 			if (packet.checkChecksum(data)) {
-				mActivityInfos.add(packet.resolveCurrentActivityInfo(data));
+				saveActivityInfo(packet.resolveCurrentActivityInfo(data));
 				ack = packet.makeReplyACK(sequenceNumber);
 				characteristicTx.setValue(ack);
 				mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -266,18 +267,23 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			break;
 		case 0x04:
 			if (packet.checkChecksum(data)) {
-				saveActivityInfo(mActivityInfos);
-				ack = packet.makeReplyACK(sequenceNumber);
-				characteristicTx.setValue(ack);
-				mBluetoothLeService.writeCharacteristic(characteristicTx);
-				Intent aIntent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
-				startActivity(aIntent);
+				mPacketForEvery15Min.add(data[1] - 1, data);
+				if (data[1] == (byte) 0x03) {
+					savePacketForEvery15Min(mPacketForEvery15Min);
+					ack = packet.makeReplyACK(sequenceNumber);
+					characteristicTx.setValue(ack);
+					mBluetoothLeService.writeCharacteristic(characteristicTx);
+				}
+				Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
+				startActivity(intent);
 			}
 			break;
 		case 0x05:
-			ack = packet.makeReplyACK(sequenceNumber);
-			characteristicTx.setValue(ack);
-			mBluetoothLeService.writeCharacteristic(characteristicTx);
+			if (packet.checkChecksum(data)) {
+				ack = packet.makeReplyACK(sequenceNumber);
+				characteristicTx.setValue(ack);
+				mBluetoothLeService.writeCharacteristic(characteristicTx);
+			}
 			break;
 		case 0x06:
 			ack = packet.makeReplyACK(sequenceNumber);
@@ -287,7 +293,6 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		default:
-			saveActivityInfo(mActivityInfos);
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -297,28 +302,27 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void saveActivityInfo(List<ActivityInfo> currentActivityInfos) {
-		ActivityInfo info = new ActivityInfo();
-		for (ActivityInfo activityInfo : currentActivityInfos) {
-			info.setUtcTime(activityInfo.getUtcTime());
-			info.setSteps(activityInfo.getSteps() + info.getSteps());
-			info.setDistance(activityInfo.getDistance() + info.getDistance());
-			info.setCalorie(activityInfo.getCalorie() + info.getCalorie());
-		}
+	private void saveActivityInfo(ActivityInfo currentActivityInfo) {
 		long utcTime = System.currentTimeMillis() / 1000;
 
 		long todayUTC = utcTime / (3600 * 24);
-		info.setUtcTime(todayUTC);
-		if (info.getSteps() > 0) {
-			DBManager.addActivityInfo(info);
+		currentActivityInfo.setUtcTime(todayUTC);
+		if (currentActivityInfo.getSteps() > 0) {
+			DBManager.addActivityInfo(currentActivityInfo);
 			TLEHttpRequest request = TLEHttpRequest.instance();
 			Map<String, String> data = new TreeMap<String, String>();
 			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
 					UserInfoKeeper.KEY_ID)));
-			data.put("StepCount", String.valueOf(info.getSteps()));
+			data.put("StepCount", String.valueOf(currentActivityInfo.getSteps()));
 			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
 			request.post(ADD_SPORT_POINT_END_URL, data);
 		}
+	}
+
+	private void savePacketForEvery15Min(List<byte[]> packetForEvery15Min) {
+		BLEPacket blePacket = new BLEPacket();
+		Map<String, Object> every15MinData = blePacket.resovleEvery15MinPacket(packetForEvery15Min);
+		DBManager.addEvery15MinData(every15MinData);
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
