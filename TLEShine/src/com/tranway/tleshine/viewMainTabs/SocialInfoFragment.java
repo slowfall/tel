@@ -1,7 +1,10 @@
 package com.tranway.tleshine.viewMainTabs;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,14 +55,20 @@ public class SocialInfoFragment extends Fragment {
 		TextView userEmail = (TextView) v.findViewById(R.id.tv_user_info_email);
 		userEmail.setText(mUserInfo.getEmail());
 
-		((ImageButton) v.findViewById(R.id.btn_add_friend)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), AddFriendActivity.class);
-				startActivity(intent);
-			}
-		});
+		TextView userDate = (TextView) v.findViewById(R.id.tv_user_info_day_user);
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd", Locale.getDefault());
+		userDate.setText(String.format(getString(R.string.day_string_of_user_login),
+				format.format(new Date())));
+
+		((ImageButton) v.findViewById(R.id.btn_add_friend))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(getActivity(), AddFriendActivity.class);
+						startActivity(intent);
+					}
+				});
 
 		mListView = (ListView) v.findViewById(R.id.list_social_friends);
 		mAdapter = new FriendsAdapter(getActivity(), mFriendList);

@@ -13,7 +13,7 @@
         android:layout_height="70dp"
         android:layout_marginLeft="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/icon_achieve_goal_method" />
+        android:src="@drawable/walk" />
 
     <LinearLayout
         android:id="@+id/layout_info"

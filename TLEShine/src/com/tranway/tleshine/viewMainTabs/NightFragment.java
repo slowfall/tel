@@ -88,7 +88,7 @@ public class NightFragment extends Fragment {
 		// // }
 		// }
 		mActivityInfos = DBManager.queryActivityInfo();
-		initView(v);
+//		initView(v);
 
 		return v;
 	}
@@ -202,7 +202,7 @@ public class NightFragment extends Fragment {
 		mContentList.add(content);
 
 		mContentAdapter = new ExerciseContentAdapter(getActivity());
-		mContentAdapter.setContentList(mContentList);
+//		mContentAdapter.setContentList(mContentList);
 		mListView.setAdapter(mContentAdapter);
 		mContentAdapter.notifyDataSetChanged();
 	}

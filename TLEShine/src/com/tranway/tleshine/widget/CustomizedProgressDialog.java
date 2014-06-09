@@ -41,7 +41,7 @@ public class CustomizedProgressDialog extends ProgressDialog {
 				}
 			}
 		});
-		this.setCancelable(false);
+//		this.setCancelable(false);
 	}
 
 	private void setScreenBrightness() {

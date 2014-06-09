@@ -39,7 +39,7 @@ public class SocialFragment extends Fragment {
 					showTodayRankFragment();
 					break;
 				case R.id.radio_rank_yesterday:
-
+					showTodayRankFragment();
 					break;
 				default:
 					break;
