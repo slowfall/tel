@@ -109,12 +109,12 @@ public class BLEPacket {
 		long utcTime = 0;
 		for (int i = 0; i < 3; i++) {
 			byte[] packetData = every15MinPacket.get(i);
-			if (packetData.length != 20) {
-				return every15MinData;
-			}
 			byte packetIndex = packetData[1];
 			switch (packetIndex) {
 			case 0x01:
+				if (packetData.length != 20) {
+					return every15MinData;
+				}
 				byte[] utcTimeBytes = new byte[4];
 				System.arraycopy(packetData, 2, utcTimeBytes, 0, utcTimeBytes.length);
 				utcTime = bytesToInt(utcTimeBytes);
@@ -122,6 +122,9 @@ public class BLEPacket {
 				System.arraycopy(packetData, 6, stepsAndCalorie, 0, 13);
 				break;
 			case 0x02:
+				if (packetData.length != 20) {
+					return every15MinData;
+				}
 				// second packet data length is 17
 				System.arraycopy(packetData, 2, stepsAndCalorie, 13, 17);
 				break;
