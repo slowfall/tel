@@ -67,7 +67,7 @@ public class NightFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_day, container, false);
+		View v = inflater.inflate(R.layout.fragment_night, container, false);
 		// ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		// for (int i = 0; i <= 6; i++) {
 		// DailyExercise mExercise = new DailyExercise();

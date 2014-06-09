@@ -13,6 +13,7 @@ public class UserInfoKeeper {
 
 	public static final String KEY_ID = "userId";
 	public static final String KEY_EMAIL = "email";
+	public static final String KEY_NAME = "userName";
 	public static final String KEY_PWD = "password";
 	public static final String KEY_BIRTH = "birthday";
 	public static final String KEY_WEIGHT = "weight";
@@ -26,6 +27,7 @@ public class UserInfoKeeper {
 		UserInfo info = new UserInfo();
 		info.setId(data.getLong(UserInfo.SEVER_KEY_ID));
 		info.setEmail(data.getString(UserInfo.SEVER_KEY_EMAIL));
+		info.setName(data.getString(UserInfo.SEVER_KEY_NAME));
 		info.setPassword(data.getString(UserInfo.SEVER_KEY_PASSWORD));
 		info.setSex(data.getInt(UserInfo.SEVER_KEY_SEX));
 		info.setBirthday(data.getLong(UserInfo.SEVER_KEY_BIRTHDAY));
@@ -36,7 +38,7 @@ public class UserInfoKeeper {
 		} else {
 			info.setStepsTarget(data.getInt(UserInfo.SEVER_KEY_GOAL));
 		}
-		info.setStride(readUserInfo(context, KEY_STRIDE));
+		info.setStride(readUserInfo(context, KEY_STRIDE, 0));
 		writeUserInfo(context, info);
 	}
 
@@ -54,11 +56,11 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(KEY_ID, info.getId());
 		edit.putString(KEY_EMAIL, info.getEmail());
+		edit.putString(KEY_NAME, info.getName());
 		edit.putString(KEY_PWD, info.getPassword());
 		edit.putLong(KEY_BIRTH, info.getBirthday());
 		edit.putInt(KEY_WEIGHT, info.getWeight());
@@ -87,8 +89,7 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putString(key, value);
 
@@ -111,8 +112,7 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putInt(key, value);
 
@@ -135,23 +135,65 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(key, value);
 
 		return edit.commit();
 	}
 
-	public static int readUserInfo(Context context, String key) {
-		int value = 0;
+	/**
+	 * read user information from SharedPreferences by key
+	 * 
+	 * @param context
+	 * @param key
+	 *            key of value
+	 * @param defaultValue
+	 *            default value if read key is not exist
+	 * 
+	 * @return return value or default value
+	 */
+	public static int readUserInfo(Context context, String key, int defaultValue) {
 		if (context == null || key == null) {
-			return value;
+			return defaultValue;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_PRIVATE);
-		value = preferences.getInt(key, 0);
-		return value;
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		defaultValue = preferences.getInt(key, defaultValue);
+		return defaultValue;
+	}
+
+	/**
+	 * read user information from SharedPreferences by key
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defaultValue
+	 * @return return value or default value
+	 */
+	public static String readUserInfo(Context context, String key, String defaultValue) {
+		if (context == null || key == null) {
+			return defaultValue;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		defaultValue = preferences.getString(key, defaultValue);
+		return defaultValue;
+	}
+
+	/**
+	 * read user information from SharedPreferences by key
+	 * 
+	 * @param context
+	 * @param key
+	 * @param defaultValue
+	 * @return return value or default value
+	 */
+	public static long readUserInfo(Context context, String key, long defaultValue) {
+		if (context == null || key == null) {
+			return defaultValue;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		defaultValue = preferences.getLong(key, defaultValue);
+		return defaultValue;
 	}
 
 	/**
@@ -169,7 +211,8 @@ public class UserInfoKeeper {
 		UserInfo info = new UserInfo();
 		SharedPreferences sp = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		info.setEmail(sp.getString(KEY_EMAIL, ""));
-		info.setId(sp.getLong(KEY_ID, 0));
+		info.setName(sp.getString(KEY_NAME, ""));
+		info.setId(sp.getLong(KEY_ID, -1));
 		info.setPassword(sp.getString(KEY_PWD, ""));
 		info.setBirthday(sp.getLong(KEY_BIRTH, 0));
 		info.setWeight(sp.getInt(KEY_WEIGHT, 0));
@@ -191,8 +234,7 @@ public class UserInfoKeeper {
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean clearUserInfo(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
-				Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.clear();
 		return edit.commit();

@@ -7,6 +7,7 @@
     <dimen name="activity_title_height">44dp</dimen>
     <dimen name="activity_title_text_size">20sp</dimen>
     <dimen name="activity_title_btn_size">16sp</dimen>
+    <dimen name="activity_social_radio_height">38dp</dimen>
 
 </resources>
 

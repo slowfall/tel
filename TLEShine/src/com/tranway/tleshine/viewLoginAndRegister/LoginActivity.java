@@ -197,10 +197,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
-			public void onSuccess(String url, JSONObject data) {
+			public void onSuccess(String url, String result) {
 				showProgress(false);
-				if (data.has(TLEHttpRequest.STATUS_CODE)) {
-					try {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.has(TLEHttpRequest.STATUS_CODE)) {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_EMAIL, email);
@@ -213,10 +214,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 							String errorMsg = data.getString(TLEHttpRequest.MSG);
 							ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
 						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 

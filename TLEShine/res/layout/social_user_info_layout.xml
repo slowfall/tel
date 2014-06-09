@@ -8,11 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp" >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/user" />
 
@@ -20,22 +22,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tv_user_info_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:padding="5dp"
                 android:text="@string/action_forgot_password"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_big" />
 
             <TextView
                 android:id="@+id/tv_user_info_day_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/day_string_of_user_login" />
+                android:padding="5dp"
+                android:text="@string/day_string_of_user_login"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
     </LinearLayout>
 
@@ -88,20 +94,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
+        android:padding="10dp" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/friends"
             android:layout_centerVertical="true"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:text="@string/friends"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_middle" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_add_friend"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/add_friend" />
     </RelativeLayout>

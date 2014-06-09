@@ -152,6 +152,7 @@ public class UserInfoUtils {
 			return data;
 		}
 		data.put(UserInfo.SEVER_KEY_EMAIL, info.getEmail());
+		data.put(UserInfo.SEVER_KEY_NAME, info.getName());
 		data.put(UserInfo.SEVER_KEY_PASSWORD, info.getPassword());
 		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
 		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));

@@ -2,19 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/include_title"
+    <RadioGroup
+        android:id="@+id/radiogroup_social"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/social_user_info_layout" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible" >
 
-    <ListView
-        android:id="@+id/lv_social_friends_list"
+        <RadioButton
+            android:id="@+id/radio_rank_today"
+            style="@style/social_tab_top"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/today" />
+
+        <RadioButton
+            android:id="@+id/radio_rank_yesterday"
+            style="@style/social_tab_top"
+            android:gravity="center"
+            android:text="@string/yestoday" />
+
+        <RadioButton
+            android:id="@+id/radio_my_info"
+            style="@style/social_tab_top"
+            android:gravity="center"
+            android:text="@string/my_info" />
+    </RadioGroup>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" >
-    </ListView>
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/fragment_social"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+    </LinearLayout>
 
 </LinearLayout>
