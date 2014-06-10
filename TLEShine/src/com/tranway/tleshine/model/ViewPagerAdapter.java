@@ -51,7 +51,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 		// holder.mTimeTxt.setText(df.format(date));
 		ActivityInfo info = mActivityInfos.get(position);
 		holder.mProgress.setProgress(info.getSteps(),
-				UserInfoKeeper.readUserInfo(MyApplication.getAppContext(), UserInfoKeeper.KEY_STEPSTARGET, 0));
+				UserGoalKeeper.readExerciseGoalPoint(MyApplication.getAppContext()));
 		long todayUtcTime = System.currentTimeMillis() / 1000 / 3600 / 24;
 		long utcTime = info.getUtcTime();
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
