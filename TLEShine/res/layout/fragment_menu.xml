@@ -23,6 +23,7 @@
         <Button
             android:id="@+id/btn_shine"
             style="@style/button_like_list"
+            android:visibility="gone"
             android:text="@string/my_shine" />
 
         <ImageView
