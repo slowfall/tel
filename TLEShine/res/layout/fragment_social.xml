@@ -16,7 +16,6 @@
         <RadioButton
             android:id="@+id/radio_rank_today"
             style="@style/social_tab_top"
-            android:checked="true"
             android:gravity="center"
             android:text="@string/today" />
 
@@ -29,6 +28,7 @@
         <RadioButton
             android:id="@+id/radio_my_info"
             style="@style/social_tab_top"
+            android:checked="true"
             android:gravity="center"
             android:text="@string/my_info" />
     </RadioGroup>

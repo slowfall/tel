@@ -72,7 +72,10 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 	}
 
 	private void setUserGoalFromSP() {
-		goalPoint = UserGoalKeeper.readExerciseGoalPoint(getActivity());
+		int userGoal = UserGoalKeeper.readExerciseGoalPoint(getActivity());
+		if (userGoal != 0) {
+			goalPoint = userGoal;
+		}
 		mGoalWheel.setCurrentGoal(goalPoint);
 		updateAchieveGoalTips(goalPoint);
 	}

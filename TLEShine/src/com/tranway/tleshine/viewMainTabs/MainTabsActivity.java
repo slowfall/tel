@@ -16,6 +16,8 @@ public class MainTabsActivity extends Activity {
 	private static final int TAB_TAG_NIGHT = 2;
 	private static final int TAB_TAG_SOCIAL = 3;
 
+	private static final String SELECTED_ITEM = "selected_item";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,12 +52,22 @@ public class MainTabsActivity extends Activity {
 		socialTab.setIcon(R.drawable.friends);
 		socialTab.setTag(TAB_TAG_SOCIAL);
 		socialTab.setTabListener(new MyTabListener(new SocialFragment()));
-		
+
 		actionBar.addTab(menuTab);
 		actionBar.addTab(dayTab);
 		actionBar.addTab(nightTab);
 		actionBar.addTab(socialTab);
 		actionBar.selectTab(dayTab);
+	}
+
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		if (savedInstanceState.containsKey(SELECTED_ITEM)) {
+			getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(SELECTED_ITEM));
+		}
+	}
+
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt(SELECTED_ITEM, getActionBar().getSelectedNavigationIndex());
 	}
 
 	protected class MyTabListener implements TabListener {
@@ -73,39 +85,41 @@ public class MainTabsActivity extends Activity {
 
 		@Override
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-			int tag = (Integer) tab.getTag();
-			switch (tag) {
-			case TAB_TAG_MENU:
-				ft.replace(R.id.fl_fragment_replace, mFragment);
-				break;
-			case TAB_TAG_DAY:
-			case TAB_TAG_NIGHT:
-				ft.replace(R.id.fl_fragment_replace, mFragment);
-				break;
-			case TAB_TAG_SOCIAL:
-				ft.replace(R.id.fl_fragment_replace, mFragment);
-			default:
-				break;
-			}
+			// int tag = (Integer) tab.getTag();
+			// switch (tag) {
+			// case TAB_TAG_MENU:
+			// ft.replace(R.id.fl_fragment_replace, mFragment);
+			// break;
+			// case TAB_TAG_DAY:
+			// case TAB_TAG_NIGHT:
+			// ft.replace(R.id.fl_fragment_replace, mFragment);
+			// break;
+			// case TAB_TAG_SOCIAL:
+			// ft.replace(R.id.fl_fragment_replace, mFragment);
+			// default:
+			// break;
+			// }
+			ft.replace(R.id.fl_fragment_replace, mFragment);
 		}
 
 		@Override
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			int tag = (Integer) tab.getTag();
-			switch (tag) {
-			case TAB_TAG_MENU:
-				// do nothing
-				break;
-			case TAB_TAG_DAY:
-			case TAB_TAG_NIGHT:
-				ft.remove(mFragment);
-				break;
-			case TAB_TAG_SOCIAL:
-				ft.remove(mFragment);
-				break;
-			default:
-				break;
-			}
+			// int tag = (Integer) tab.getTag();
+			// switch (tag) {
+			// case TAB_TAG_MENU:
+			// // do nothing
+			// break;
+			// case TAB_TAG_DAY:
+			// case TAB_TAG_NIGHT:
+			// ft.remove(mFragment);
+			// break;
+			// case TAB_TAG_SOCIAL:
+			// ft.remove(mFragment);
+			// break;
+			// default:
+			// break;
+			// }
+			ft.remove(mFragment);
 		}
 	}
 
