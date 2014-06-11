@@ -155,7 +155,7 @@ public class BLEPacket {
 			if ((i % 2) == 0) {
 				steps += bytesToInt(new byte[] { byteArray[i] });
 			} else {
-				calories = bytesToInt(new byte[] { byteArray[i] });
+				calories += bytesToInt(new byte[] { byteArray[i] });
 			}
 		}
 		every15MinData.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime);
