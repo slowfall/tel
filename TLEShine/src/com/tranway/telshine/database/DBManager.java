@@ -253,31 +253,33 @@ public class DBManager {
 		return activityInfos;
 	}
 
-	public static long addEvery15MinData(Map<String, Object> every15MinData) {
+	public static long addEvery15MinData(List<Map<String, Object>> every15MinDatas) {
 		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
 				MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
-		if (every15MinData == null || every15MinData.size() != 3 || db == null) {
+		if (every15MinDatas == null || every15MinDatas.size() <= 0 || db == null) {
 			return -1;
 		}
 
 		long ret = 0;
 		db.beginTransaction();
 		try {
-			ContentValues mValues = new ContentValues();
-			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_UTC_TIME)) {
-				mValues.put(DBEvery15MinPacketHelper.KEY_UTC_TIME,
-						(Long) every15MinData.get(DBEvery15MinPacketHelper.KEY_UTC_TIME));
+			for (Map<String, Object> every15MinData : every15MinDatas) {
+				ContentValues mValues = new ContentValues();
+				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_UTC_TIME)) {
+					mValues.put(DBEvery15MinPacketHelper.KEY_UTC_TIME,
+							(Long) every15MinData.get(DBEvery15MinPacketHelper.KEY_UTC_TIME));
+				}
+				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_STEPS)) {
+					mValues.put(DBEvery15MinPacketHelper.KEY_STEPS,
+							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_STEPS));
+				}
+				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_CAOLRIE)) {
+					mValues.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
+							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_CAOLRIE));
+				}
+				ret = db.replace(DBEvery15MinPacketHelper.TABLE_NAME, null, mValues);
 			}
-			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_STEPS)) {
-				mValues.put(DBEvery15MinPacketHelper.KEY_STEPS,
-						(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_STEPS));
-			}
-			if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_CAOLRIE)) {
-				mValues.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
-						(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_CAOLRIE));
-			}
-			ret = db.replace(DBEvery15MinPacketHelper.TABLE_NAME, null, mValues);
 			db.setTransactionSuccessful();
 		} finally {
 			db.endTransaction();

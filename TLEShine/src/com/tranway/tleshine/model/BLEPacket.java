@@ -1,5 +1,6 @@
 package com.tranway.tleshine.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -101,32 +102,36 @@ public class BLEPacket {
 		return activityInfo;
 	}
 
-	public static final int EVERY_15_MIN_PACKET_DATA_LENGHT = 15 * 2;
+	public static final int EVERY_15_MIN_PACKET_UTC_TIME_LENGHT = 4;
+	public static final int EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT = 13;
+	public static final int EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT = 17;
 
-	public Map<String, Object> resovleEvery15MinPacket(List<byte[]> every15MinPacket) {
-		Map<String, Object> every15MinData = new TreeMap<String, Object>();
-		byte[] stepsAndCalorie = new byte[EVERY_15_MIN_PACKET_DATA_LENGHT];
-		long utcTime = 0;
+	public List<Map<String, Object>> resovleEvery15MinPacket(List<byte[]> every15MinPacket) {
+		List<Map<String, Object>> every15MinDatas = new ArrayList<Map<String, Object>>();
+		byte[] timeAndData = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT
+				+ EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT + EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT];
 		for (int i = 0; i < 3; i++) {
 			byte[] packetData = every15MinPacket.get(i);
 			byte packetIndex = packetData[1];
 			switch (packetIndex) {
 			case 0x01:
 				if (packetData.length != 20) {
-					return every15MinData;
+					return every15MinDatas;
 				}
-				byte[] utcTimeBytes = new byte[4];
-				System.arraycopy(packetData, 2, utcTimeBytes, 0, utcTimeBytes.length);
-				utcTime = bytesToInt(utcTimeBytes);
+				System.arraycopy(packetData, 2, timeAndData, 0, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT);
 				// first packet data length is 13
-				System.arraycopy(packetData, 6, stepsAndCalorie, 0, 13);
+				System.arraycopy(packetData, 2 + EVERY_15_MIN_PACKET_UTC_TIME_LENGHT, timeAndData,
+						EVERY_15_MIN_PACKET_UTC_TIME_LENGHT, EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT);
 				break;
 			case 0x02:
 				if (packetData.length != 20) {
-					return every15MinData;
+					return every15MinDatas;
 				}
 				// second packet data length is 17
-				System.arraycopy(packetData, 2, stepsAndCalorie, 13, 17);
+				System.arraycopy(packetData, 2, timeAndData, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT
+						+ EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT,
+						EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT);
+				every15MinDatas.add(resovleEvery15MinByteArray(timeAndData));
 				break;
 			case 0x03:
 				// check total packets number
@@ -135,21 +140,29 @@ public class BLEPacket {
 				break;
 			}
 		}
+		return every15MinDatas;
+	}
+
+	private Map<String, Object> resovleEvery15MinByteArray(byte[] byteArray) {
+		Map<String, Object> every15MinData = new TreeMap<String, Object>();
 		int steps = 0;
 		int calories = 0;
-		for (int i = 0; i < stepsAndCalorie.length; i++) {
+		byte[] utcTimeBytes = new byte[4];
+		System.arraycopy(byteArray, 0, utcTimeBytes, 0, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT);
+		int utcTime = bytesToInt(utcTimeBytes);
+		for (int i = EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i < byteArray.length; i++) {
 			// even is step, odd is calorie
 			if ((i % 2) == 0) {
-				steps += bytesToInt(new byte[] { stepsAndCalorie[i] });
+				steps += bytesToInt(new byte[] { byteArray[i] });
 			} else {
-				calories = bytesToInt(new byte[] { stepsAndCalorie[i] });
+				calories = bytesToInt(new byte[] { byteArray[i] });
 			}
 		}
-
 		every15MinData.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime);
 		every15MinData.put(DBEvery15MinPacketHelper.KEY_STEPS, steps);
 		every15MinData.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, calories);
-		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps + ", calories:" + calories);
+		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps
+				+ ", calories:" + calories);
 		return every15MinData;
 	}
 
@@ -200,7 +213,7 @@ public class BLEPacket {
 	public byte checksum(byte[] bytes, int length) {
 		int sum = 0;
 		for (int i = 0; i < length; i++) {
-			sum += bytesToInt(new byte[]{bytes[i]});
+			sum += bytesToInt(new byte[] { bytes[i] });
 		}
 		int checksum = (sum % 256);
 		return (byte) checksum;

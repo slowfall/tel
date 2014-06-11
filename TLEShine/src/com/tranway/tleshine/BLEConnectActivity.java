@@ -116,9 +116,6 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		checkBLE();
 
 		initTitleView();
-		mPacketForEvery15Min.add(new byte[1]);
-		mPacketForEvery15Min.add(new byte[1]);
-		mPacketForEvery15Min.add(new byte[1]);
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
@@ -220,7 +217,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
-		BluetoothGattCharacteristic characteristicRx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
+		BluetoothGattCharacteristic characteristicRx = gattService
+				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
 		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
@@ -251,7 +249,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
 				characteristicTx.setValue(utc);
-				Util.logD(TAG, "isUpdateUtc:" + isUpdateUtc + ", getUtcTime:" + getUtcTime + ", utcTime:" + utcTime);
+				Util.logD(TAG, "isUpdateUtc:" + isUpdateUtc + ", getUtcTime:" + getUtcTime
+						+ ", utcTime:" + utcTime);
 				mBluetoothLeService.writeCharacteristic(characteristicTx);
 			}
 			break;
@@ -266,15 +265,16 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			break;
 		case 0x04:
 			if (packet.checkChecksum(data)) {
-				mPacketForEvery15Min.add(data[1] - 1, data);
+				mPacketForEvery15Min.add(data);
 				if (data[1] == (byte) 0x03) {
 					savePacketForEvery15Min(mPacketForEvery15Min);
 					ack = packet.makeReplyACK(sequenceNumber);
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
+					Intent intent = new Intent(MyApplication.getAppContext(),
+							MainTabsActivity.class);
+					startActivity(intent);
 				}
-				Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
-				startActivity(intent);
 			}
 			break;
 		case 0x05:
@@ -311,8 +311,8 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			TLEHttpRequest request = TLEHttpRequest.instance();
 			Map<String, String> data = new TreeMap<String, String>();
 			data.put("StepCount", String.valueOf(currentActivityInfo.getSteps()));
-			data.put("UserID",
-					String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(), UserInfoKeeper.KEY_ID, 0l)));
+			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
+					UserInfoKeeper.KEY_ID, 0l)));
 			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
 			request.post(ADD_SPORT_POINT_END_URL, data);
 		}
@@ -320,8 +320,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 	private void savePacketForEvery15Min(List<byte[]> packetForEvery15Min) {
 		BLEPacket blePacket = new BLEPacket();
-		Map<String, Object> every15MinData = blePacket.resovleEvery15MinPacket(packetForEvery15Min);
-		DBManager.addEvery15MinData(every15MinData);
+		List<Map<String, Object>> every15MinDatas = blePacket
+				.resovleEvery15MinPacket(packetForEvery15Min);
+		DBManager.addEvery15MinData(every15MinDatas);
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
@@ -375,10 +376,10 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 					runOnUiThread(new Runnable() {
 						public void run() {
 
-							Toast toast = Toast.makeText(BLEConnectActivity.this, R.string.couldnot_search_ble_device,
-									Toast.LENGTH_SHORT);
+							Toast toast = Toast.makeText(BLEConnectActivity.this,
+									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
 							toast.show();
-							mConnectBtn.setText(R.string.click_scan_device);
+							mConnectBtn.setText(R.string.connect_fitband);
 							mConnectBtn.setEnabled(true);
 						}
 					});
@@ -398,7 +399,9 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
-			Log.i(TAG, "device address:" + device.getAddress() + ", scanRecord=" + Util.bytesToHex(scanRecord));
+			Log.i(TAG,
+					"device address:" + device.getAddress() + ", scanRecord="
+							+ Util.bytesToHex(scanRecord));
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -434,7 +437,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				mConnectBtn.setText(R.string.click_scan_device);
+				mConnectBtn.setText(R.string.connect_fitband);
 				mConnectBtn.setEnabled(true);
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 			}

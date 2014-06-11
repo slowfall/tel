@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="18"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -31,11 +31,6 @@
             android:label="@string/title_activity_select_login"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -104,6 +99,11 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AndroidDevelopers" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewMainTabs.AddFriendActivity"

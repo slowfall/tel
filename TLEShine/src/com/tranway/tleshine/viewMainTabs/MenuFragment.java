@@ -25,7 +25,7 @@ public class MenuFragment extends Fragment implements OnClickListener {
 
 	private void initView(View v) {
 		v.findViewById(R.id.btn_goal).setOnClickListener(this);
-		v.findViewById(R.id.btn_shine).setOnClickListener(this);
+//		v.findViewById(R.id.btn_shine).setOnClickListener(this);
 		v.findViewById(R.id.btn_settings).setOnClickListener(this);
 	}
 
