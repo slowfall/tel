@@ -65,6 +65,9 @@ public class TLEHttpRequest {
 	public void setOnHttpRequestListener(OnHttpRequestListener listener, Context context) {
 		mListener = listener;
 		if (context != null) {
+			if (dialog != null && dialog.isShowing()) {
+				dialog.dismiss();
+			}
 			dialog = new CustomizedProgressDialog(context, R.string.is_loading);
 		} else {
 			dialog = null;

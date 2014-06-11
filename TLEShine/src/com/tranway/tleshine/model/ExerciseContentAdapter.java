@@ -72,9 +72,23 @@ public class ExerciseContentAdapter extends BaseAdapter {
 
 		final Map<String, Object> content = mContentList.get(position);
 		// holder.exerciseIcon.setImageDrawable();
-		holder.exerciseIntensit.setText("轻微运动");
+		int steps = (Integer) content.get(DBEvery15MinPacketHelper.KEY_STEPS);
+		int intensitId = R.string.light_sport;
+		int iconId = R.drawable.walk;
+		if (steps > 1000) {
+			intensitId = R.string.overdose_sport;
+			iconId = R.drawable.run;
+		} else if (steps > 500) {
+			intensitId = R.string.right_sport;
+			iconId = R.drawable.little_run;
+		} else {
+			intensitId = R.string.light_sport;
+			iconId = R.drawable.walk;
+		}
+		holder.exerciseIntensit.setText(intensitId);
+		holder.exerciseIcon.setImageResource(iconId);
 		long utcTime = (Long) content.get(DBEvery15MinPacketHelper.KEY_UTC_TIME);
-		SimpleDateFormat format = new SimpleDateFormat("HH:MM:SS", Locale.getDefault());
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 		String fromTime = format.format(new Date(utcTime * 1000));
 		String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
 		holder.exerciseTime.setText(fromTime + "~" + toTime);

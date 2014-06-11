@@ -32,5 +32,18 @@
     <string name="title_activity_main_tabs">MainTabsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_bleconnect">BLEConnectActivity</string>
-
+    <string name="error_device_address">无效设备。</string>
+    <string name="scanning">搜索中......</string>
+    <string name="connect_device">连接设备</string>
+    <string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
+    <string name="today">今天</string>
+    <string name="yestoday">昨天</string>
+    <string name="day_string_of_user_login">于%1$s使用</string>
+	<string name="cycle1_text">连续达标：1</string>
+	<string name="cycle2_text">最高分：1124</string>
+	<string name="cycle3_text">达标次数：1</string>
+	<string name="friends">friends</string>
+   	<string name="light_sport">轻微运动</string>
+   	<string name="right_sport">适量运动</string>
+   	<string name="overdose_sport">剧烈运动</string>
 </resources>

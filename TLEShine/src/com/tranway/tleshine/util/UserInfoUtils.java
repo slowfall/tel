@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.tranway.tleshine.model.UserInfo;
 

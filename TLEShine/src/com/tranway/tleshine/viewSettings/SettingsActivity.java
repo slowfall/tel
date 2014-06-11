@@ -142,6 +142,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			mServiceConnection = null;
 			finish();
+			return;
 		}
 
 		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);

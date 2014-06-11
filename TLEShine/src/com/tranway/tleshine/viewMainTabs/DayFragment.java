@@ -1,6 +1,7 @@
 package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.tranway.telshine.database.DBEvery15MinPacketHelper;
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ActivityInfo;
-import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
@@ -61,7 +62,8 @@ public class DayFragment extends Fragment {
 	// private DBManager dbManager = new
 	// DBManager(MyApplication.getAppContext());
 
-	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
+//	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
+	private List<Map<String, Object>> mEvery15MinPackets = new ArrayList<Map<String, Object>>();
 	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
 
 	private List<ActivityInfo> mActivityInfos = new ArrayList<ActivityInfo>();
@@ -87,9 +89,20 @@ public class DayFragment extends Fragment {
 		// }
 
 		mActivityInfos = DBManager.queryActivityInfo();
-		initView(v);
+//		ActivityInfo activityInfo = new ActivityInfo();
+//		activityInfo.setCalorie(100);
+//		activityInfo.setDistance(1000);
+//		activityInfo.setSteps(100);
+//		activityInfo.setUtcTime(System.currentTimeMillis() * 1000);
+//		mActivityInfos.add(activityInfo);
 
 		return v;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		initView(getView());
 	}
 
 	private void initView(View v) {
@@ -104,8 +117,8 @@ public class DayFragment extends Fragment {
 		mScrollView = (ScrollView) v.findViewById(R.id.scrollview);
 
 		initViewPagerLayout(v, displayWidth, displayHeight);
-		initChatLayout(v, displayWidth, displayHeight, statusHeight);
 		initContentLayout(v);
+		initChatLayout(v, displayWidth, displayHeight, statusHeight);
 	}
 
 	private void initViewPagerLayout(View v, int displayWidth, int displayHeight) {
@@ -129,6 +142,41 @@ public class DayFragment extends Fragment {
 				return mViewPager.dispatchTouchEvent(event);
 			}
 		});
+	}
+
+	private void initContentLayout(View v) {
+		mListView = (ListView) v.findViewById(R.id.list_content);
+
+		// // for test
+		// ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK,
+		// 200);
+		// mContentList.add(content);
+		// content = new ExerciseContent(12, 13, Sport.WALK, 400);
+		// mContentList.add(content);
+		// content = new ExerciseContent(13, 14, Sport.RUN, 500);
+		// mContentList.add(content);
+		// content = new ExerciseContent(14, 15, Sport.SWIM, 300);
+		// mContentList.add(content);
+		// content = new ExerciseContent(15, 16, Sport.SWIM, 200);
+		// mContentList.add(content);
+		// content = new ExerciseContent(16, 17, Sport.SWIM, 200);
+		// mContentList.add(content);
+		long utcTime = System.currentTimeMillis() / 1000;
+		long dayUtc = utcTime / ONE_DAY_SECONDS;
+		mEvery15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
+				* ONE_DAY_SECONDS);
+//		//TODO test
+//		for (int i = 0; i < 14; i++) {
+//			Map<String, Object> map = new TreeMap<String, Object>();
+//			map.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime - 3600 * i);
+//			map.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, 10 * i + 1);
+//			map.put(DBEvery15MinPacketHelper.KEY_STEPS, 100 * i + 10);
+//			mEvery15MinPackets.add(map);
+//		}
+		mContentAdapter = new ExerciseContentAdapter(getActivity());
+		mContentAdapter.setContentList(mEvery15MinPackets);
+		mListView.setAdapter(mContentAdapter);
+		mContentAdapter.notifyDataSetChanged();
 	}
 
 	private void initChatLayout(View v, int displayWidth, int displayHeight, int statusHeight) {
@@ -164,45 +212,26 @@ public class DayFragment extends Fragment {
 		LinearSeries series = new LinearSeries();
 		series.setLineColor(getResources().getColor(R.color.yellow));
 		series.setLineWidth(5);
-		series.addPoint(new LinearPoint(0, 100));
-		series.addPoint(new LinearPoint(6, 140));
-		series.addPoint(new LinearPoint(12, 80));
-		series.addPoint(new LinearPoint(18, 200));
-		series.addPoint(new LinearPoint(24, 100));
+		series.addPoint(new LinearPoint(0, 0));
+		series.addPoint(new LinearPoint(6, 0));
+		series.addPoint(new LinearPoint(12, 0));
+		series.addPoint(new LinearPoint(18, 0));
+//		series.addPoint(new LinearPoint(24, 0));
+		for (Map<String, Object> every15MinPacket : mEvery15MinPackets) {
+			long utcTime = (Long) every15MinPacket.get(DBEvery15MinPacketHelper.KEY_UTC_TIME);
+			int step = (Integer) every15MinPacket.get(DBEvery15MinPacketHelper.KEY_STEPS);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(utcTime * 1000);
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//			Util.logD(getTag(), "hour:" + hour + ", step:" + step);
+			series.addPoint(new LinearPoint(hour, step));
+		}
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
 		// Add chart view data
 		chartView.addSeries(series);
 		LabelAdapter mAdapter = new LabelAdapter(getActivity(), LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
-	}
-
-	private void initContentLayout(View v) {
-		mListView = (ListView) v.findViewById(R.id.list_content);
-
-		// // for test
-		// ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK,
-		// 200);
-		// mContentList.add(content);
-		// content = new ExerciseContent(12, 13, Sport.WALK, 400);
-		// mContentList.add(content);
-		// content = new ExerciseContent(13, 14, Sport.RUN, 500);
-		// mContentList.add(content);
-		// content = new ExerciseContent(14, 15, Sport.SWIM, 300);
-		// mContentList.add(content);
-		// content = new ExerciseContent(15, 16, Sport.SWIM, 200);
-		// mContentList.add(content);
-		// content = new ExerciseContent(16, 17, Sport.SWIM, 200);
-		// mContentList.add(content);
-		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
-		long utcTime = System.currentTimeMillis() / 1000;
-		long dayUtc = utcTime / ONE_DAY_SECONDS;
-		every15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
-				* ONE_DAY_SECONDS);
-		mContentAdapter = new ExerciseContentAdapter(getActivity());
-		mContentAdapter.setContentList(every15MinPackets);
-		mListView.setAdapter(mContentAdapter);
-		mContentAdapter.notifyDataSetChanged();
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {
