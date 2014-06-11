@@ -19,7 +19,7 @@ public class NightGoalFragment extends Fragment implements OnTitleButtonClickLis
 
 	private CustomizedTimeWheelView mTimeWheel;
 	private TextView mTimeTxt;
-	private int goalTime;
+	private int goalTime = 8 * 60;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +72,10 @@ public class NightGoalFragment extends Fragment implements OnTitleButtonClickLis
 	}
 
 	private void setUserSleepTimeFromSP() {
-		goalTime = UserGoalKeeper.readSleepGoalTime(getActivity());
+		int userGoal = UserGoalKeeper.readSleepGoalTime(getActivity());
+		if (userGoal != -1) {
+			goalTime = userGoal;
+		}
 		mTimeWheel.setCurrentGoal(goalTime);
 		updateAchieveGoalTips(goalTime);
 	}

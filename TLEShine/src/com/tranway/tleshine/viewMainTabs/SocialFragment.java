@@ -2,6 +2,7 @@ package com.tranway.tleshine.viewMainTabs;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,15 @@ import com.tranway.tleshine.R;
 
 public class SocialFragment extends Fragment {
 
+	private static final String TAG_INFO = "info";
+	private static final String TAG_TODAY = "today";
+	private static final String TAG_YESTERDAY = "yesterday";
+	private static final String SAVED_TAG = "fragment_tag";
+
 	private SocialInfoFragment mInfoFragment;
 	private SocialRankFragment mTodayRankFragment, mYesterdayRankFragment;
+
+	private String mRadioTag = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,9 +29,15 @@ public class SocialFragment extends Fragment {
 
 		initView(v);
 
-		// showTodayRankFragment();
-
+		showInfoFragment();
+		
 		return v;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(SAVED_TAG, mRadioTag);
 	}
 
 	private void initView(View v) {
@@ -46,20 +60,17 @@ public class SocialFragment extends Fragment {
 				}
 			}
 		});
-
 	}
 
 	private void showInfoFragment() {
-		if (mInfoFragment == null) {
-			mInfoFragment = new SocialInfoFragment();
-		}
+		mRadioTag = TAG_INFO;
+		mInfoFragment = new SocialInfoFragment();
 		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment).commit();
 	}
 
 	private void showTodayRankFragment() {
-		if (mTodayRankFragment == null) {
-			mTodayRankFragment = new SocialRankFragment();
-		}
+		mRadioTag = TAG_TODAY;
+		mTodayRankFragment = new SocialRankFragment();
 		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mTodayRankFragment).commit();
 	}
 }
