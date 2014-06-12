@@ -1,20 +1,17 @@
 <resources>
 
+    <color name="orange">#eb682a</color>
     <color name="black">#FF000000</color>
     <color name="gray">#FFC0C0C0</color>
     <color name="yellow">#FFFF6600</color>
     <color name="purple">#FF660066</color>
     <color name="blue">#FF00CCFF</color>
     <color name="black_overlay">#66000000</color>
-    
     <color name="border_square_color_gray">#FFC0C0C0</color>
-    
     <color name="radio_button_bg_checked_color_gray">#FFC0C0C0</color>
     <color name="radio_button_bg_checked_color_yellow">#FFFF6600</color>
-    
-    
     <color name="activity_title_text_color">#FFFFFFFF</color>
     <color name="activity_title_bg_color">#FFFF6633</color>
-
     <color name="layout_achieve_goal_method_bg_color">#FFC0C0C0</color>
+
 </resources>

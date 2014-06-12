@@ -45,7 +45,7 @@ import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
+import com.tranway.tleshine.viewMainTabs.MainActivity;
 
 public class SettingsActivity extends Activity implements OnClickListener {
 	private static final String TAG = SettingsActivity.class.getSimpleName();
@@ -222,7 +222,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
 					Intent intent = new Intent(MyApplication.getAppContext(),
-							MainTabsActivity.class);
+							MainActivity.class);
 					startActivity(intent);
 				}
 			}
@@ -238,14 +238,14 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
+			Intent intent = new Intent(MyApplication.getAppContext(), MainActivity.class);
 			startActivity(intent);
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent bIntent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
+			Intent bIntent = new Intent(MyApplication.getAppContext(), MainActivity.class);
 			startActivity(bIntent);
 			break;
 		}
@@ -317,6 +317,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_connect:
 			scanAndConnectDevice();
+			mConnectBtn.setText(R.string.scanning);
 			mConnectBtn.setEnabled(false);
 			break;
 		case R.id.btn_title_left:
@@ -340,6 +341,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 							Toast toast = Toast.makeText(SettingsActivity.this,
 									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
 							toast.show();
+							mConnectBtn.setText(R.string.connect_fitband);
 							mConnectBtn.setEnabled(true);
 						}
 					});
@@ -397,6 +399,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				mConnectBtn.setText(R.string.connect_fitband);
 				mConnectBtn.setEnabled(true);
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 			}

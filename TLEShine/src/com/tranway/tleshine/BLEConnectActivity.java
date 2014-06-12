@@ -44,7 +44,7 @@ import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.viewMainTabs.MainTabsActivity;
+import com.tranway.tleshine.viewMainTabs.MainActivity;
 
 @SuppressLint("NewApi")
 public class BLEConnectActivity extends Activity implements OnClickListener {
@@ -272,7 +272,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
 					Intent intent = new Intent(MyApplication.getAppContext(),
-							MainTabsActivity.class);
+							MainActivity.class);
 					startActivity(intent);
 				}
 			}
@@ -288,14 +288,14 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent intent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
+			Intent intent = new Intent(MyApplication.getAppContext(), MainActivity.class);
 			startActivity(intent);
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent bIntent = new Intent(MyApplication.getAppContext(), MainTabsActivity.class);
+			Intent bIntent = new Intent(MyApplication.getAppContext(), MainActivity.class);
 			startActivity(bIntent);
 			break;
 		}

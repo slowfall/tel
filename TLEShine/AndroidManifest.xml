@@ -31,11 +31,6 @@
             android:label="@string/title_activity_select_login"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -99,11 +94,40 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.tranway.tleshine.viewMainTabs.MainTabsActivity"
+            android:name="com.tranway.tleshine.viewMainTabs.MainActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidDevelopers" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewMainTabs.MenuActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AndroidDevelopers" >
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewMainTabs.ActivityActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewMainTabs.SleepActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewMainTabs.FriendsActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewMainTabs.AddFriendActivity"

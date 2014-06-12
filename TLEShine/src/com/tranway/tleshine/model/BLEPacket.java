@@ -106,12 +106,12 @@ public class BLEPacket {
 	public static final int EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT = 13;
 	public static final int EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT = 17;
 
-	public List<Map<String, Object>> resovleEvery15MinPacket(List<byte[]> every15MinPacket) {
+	public List<Map<String, Object>> resovleEvery15MinPacket(List<byte[]> every15MinPackets) {
 		List<Map<String, Object>> every15MinDatas = new ArrayList<Map<String, Object>>();
 		byte[] timeAndData = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT
 				+ EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT + EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT];
-		for (int i = 0; i < 3; i++) {
-			byte[] packetData = every15MinPacket.get(i);
+		for (int i = 0; i < every15MinPackets.size(); i++) {
+			byte[] packetData = every15MinPackets.get(i);
 			byte packetIndex = packetData[1];
 			switch (packetIndex) {
 			case 0x01:
