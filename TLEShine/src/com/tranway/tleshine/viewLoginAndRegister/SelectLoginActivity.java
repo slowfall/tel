@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.welcome.WelcomeActivity;
 
 public class SelectLoginActivity extends Activity {
 	private static final String TAG = SelectLoginActivity.class.getSimpleName();
@@ -31,11 +33,10 @@ public class SelectLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_select_login);
-
-		setup(savedInstanceState);
+		setup();
 	}
 
-	private void setup(Bundle savedInstanceState) {
+	private void setup() {
 		findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 
 			@Override
