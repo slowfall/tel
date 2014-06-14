@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tranway.tleshine.R;
@@ -19,8 +19,7 @@ public class ForgotPasswordActivity extends Activity implements OnClickListener 
 	}
 
 	private void initTitleView() {
-		Button leftBtn = (Button) findViewById(R.id.btn_title_icon_left);
-		leftBtn.setText(R.string.back);
+		ImageButton leftBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
 		leftBtn.setVisibility(View.VISIBLE);
 		leftBtn.setOnClickListener(this);
 		// Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
@@ -37,7 +36,6 @@ public class ForgotPasswordActivity extends Activity implements OnClickListener 
 		case R.id.btn_title_icon_left:
 			finish();
 			break;
-
 		default:
 			break;
 		}

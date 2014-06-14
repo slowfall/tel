@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,7 +99,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button leftBtn = (Button) findViewById(R.id.btn_title_icon_left);
+		ImageButton leftBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
 //		mPreBtn.setText(R.string.back);
 		leftBtn.setVisibility(View.VISIBLE);
 		leftBtn.setOnClickListener(this);
