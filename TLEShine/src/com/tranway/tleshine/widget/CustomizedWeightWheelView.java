@@ -11,7 +11,6 @@ import com.tranway.tleshine.R;
 
 public class CustomizedWeightWheelView extends LinearLayout {
 
-	private String[] unitArray = { "公斤" };
 	private WheelView mKgWheel;
 	private WheelView mGWheel;
 	private WheelView mUnitWheel;
@@ -44,7 +43,7 @@ public class CustomizedWeightWheelView extends LinearLayout {
 		mGWheel.setCurrentItem(default_g);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setAdapter(new ArrayWheelAdapter<String>(unitArray, unitArray.length));
+		mUnitWheel.setLabel("公斤");
 		mUnitWheel.setCyclic(false);
 	}
 

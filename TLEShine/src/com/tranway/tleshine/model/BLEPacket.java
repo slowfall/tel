@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.tranway.telshine.database.DBEvery15MinPacketHelper;
+import com.tranway.telshine.database.DBInfo;
 
 public class BLEPacket {
 	private static final String TAG = BLEPacket.class.getSimpleName();
@@ -103,37 +103,30 @@ public class BLEPacket {
 	}
 
 	public static final int EVERY_15_MIN_PACKET_UTC_TIME_LENGHT = 4;
-	public static final int EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT = 13;
-	public static final int EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT = 17;
 
-	public List<Map<String, Object>> resovleEvery15MinPacket(List<byte[]> every15MinPackets) {
+	public List<Map<String, Object>> resolveEvery15MinPacket(List<byte[]> every15MinPackets) {
 		List<Map<String, Object>> every15MinDatas = new ArrayList<Map<String, Object>>();
-		byte[] timeAndData = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT
-				+ EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT + EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT];
+		List<Byte> every15MinBytes = new ArrayList<Byte>();
 		for (int i = 0; i < every15MinPackets.size(); i++) {
 			byte[] packetData = every15MinPackets.get(i);
 			byte packetIndex = packetData[1];
 			switch (packetIndex) {
 			case 0x01:
-				if (packetData.length != 20) {
-					return every15MinDatas;
+				if (every15MinBytes.size() > 0) {
+					every15MinDatas.add(resolveTimeStepAndCalorie(every15MinBytes));
+					every15MinBytes.clear();
 				}
-				System.arraycopy(packetData, 2, timeAndData, 0, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT);
-				// first packet data length is 13
-				System.arraycopy(packetData, 2 + EVERY_15_MIN_PACKET_UTC_TIME_LENGHT, timeAndData,
-						EVERY_15_MIN_PACKET_UTC_TIME_LENGHT, EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT);
+
+				copyBytesArrayToList(packetData, 2, packetData.length - 1, every15MinBytes);
 				break;
 			case 0x02:
-				if (packetData.length != 20) {
-					return every15MinDatas;
-				}
-				// second packet data length is 17
-				System.arraycopy(packetData, 2, timeAndData, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT
-						+ EVERY_15_MIN_PACKET_FRIST_DATA_LENGHT,
-						EVERY_15_MIN_PACKET_SECONDE_DATA_LENGHT);
-				every15MinDatas.add(resovleEvery15MinByteArray(timeAndData));
+				copyBytesArrayToList(packetData, 2, packetData.length - 1, every15MinBytes);
 				break;
 			case 0x03:
+				if (every15MinBytes.size() > 0) {
+					every15MinDatas.add(resolveTimeStepAndCalorie(every15MinBytes));
+					every15MinBytes.clear();
+				}
 				// check total packets number
 				break;
 			default:
@@ -143,24 +136,32 @@ public class BLEPacket {
 		return every15MinDatas;
 	}
 
-	private Map<String, Object> resovleEvery15MinByteArray(byte[] byteArray) {
+	private void copyBytesArrayToList(byte[] fromArray, int fromPos, int length, List<Byte> toList) {
+		for (int i = fromPos; i < length; i++) {
+			toList.add(fromArray[i]);
+		}
+	}
+
+	private Map<String, Object> resolveTimeStepAndCalorie(List<Byte> every15MinBytes) {
 		Map<String, Object> every15MinData = new TreeMap<String, Object>();
 		int steps = 0;
 		int calories = 0;
-		byte[] utcTimeBytes = new byte[4];
-		System.arraycopy(byteArray, 0, utcTimeBytes, 0, EVERY_15_MIN_PACKET_UTC_TIME_LENGHT);
+		byte[] utcTimeBytes = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT];
+		for (int i = 0; i < EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i++) {
+			utcTimeBytes[i] = every15MinBytes.get(i);
+		}
 		int utcTime = bytesToInt(utcTimeBytes);
-		for (int i = EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i < byteArray.length; i++) {
+		for (int i = EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i < every15MinBytes.size(); i++) {
 			// even is step, odd is calorie
 			if ((i % 2) == 0) {
-				steps += bytesToInt(new byte[] { byteArray[i] });
+				steps += bytesToInt(new byte[] { every15MinBytes.get(i) });
 			} else {
-				calories += bytesToInt(new byte[] { byteArray[i] });
+				calories += bytesToInt(new byte[] { every15MinBytes.get(i) });
 			}
 		}
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime);
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_STEPS, steps);
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, calories);
+		every15MinData.put(DBInfo.KEY_UTC_TIME, utcTime);
+		every15MinData.put(DBInfo.KEY_STEPS, steps);
+		every15MinData.put(DBInfo.KEY_CALORIE, calories);
 		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps
 				+ ", calories:" + calories);
 		return every15MinData;

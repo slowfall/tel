@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
@@ -13,10 +14,8 @@ public class CustomizedHighWheelView extends LinearLayout {
 
 	private WheelView mMeterWheel;
 	private WheelView mCmWheel;
-	private WheelView mUnitWheel;
 
 	private String[] cmStrings; // WheelView上显示的厘米部分，如 .65
-	private String[] unit = { "米" };
 	private int default_m = 1;
 	private int default_cm = 70;
 
@@ -42,9 +41,9 @@ public class CustomizedHighWheelView extends LinearLayout {
 		mCmWheel.setCyclic(false);
 		mCmWheel.setCurrentItem(default_cm);
 
-		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setAdapter(new ArrayWheelAdapter<String>(unit, unit.length));
+		WheelView mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
 		mUnitWheel.setCyclic(false);
+		mUnitWheel.setLabel("米");
 	}
 
 	/**

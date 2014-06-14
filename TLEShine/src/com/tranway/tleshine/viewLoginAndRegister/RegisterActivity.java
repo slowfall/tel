@@ -140,16 +140,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mEmailTxt.requestFocus();
 			return false;
 		}
-		// if (name.length() < 4 || name.length() > 20) {
-		// mNameTxt.setError(getResources().getString(R.string.name_length_invalid));
-		// mNameTxt.requestFocus();
-		// return false;
-		// }
-		// if (!checkNameAvailable(name)) {
-		// mNameTxt.setError(getResources().getString(R.string.name_invalid));
-		// mNameTxt.requestFocus();
-		// return false;
-		// }
 		if (TextUtils.isEmpty(pwd)) {
 			mPwdTxt.setError(getResources().getString(R.string.password_empty));
 			mPwdTxt.requestFocus();
@@ -182,17 +172,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		String regEx = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(email);
-		return matcher.matches();
-	}
-
-	private boolean checkNameAvailable(String name) {
-		if (name == null) {
-			return false;
-		}
-		String regEx = "^[\\w\u3E00-\u9FA5]+$";
-		// String regEx = "^[0-9a-zA-Z_\u3E00-\u9FA5]+$";
-		Pattern p = Pattern.compile(regEx);
-		Matcher matcher = p.matcher(name);
 		return matcher.matches();
 	}
 

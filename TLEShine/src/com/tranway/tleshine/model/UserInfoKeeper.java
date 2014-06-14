@@ -214,11 +214,11 @@ public class UserInfoKeeper {
 		info.setName(sp.getString(KEY_NAME, ""));
 		info.setId(sp.getLong(KEY_ID, -1));
 		info.setPassword(sp.getString(KEY_PWD, ""));
-		info.setBirthday(sp.getLong(KEY_BIRTH, 0));
-		info.setWeight(sp.getInt(KEY_WEIGHT, 0));
-		info.setAge(sp.getInt(KEY_AGE, 0));
-		info.setHeight(sp.getInt(KEY_HEIGHT, 0));
-		info.setStride(sp.getInt(KEY_STRIDE, 0));
+		info.setBirthday(sp.getLong(KEY_BIRTH, -1));
+		info.setWeight(sp.getInt(KEY_WEIGHT, -1));
+		info.setAge(sp.getInt(KEY_AGE, -1));
+		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
+		info.setStride(sp.getInt(KEY_STRIDE, -1));
 		info.setSex(sp.getInt(KEY_SEX, 0));
 		info.setStepsTarget(UserGoalKeeper.readExerciseGoalPoint(context));
 		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));

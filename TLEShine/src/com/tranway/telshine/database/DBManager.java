@@ -31,8 +31,8 @@ public class DBManager {
 	 * 
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long addDailyExerciseInfo(DailyExercise exercise) {
-		if (exercise == null || db == null) {
+	public long addDailyExerciseInfo(long userId, DailyExercise exercise) {
+		if (userId < 0 || exercise == null || db == null) {
 			return -1;
 		}
 
@@ -40,6 +40,7 @@ public class DBManager {
 		db.beginTransaction();
 		try {
 			ContentValues mValues = new ContentValues();
+			mValues.put(DBInfo.USER_ID, userId);
 			mValues.put(DBInfo.EXERCISE_DATE, exercise.getDate());
 			mValues.put(DBInfo.EXERCISE_GOAL, exercise.getGoal());
 			mValues.put(DBInfo.EXERCISE_ACHIEVE, exercise.getAchieve());
@@ -59,8 +60,8 @@ public class DBManager {
 	 * 
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long addDailyExerciseInfo(ArrayList<DailyExercise> exList) {
-		if (exList == null || db == null) {
+	public long addDailyExerciseInfo(long userId, ArrayList<DailyExercise> exList) {
+		if (userId < 0 || exList == null || db == null) {
 			return -1;
 		}
 
@@ -69,6 +70,7 @@ public class DBManager {
 		try {
 			ContentValues mValues = new ContentValues();
 			for (DailyExercise exercise : exList) {
+				mValues.put(DBInfo.USER_ID, userId);
 				mValues.put(DBInfo.EXERCISE_DATE, exercise.getDate());
 				mValues.put(DBInfo.EXERCISE_GOAL, exercise.getGoal());
 				mValues.put(DBInfo.EXERCISE_ACHIEVE, exercise.getAchieve());
@@ -86,7 +88,7 @@ public class DBManager {
 	 * 
 	 * @return return daily exercise list or null
 	 * */
-	public ArrayList<DailyExercise> queryDailyExerciseInfo() {
+	public ArrayList<DailyExercise> queryDailyExerciseInfo(long userId) {
 		if (db == null) {
 			return null;
 		}
@@ -94,8 +96,9 @@ public class DBManager {
 		db.beginTransaction();
 		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_DAILY_EXERCISE + " order by "
-					+ DBInfo.EXERCISE_DATE + " DESC", new String[] {});
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_DAILY_EXERCISE + " where "
+					+ DBInfo.USER_ID + "=? " + " order by " + DBInfo.EXERCISE_DATE + " DESC",
+					new String[] { String.valueOf(userId) });
 			while (cursor.moveToNext()) {
 				DailyExercise ex = new DailyExercise();
 				ex.setDate(cursor.getLong(cursor.getColumnIndex(DBInfo.EXERCISE_DATE)));
@@ -118,21 +121,21 @@ public class DBManager {
 	 * 
 	 * @return return daily exercise list or null
 	 * */
-	public ArrayList<DailyExercise> queryDailyExerciseInfo(long fromDate) {
-		if (db == null) {
+	public ArrayList<DailyExercise> queryDailyExerciseInfo(long userId, long fromDate) {
+		if (userId < 0 || db == null) {
 			return null;
 		}
 
 		if (fromDate < 0) {
-			return queryDailyExerciseInfo();
+			return queryDailyExerciseInfo(userId);
 		}
 
 		db.beginTransaction();
 		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		try {
 			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_DAILY_EXERCISE + " where "
-					+ DBInfo.EXERCISE_DATE + " > ? " + " order by " + DBInfo.EXERCISE_DATE
-					+ " DESC", new String[] { String.valueOf(fromDate) });
+					+ DBInfo.USER_ID + "=?  and " + DBInfo.EXERCISE_DATE + " > ? " + " order by "
+					+ DBInfo.EXERCISE_DATE + " DESC", new String[] { String.valueOf(fromDate) });
 			while (cursor.moveToNext()) {
 				DailyExercise ex = new DailyExercise();
 				ex.setDate(cursor.getLong(cursor.getColumnIndex(DBInfo.EXERCISE_DATE)));
@@ -157,15 +160,15 @@ public class DBManager {
 	 * 
 	 * @return return daily exercise list or null
 	 * */
-	public ArrayList<DailyExercise> queryDailyExerciseInfo(long fromDate, long toDate) {
-		if (db == null) {
+	public ArrayList<DailyExercise> queryDailyExerciseInfo(long userId, long fromDate, long toDate) {
+		if (userId < 0 || db == null) {
 			return null;
 		}
 
 		if (fromDate < 0 && toDate < 0) {
-			return queryDailyExerciseInfo();
+			return queryDailyExerciseInfo(userId);
 		} else if (fromDate > 0 && toDate < 0) {
-			return queryDailyExerciseInfo(fromDate);
+			return queryDailyExerciseInfo(userId, fromDate);
 		} else if (fromDate < 0 && toDate > 0) {
 			fromDate = 0;
 		}
@@ -174,9 +177,9 @@ public class DBManager {
 		ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
 		try {
 			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_DAILY_EXERCISE + " where "
-					+ DBInfo.EXERCISE_DATE + " > ? and " + DBInfo.EXERCISE_DATE + " < ? "
-					+ " order by " + DBInfo.EXERCISE_DATE + " DESC",
-					new String[] { String.valueOf(fromDate), String.valueOf(toDate) });
+					+ DBInfo.USER_ID + "=?  and " + DBInfo.EXERCISE_DATE + " > ? and "
+					+ DBInfo.EXERCISE_DATE + " < ? " + " order by " + DBInfo.EXERCISE_DATE
+					+ " DESC", new String[] { String.valueOf(fromDate), String.valueOf(toDate) });
 			while (cursor.moveToNext()) {
 				DailyExercise ex = new DailyExercise();
 				ex.setDate(cursor.getLong(cursor.getColumnIndex(DBInfo.EXERCISE_DATE)));
@@ -198,10 +201,13 @@ public class DBManager {
 		db.close();
 	}
 
-	public static long addActivityInfo(ActivityInfo activityInfo) {
-		DBActivityInfoHelper helper = new DBActivityInfoHelper(MyApplication.getAppContext());
+	public static long addActivityInfo(long userId, ActivityInfo activityInfo) {
+		if (userId < 0 || activityInfo == null) {
+			return -1;
+		}
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
-		if (activityInfo == null || db == null) {
+		if (db == null) {
 			return -1;
 		}
 
@@ -209,11 +215,12 @@ public class DBManager {
 		db.beginTransaction();
 		try {
 			ContentValues mValues = new ContentValues();
-			mValues.put(DBActivityInfoHelper.KEY_UTC_TIME, activityInfo.getUtcTime());
-			mValues.put(DBActivityInfoHelper.KEY_STEPS, activityInfo.getSteps());
-			mValues.put(DBActivityInfoHelper.KEY_DISTANCE, activityInfo.getDistance());
-			mValues.put(DBActivityInfoHelper.KEY_CALORIE, activityInfo.getCalorie());
-			ret = db.replace(DBActivityInfoHelper.TABLE_NAME, null, mValues);
+			mValues.put(DBInfo.USER_ID, userId);
+			mValues.put(DBInfo.KEY_UTC_TIME, activityInfo.getUtcTime());
+			mValues.put(DBInfo.KEY_STEPS, activityInfo.getSteps());
+			mValues.put(DBInfo.KEY_DISTANCE, activityInfo.getDistance());
+			mValues.put(DBInfo.KEY_CALORIE, activityInfo.getCalorie());
+			ret = db.replace(DBInfo.TB_ACTIVITY_INFO, null, mValues);
 			db.setTransactionSuccessful();
 		} finally {
 			db.endTransaction();
@@ -222,27 +229,29 @@ public class DBManager {
 		return ret;
 	}
 
-	public static List<ActivityInfo> queryActivityInfo() {
-		DBActivityInfoHelper helper = new DBActivityInfoHelper(MyApplication.getAppContext());
-		SQLiteDatabase db = helper.getWritableDatabase();
+	public static List<ActivityInfo> queryActivityInfo(long userId) {
 		List<ActivityInfo> activityInfos = new ArrayList<ActivityInfo>();
+		if (userId < 0) {
+			return activityInfos;
+		}
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
 		if (db == null) {
 			return activityInfos;
 		}
 
 		db.beginTransaction();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBActivityInfoHelper.TABLE_NAME
-					+ " order by " + DBActivityInfoHelper.KEY_UTC_TIME + " ASC", null);
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_ACTIVITY_INFO + " where "
+					+ DBInfo.USER_ID + "=? " + " order by " + DBInfo.KEY_UTC_TIME + " ASC",
+					new String[] { String.valueOf(userId) });
 
 			while (cursor.moveToNext()) {
 				ActivityInfo info = new ActivityInfo();
-				info.setUtcTime(cursor.getLong(cursor
-						.getColumnIndex(DBActivityInfoHelper.KEY_UTC_TIME)));
-				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBActivityInfoHelper.KEY_STEPS)));
-				info.setDistance(cursor.getColumnIndex(DBActivityInfoHelper.KEY_DISTANCE));
-				info.setCalorie(cursor.getInt(cursor
-						.getColumnIndex(DBActivityInfoHelper.KEY_CALORIE)));
+				info.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
+				info.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
+				info.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
 				activityInfos.add(info);
 			}
 			cursor.close();
@@ -253,11 +262,13 @@ public class DBManager {
 		return activityInfos;
 	}
 
-	public static long addEvery15MinData(List<Map<String, Object>> every15MinDatas) {
-		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
-				MyApplication.getAppContext());
+	public static long addEvery15MinData(long userId, List<Map<String, Object>> every15MinDatas) {
+		if (userId < 0 || every15MinDatas == null || every15MinDatas.size() <= 0) {
+			return -1;
+		}
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
-		if (every15MinDatas == null || every15MinDatas.size() <= 0 || db == null) {
+		if (db == null) {
 			return -1;
 		}
 
@@ -266,19 +277,18 @@ public class DBManager {
 		try {
 			for (Map<String, Object> every15MinData : every15MinDatas) {
 				ContentValues mValues = new ContentValues();
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_UTC_TIME)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_UTC_TIME,
-							(Long) every15MinData.get(DBEvery15MinPacketHelper.KEY_UTC_TIME));
+				mValues.put(DBInfo.USER_ID, userId);
+				if (every15MinData.containsKey(DBInfo.KEY_UTC_TIME)) {
+					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME));
 				}
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_STEPS)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_STEPS,
-							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_STEPS));
+				if (every15MinData.containsKey(DBInfo.KEY_STEPS)) {
+					mValues.put(DBInfo.KEY_STEPS, (Integer) every15MinData.get(DBInfo.KEY_STEPS));
 				}
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_CAOLRIE)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
-							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_CAOLRIE));
+				if (every15MinData.containsKey(DBInfo.KEY_CALORIE)) {
+					mValues.put(DBInfo.KEY_CALORIE,
+							(Integer) every15MinData.get(DBInfo.KEY_CALORIE));
 				}
-				ret = db.replace(DBEvery15MinPacketHelper.TABLE_NAME, null, mValues);
+				ret = db.replace(DBInfo.TB_EVERY_FIFTEEN_MIN, null, mValues);
 			}
 			db.setTransactionSuccessful();
 		} finally {
@@ -288,31 +298,32 @@ public class DBManager {
 		return ret;
 	}
 
-	public static List<Map<String, Object>> queryEvery15MinPackets(long fromUTC, long toUTC) {
-		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
-				MyApplication.getAppContext());
-		SQLiteDatabase db = helper.getWritableDatabase();
+	public static List<Map<String, Object>> queryEvery15MinPackets(long userId, long fromUTC,
+			long toUTC) {
 		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
+		if (userId < 0 || fromUTC < 0 || toUTC < 0 || fromUTC > toUTC) {
+			return every15MinPackets;
+		}
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
 		if (db == null) {
 			return every15MinPackets;
 		}
 
 		db.beginTransaction();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBEvery15MinPacketHelper.TABLE_NAME
-					+ " where " + DBEvery15MinPacketHelper.KEY_UTC_TIME + " > ? and "
-					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " < ? " + " order by "
-					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " DESC",
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_EVERY_FIFTEEN_MIN + " where "
+					+ DBInfo.USER_ID + "=? and " + DBInfo.KEY_UTC_TIME + " > ? and "
+					+ DBInfo.KEY_UTC_TIME + " < ? " + " order by " + DBInfo.KEY_UTC_TIME + " DESC",
 					new String[] { String.valueOf(fromUTC), String.valueOf(toUTC) });
 
 			while (cursor.moveToNext()) {
 				Map<String, Object> data = new TreeMap<String, Object>();
-				data.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, cursor.getLong(cursor
-						.getColumnIndex(DBEvery15MinPacketHelper.KEY_UTC_TIME)));
-				data.put(DBEvery15MinPacketHelper.KEY_STEPS,
-						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_STEPS)));
-				data.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
-						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_CAOLRIE)));
+				data.put(DBInfo.KEY_UTC_TIME,
+						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				data.put(DBInfo.KEY_STEPS, cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
+				data.put(DBInfo.KEY_CALORIE,
+						cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
 				every15MinPackets.add(data);
 			}
 			cursor.close();

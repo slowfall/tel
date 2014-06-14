@@ -1,20 +1,29 @@
 package com.tranway.tleshine.viewMainTabs;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
+	private static final String GET_INFO_END_URL = "/Get";
 
 	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer,
 			R.id.rb_contacts, R.id.rb_preset };
@@ -38,6 +47,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		getUserInfoFromServer(UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, null));
 		setup();
 	}
 
@@ -71,5 +81,31 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 				break;
 			}
 		}
+	}	
+	
+	private void getUserInfoFromServer(String email) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onSuccess(String url, String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					UserInfoKeeper.writeUserInfo(getApplicationContext(), data);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					ToastHelper.showToast(R.string.get_register_info_failed);
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+		}, this);
+		if (email != null) {
+			httpRequest.get(GET_INFO_END_URL + "/" + email, null);
+		}
 	}
+
 }

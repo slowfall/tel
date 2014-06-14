@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/black" >
+            android:background="@color/fitband_second_color" >
 
             <Button
                 android:id="@+id/btn_complete"
@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
+                android:background="@android:color/transparent"
                 android:text="@string/complete" />
         </RelativeLayout>
 
@@ -31,7 +32,7 @@
             android:id="@+id/weight_wheel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
+            android:layout_margin="20dp" />
     </LinearLayout>
 
 </RelativeLayout>

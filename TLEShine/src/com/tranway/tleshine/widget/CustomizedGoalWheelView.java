@@ -14,7 +14,6 @@ public class CustomizedGoalWheelView extends LinearLayout {
 	private WheelView mUnitWheel;
 
 	private String[] rightStr = { "000", "100", "200", "300", "400", "500", "600", "700", "800", "900" };
-	private String[] unit = { "点" };
 	private int default_m = 0;
 	private int default_cm = 6;
 
@@ -40,7 +39,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 		mRightWheel.setCurrentItem(default_cm);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setAdapter(new ArrayWheelAdapter<String>(unit, unit.length));
+		mUnitWheel.setLabel("点");
 		mUnitWheel.setCyclic(false);
 	}
 

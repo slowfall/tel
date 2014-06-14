@@ -17,10 +17,8 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 
 	private static final int YEAR_MAX = Calendar.getInstance().get(Calendar.YEAR) - 1;
 	private static final int YEAR_BASE = 1970;
-	// private static final int MONTH_BASE = 1;
+	private static final int MONTH_BASE = 1;
 	private static final int DAY_BASE = 1;
-	private String[] monthStrings = { "January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December" };
 	private WheelView mMonthWheel;
 	private WheelView mDayWheel;
 	private WheelView mYearWheel;
@@ -40,9 +38,10 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 	}
 
 	private void initialize() {
-		mMonthWheel = (WheelView) findViewById(R.id.wheel_left);
-		mMonthWheel.setAdapter(new ArrayWheelAdapter<String>(monthStrings, monthStrings.length));
+		mMonthWheel = (WheelView) findViewById(R.id.wheel_middle);
+		mMonthWheel.setAdapter(new NumericWheelAdapter(MONTH_BASE, 12, null));
 		mMonthWheel.setCyclic(false);
+		mMonthWheel.setLabel("月");
 		mMonthWheel.setCurrentItem(default_month);
 		mMonthWheel.addChangingListener(new OnWheelChangedListener() {
 
@@ -52,18 +51,20 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 			}
 		});
 
-		mDayWheel = (WheelView) findViewById(R.id.wheel_middle);
+		mDayWheel = (WheelView) findViewById(R.id.wheel_right);
 		int maxDay = getMaxDayInMonth(mMonthWheel.getCurrentItem());
 		mDayWheel.setAdapter(new NumericWheelAdapter(DAY_BASE, maxDay, null));
 		mDayWheel.setCyclic(false);
+		mDayWheel.setLabel("日");
 		mDayWheel.setCurrentItem(default_day);
 
-		mYearWheel = (WheelView) findViewById(R.id.wheel_right);
+		mYearWheel = (WheelView) findViewById(R.id.wheel_left);
 		mYearWheel.setAdapter(new NumericWheelAdapter(YEAR_BASE, YEAR_MAX, null));
 		mYearWheel.setCyclic(false);
+		mYearWheel.setLabel("年");
 		mYearWheel.setCurrentItem(default_year);
 	}
-	
+
 	private void onMonthChanged(int month) {
 		updateDayWheel(getMaxDayInMonth(month));
 	}
@@ -89,7 +90,7 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 	 */
 	public long getBirthday() {
 		int year = mYearWheel.getCurrentItem() + YEAR_BASE;
-		int month = mMonthWheel.getCurrentItem() + 1;
+		int month = mMonthWheel.getCurrentItem() + MONTH_BASE;
 		int day = mDayWheel.getCurrentItem() + DAY_BASE;
 
 		return UserInfoUtils.convertBirthdayToUnixDate(year, month, day);

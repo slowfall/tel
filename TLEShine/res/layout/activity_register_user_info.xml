@@ -32,11 +32,14 @@
                 android:padding="10dp" >
 
                 <TextView
+                    android:id="@+id/txt_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:singleLine="true"
                     android:textColor="@color/fitband_main_color"
                     android:textSize="@dimen/text_size_middle" />
 

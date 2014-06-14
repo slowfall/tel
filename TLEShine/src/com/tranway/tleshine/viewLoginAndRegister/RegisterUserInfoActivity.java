@@ -1,11 +1,15 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,12 +27,13 @@ import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserHighActivity;
+import com.tranway.tleshine.viewSettings.SettingsUserStrideActivity;
 import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
 
 public class RegisterUserInfoActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserInfoActivity.class.getSimpleName();
 
-	private TextView mNameTxt, mHighTxt, mWeightTxt, mBirthdayTxt;
+	private TextView mNameTxt, mHighTxt, mWeightTxt, mBirthdayTxt, mStrideTxt, mUserNameTxt;
 	private RadioGroup mSexGroup;
 	private RadioButton mMaleRadio, mFemaleRadio;
 
@@ -51,14 +56,32 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private void initView() {
 		initTitleView();
 
+		mUserNameTxt = (TextView)findViewById(R.id.txt_username);
 		mNameTxt = (TextView) findViewById(R.id.txt_nikename);
 		mNameTxt.setOnClickListener(this);
+		mNameTxt.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				mUserNameTxt.setText(arg0);
+			}
+		});
 		mHighTxt = (TextView) findViewById(R.id.txt_height);
 		mHighTxt.setOnClickListener(this);
 		mWeightTxt = (TextView) findViewById(R.id.txt_weight);
 		mWeightTxt.setOnClickListener(this);
 		mBirthdayTxt = (TextView) findViewById(R.id.txt_birthday);
 		mBirthdayTxt.setOnClickListener(this);
+		mStrideTxt = (TextView) findViewById(R.id.txt_step);
+		mStrideTxt.setOnClickListener(this);
 
 		mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
 		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
@@ -94,7 +117,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		if (userInfo == null) {
 			return;
 		}
-		if (TextUtils.isEmpty(userInfo.getName())) {
+		if (!TextUtils.isEmpty(userInfo.getName())) {
 			mNameTxt.setText(userInfo.getName());
 		}
 		try {
@@ -110,6 +133,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		}
 		if (userInfo.getWeight() >= 0) {
 			mWeightTxt.setText(UserInfoUtils.convertWeightToString(userInfo.getWeight()));
+		}
+		if (userInfo.getStride() >= 0) {
+			mStrideTxt.setText(userInfo.getStride() + " CM");
 		}
 		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
 			mFemaleRadio.setChecked(true);
@@ -140,6 +166,10 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		case R.id.txt_birthday:
 			Intent intent3 = new Intent(this, SettingsUserBirthdayActivity.class);
 			startActivityForResult(intent3, SettingsUserBirthdayActivity.REQUEST_CODE);
+			break;
+		case R.id.txt_step:
+			Intent intent4 = new Intent(this, SettingsUserStrideActivity.class);
+			startActivityForResult(intent4, SettingsUserStrideActivity.REQUEST_CODE);
 			break;
 		default:
 			break;
@@ -177,6 +207,13 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 				ToastHelper.showToast(R.string.parse_date_exception);
 			}
 			break;
+		case SettingsUserStrideActivity.REQUEST_CODE:
+			int stride = data.getIntExtra(SettingsUserStrideActivity.RESPONSE_NAME_VALUE, -1);
+			userInfo.setStride(stride);
+			if (stride >= 0) {
+				mStrideTxt.setText(stride + " CM");
+			}
+			break;
 		default:
 			break;
 		}
@@ -185,6 +222,21 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private void onNextButtonClick() {
 		if (userInfo == null) {
 			return;
+		}
+		String name = mNameTxt.getText().toString();
+		if (TextUtils.isEmpty(name)) {
+			ToastHelper.showToast(R.string.prompt_name);
+			return;
+		} else {
+			if (name.length() < 4 || name.length() > 20) {
+				ToastHelper.showToast(getResources().getString(R.string.name_length_invalid));
+				return;
+			}
+			if (!checkNameAvailable(name)) {
+				ToastHelper.showToast(getResources().getString(R.string.name_invalid));
+				return;
+			}
+			userInfo.setName(name);
 		}
 		if (userInfo.getBirthday() < 0) {
 			ToastHelper.showToast(R.string.prompt_birthday);
@@ -195,27 +247,25 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		} else if (userInfo.getWeight() < 0) {
 			ToastHelper.showToast(R.string.prompt_weight);
 			return;
+		} else if (userInfo.getStride() < 0) {
+			ToastHelper.showToast(R.string.prompt_stride);
+			return;
 		} else {
 			UserInfoKeeper.writeUserInfo(this, userInfo);
-			Intent intent = new Intent(this, RegisterUserGoalActivity.class);
+			Intent intent = new Intent(this, RegisterUserGoal_Activity.class);
 			startActivity(intent);
 		}
 	}
 
-	// private int getUserSelectSex() {
-	// int sex = UserInfo.SEX_FEMALE;
-	// if (mSexGroup == null || mMaleRadio == null || mFemaleRadio == null) {
-	// return sex;
-	// }
-	//
-	// int check = mSexGroup.getCheckedRadioButtonId();
-	// if (check == mMaleRadio.getId()) {
-	// sex = UserInfo.SEX_MALE;
-	// } else if (check == mFemaleRadio.getId()) {
-	// sex = UserInfo.SEX_FEMALE;
-	// }
-	//
-	// return sex;
-	// }
+	private boolean checkNameAvailable(String name) {
+		if (name == null) {
+			return false;
+		}
+		String regEx = "^[\\w\u3E00-\u9FA5]+$";
+		// String regEx = "^[0-9a-zA-Z_\u3E00-\u9FA5]+$";
+		Pattern p = Pattern.compile(regEx);
+		Matcher matcher = p.matcher(name);
+		return matcher.matches();
+	}
 
 }

@@ -32,13 +32,13 @@ public class CustomizedTimeWheelView extends LinearLayout {
 		mHourWheel.setAdapter(new NumericWheelAdapter(0, 23, null));
 		mHourWheel.setCyclic(false);
 		mHourWheel.setCurrentItem(default_hour);
-		mHourWheel.setLabel("小时");
+		mHourWheel.setLabel("时");
 
 		mMinuteWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mMinuteWheel.setAdapter(new NumericWheelAdapter(0, 59, null));
 		mMinuteWheel.setCyclic(false);
 		mMinuteWheel.setCurrentItem(default_min);
-		mMinuteWheel.setLabel("分钟");
+		mMinuteWheel.setLabel("分");
 
 		mUnuseWheel = (WheelView) findViewById(R.id.wheel_right);
 		mUnuseWheel.setVisibility(View.GONE);

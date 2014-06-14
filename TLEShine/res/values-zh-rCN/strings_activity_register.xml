@@ -28,6 +28,9 @@
     <string name="weight">体重</string>
     <string name="prompt_weight">请设置您的体重</string>
     <string name="prompt_step">请设置您的步长</string>
+    <string name="night_late_tips">夜深了...</string>
+    <string name="good_night_tips">晚安~~~</string>
+     <string name="health_sleep_tips">健康的生活习惯，从合理的睡眠模式开启</string>
     
     <string name="complete">完成</string>
     

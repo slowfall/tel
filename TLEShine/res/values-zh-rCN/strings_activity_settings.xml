@@ -19,7 +19,7 @@
 	<string name="provision">使用条款</string>
 	
 	<string name="setting_goal">设定目标</string>
-	<string name="how_achieve_goal">如何实现目标：</string>
+	<string name="how_achieve_goal">以下是实现目标的方式：</string>
 	<string name="walk">步行</string>
 	<string name="run">跑步</string>
 	<string name="swim">游泳</string>
@@ -33,5 +33,7 @@
 	<string name="cancel">取消</string>
 	<string name="save">保存</string>
 	<string name="my_goal">我的目标</string>
+	<string name="my_exercise_goal">我的运动目标</string>
+	<string name="my_sleep_goal">我的睡眠目标</string>
 	<string name="crrent_situation">每天当前情况： </string>
 </resources>

@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +30,7 @@ import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.viewMainTabs.MainActivity;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -99,7 +100,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button leftBtn = (Button) findViewById(R.id.btn_title_icon_left);
+		ImageButton leftBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
 //		mPreBtn.setText(R.string.back);
 		leftBtn.setVisibility(View.VISIBLE);
 		leftBtn.setOnClickListener(this);
@@ -212,7 +213,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 							UserInfoKeeper.writeUserInfo(getApplicationContext(),
 									UserInfoKeeper.KEY_PWD, password);
 							Intent intent = new Intent(MyApplication.getAppContext(),
-									BLEConnectActivity.class);
+									MainActivity.class);
 							startActivity(intent);
 						} else {
 							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,

@@ -3,7 +3,7 @@
     android:id="@+id/ll_achieve_method"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/layout_achieve_goal_method_bg_color"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     android:padding="20dp" >
 
@@ -14,7 +14,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/how_achieve_goal"
-        android:textColor="@color/black"
+        android:textColor="@color/fitband_main_color"
         android:textSize="@dimen/text_size_small" />
 
     <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_weight="1.0"
                 android:gravity="center"
                 android:text="@string/walk"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_small" />
 
             <TextView
@@ -70,7 +70,7 @@
                 android:layout_weight="1.0"
                 android:gravity="center"
                 android:text="@string/run"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_small" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_weight="1.0"
                 android:gravity="center"
                 android:text="@string/swim"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
@@ -94,7 +94,7 @@
                 android:layout_weight="1.0"
                 android:gravity="center|right"
                 android:text="@string/or"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_min" />
 
             <TextView
@@ -103,7 +103,7 @@
                 android:layout_weight="1.0"
                 android:gravity="center|right"
                 android:text="@string/or"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_min" />
 
             <TextView
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:gravity="center|right"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_min" />
         </LinearLayout>
     </FrameLayout>
@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_small" />
 
         <TextView
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_small" />
 
         <TextView
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 

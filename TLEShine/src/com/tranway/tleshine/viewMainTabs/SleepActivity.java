@@ -28,6 +28,7 @@ import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContent;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.BarAdapter;
 import com.tranway.tleshine.widget.chartview.BarChartView;
@@ -88,7 +89,8 @@ public class SleepActivity extends Activity {
 		// // Log.d("------", "date : " + ex.getDate());
 		// // }
 		// }
-		mActivityInfos = DBManager.queryActivityInfo();
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		mActivityInfos = DBManager.queryActivityInfo(userId);
 //		initView();
 	}
 

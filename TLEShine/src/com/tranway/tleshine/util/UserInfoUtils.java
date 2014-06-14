@@ -9,14 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.tranway.tleshine.model.UserInfo;
 
 @SuppressLint("SimpleDateFormat")
 public class UserInfoUtils {
 	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
-	private static final String[] MONTH = { "January", "February", "March", "April", "May", "June", "July", "August",
-			"September", "October", "November", "December" };
 
 	/**
 	 * convert birthday string to UNIX date
@@ -43,7 +42,7 @@ public class UserInfoUtils {
 	 * 
 	 * @param formatDate
 	 *            format date string, such as [ 1990-08-19 ]
-	 * @return such as [ September 19, 1990 ]
+	 * @return such as [ 1990年 09月 10日 ]
 	 * 
 	 * @throws ParseException
 	 */
@@ -53,10 +52,10 @@ public class UserInfoUtils {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
+		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-		return MONTH[month] + " " + df.format(day) + ", " + year;
+		return year + "年  " + df.format(month) + "月  " + df.format(day) + "日";
 	}
 
 	/**
@@ -79,11 +78,11 @@ public class UserInfoUtils {
 	 * 
 	 * @param high
 	 *            170 cm
-	 * @return 1.70 米
+	 * @return 1.70 M
 	 */
 	public static String convertHighToString(int high) {
 		DecimalFormat df = new DecimalFormat("#0.00");
-		String s = df.format((float) high / 100) + " 米";
+		String s = df.format((float) high / 100) + " M";
 		return s;
 	}
 
@@ -92,11 +91,11 @@ public class UserInfoUtils {
 	 * 
 	 * @param weight
 	 *            504*0.1KG
-	 * @return 50.4 公斤
+	 * @return 50.4 KG
 	 */
 	public static String convertWeightToString(int weight) {
 		DecimalFormat df = new DecimalFormat("#0.0");
-		String s = df.format((float) weight / 10) + " 公斤";
+		String s = df.format((float) weight / 10) + " KG";
 		return s;
 	}
 
@@ -154,6 +153,7 @@ public class UserInfoUtils {
 		data.put(UserInfo.SEVER_KEY_NAME, info.getName());
 		data.put(UserInfo.SEVER_KEY_PASSWORD, info.getPassword());
 		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
+		Log.d("------", "birthday: " + info.getBirthday());
 		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
 		data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight()));
 		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight()));

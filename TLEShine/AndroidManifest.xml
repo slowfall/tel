@@ -72,6 +72,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoal_Activity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserSleepActivity"
+            android:label="@string/title_activity_main_tabs"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsUserHighActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/CustomWindowTransparent"
@@ -85,6 +100,12 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsUserBirthdayActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/CustomWindowTransparent"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewSettings.SettingsUserStrideActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/CustomWindowTransparent"
             android:windowSoftInputMode="stateHidden" >
@@ -137,11 +158,6 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
-            android:label="@string/title_activity_main_tabs"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsGoalActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait" >
@@ -161,7 +177,7 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.LoadingActivity"
-            android:label="@string/title_activity_loading"
+            android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity

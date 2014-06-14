@@ -34,8 +34,11 @@
     <string name="prompt_high">Please enter your height</string>
     <string name="weight">Weight</string>
     <string name="step">Step</string>
-    <string name="prompt_weight">Please enter your weight</string>
-    <string name="prompt_step">Please enter your step length</string>
+    <string name="prompt_weight">Please set your weight</string>
+    <string name="prompt_stride">Please set your stride</string>
+    <string name="night_late_tips">Late at night...</string>
+    <string name="good_night_tips">Good night~~~</string>
+    <string name="health_sleep_tips">Healthy sleep habits, beginning in the reasonable sleep mode</string>
     
     <string name="complete">complete</string>
     

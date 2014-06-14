@@ -16,13 +16,14 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/black" >
+            android:background="@color/fitband_second_color" >
 
             <Button
                 android:id="@+id/btn_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:text="@string/complete" />
         </RelativeLayout>
@@ -31,7 +32,7 @@
             android:id="@+id/hight_wheel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
+            android:layout_margin="20dp" />
     </LinearLayout>
 
 </RelativeLayout>

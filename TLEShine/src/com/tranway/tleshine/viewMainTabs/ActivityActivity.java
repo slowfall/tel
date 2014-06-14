@@ -26,11 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
-import com.tranway.telshine.database.DBEvery15MinPacketHelper;
+import com.tranway.telshine.database.DBInfo;
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -89,7 +90,8 @@ public class ActivityActivity extends Activity {
 		// // }
 		// }
 
-		mActivityInfos = DBManager.queryActivityInfo();
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		mActivityInfos = DBManager.queryActivityInfo(userId);
 		ActivityInfo activityInfo = new ActivityInfo();
 		activityInfo.setCalorie(100);
 		activityInfo.setDistance(1000);
@@ -163,14 +165,15 @@ public class ActivityActivity extends Activity {
 		// mContentList.add(content);
 		long utcTime = System.currentTimeMillis() / 1000;
 		long dayUtc = utcTime / ONE_DAY_SECONDS;
-		mEvery15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
 				* ONE_DAY_SECONDS);
 //		//TODO test
 		for (int i = 0; i < 14; i++) {
 			Map<String, Object> map = new TreeMap<String, Object>();
-			map.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime - 3600 * i);
-			map.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, 10 * i + 1);
-			map.put(DBEvery15MinPacketHelper.KEY_STEPS, 100 * i + 10);
+			map.put(DBInfo.KEY_UTC_TIME, utcTime - 3600 * i);
+			map.put(DBInfo.KEY_CALORIE, 10 * i + 1);
+			map.put(DBInfo.KEY_STEPS, 100 * i + 10);
 			mEvery15MinPackets.add(map);
 		}
 		mContentAdapter = new ExerciseContentAdapter(this);
@@ -218,8 +221,8 @@ public class ActivityActivity extends Activity {
 		series.addPoint(new LinearPoint(18, 0));
 //		series.addPoint(new LinearPoint(24, 0));
 		for (Map<String, Object> every15MinPacket : mEvery15MinPackets) {
-			long utcTime = (Long) every15MinPacket.get(DBEvery15MinPacketHelper.KEY_UTC_TIME);
-			int step = (Integer) every15MinPacket.get(DBEvery15MinPacketHelper.KEY_STEPS);
+			long utcTime = (Long) every15MinPacket.get(DBInfo.KEY_UTC_TIME);
+			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(utcTime * 1000);
 			int hour = calendar.get(Calendar.HOUR_OF_DAY);
