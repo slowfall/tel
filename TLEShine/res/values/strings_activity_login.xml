@@ -20,5 +20,6 @@
 	<string name="login">Sign in</string>
 	<string name="register">Sign up</string>
 	<string name="forgot_password">forgot password</string>
+	<string name="submit">Submit</string>
 	<string name="request_identify">get identify code</string>
 </resources>

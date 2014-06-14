@@ -168,6 +168,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.tranway.tleshine.viewLoginAndRegister.ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

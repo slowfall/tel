@@ -40,7 +40,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
 	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] { "foo@example.com:hello", "bar@example.com:world" };
+	private static final String[] DUMMY_CREDENTIALS = new String[] { "foo@example.com:hello",
+			"bar@example.com:world" };
 	private static final String LOGIN_END_URL = "/checklogin";
 	/**
 	 * The default email to populate the email field with.
@@ -93,24 +94,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		mLoginFormView = findViewById(R.id.login_form);
 
-		// findViewById(R.id.sign_in_button).setOnClickListener(new
-		// View.OnClickListener() {
-		// @Override
-		// public void onClick(View view) {
-		// attemptLogin();
-		// }
-		// });
+		findViewById(R.id.tv_forgot_password).setOnClickListener(this);
+		findViewById(R.id.btn_login).setOnClickListener(this);
 	}
 
 	private void initTitleView() {
-		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
-		mPreBtn.setText(R.string.pre_step);
-		mPreBtn.setVisibility(View.VISIBLE);
-		mPreBtn.setOnClickListener(this);
-		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
-		mNextBtn.setText(R.string.next_step);
-		mNextBtn.setOnClickListener(this);
-		mNextBtn.setVisibility(View.VISIBLE);
+		Button leftBtn = (Button) findViewById(R.id.btn_title_icon_left);
+//		mPreBtn.setText(R.string.back);
+		leftBtn.setVisibility(View.VISIBLE);
+		leftBtn.setOnClickListener(this);
+		// Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
+		// mNextBtn.setText(R.string.next_step);
+		// mNextBtn.setOnClickListener(this);
+		// mNextBtn.setVisibility(View.VISIBLE);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.login);
 	}
@@ -118,11 +114,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_title_left:
+		case R.id.btn_title_icon_left:
 			finish();
 			break;
 		case R.id.btn_title_right:
 			attemptLogin();
+			break;
+		case R.id.btn_login:
+			attemptLogin();
+			break;
+		case R.id.tv_forgot_password:
+			Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;
@@ -204,9 +207,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 					if (data.has(TLEHttpRequest.STATUS_CODE)) {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_EMAIL, email);
-							UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_PWD, password);
-							Intent intent = new Intent(MyApplication.getAppContext(), BLEConnectActivity.class);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(),
+									UserInfoKeeper.KEY_EMAIL, email);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(),
+									UserInfoKeeper.KEY_PWD, password);
+							Intent intent = new Intent(MyApplication.getAppContext(),
+									BLEConnectActivity.class);
 							startActivity(intent);
 						} else {
 							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,
