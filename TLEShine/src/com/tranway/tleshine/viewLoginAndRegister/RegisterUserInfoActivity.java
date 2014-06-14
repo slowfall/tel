@@ -78,11 +78,11 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 	private void initTitleView() {
 		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
-		mExsitBtn.setText(R.string.pre_step);
+		mExsitBtn.setText(R.string.cancel);
 		mExsitBtn.setVisibility(View.VISIBLE);
 		mExsitBtn.setOnClickListener(this);
 		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
-		mNextBtn.setText(R.string.next_step);
+		mNextBtn.setText(R.string.save);
 		mNextBtn.setOnClickListener(this);
 		mNextBtn.setVisibility(View.VISIBLE);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);

@@ -9,7 +9,7 @@
         android:id="@+id/include_title"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/activity_title_height"
-        layout="@layout/title_control_icon" />
+        layout="@layout/title_control" />
 
     <ScrollView
         android:id="@+id/register_form"
@@ -31,14 +31,26 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small" />
 
-            <EditText
-                android:id="@+id/email"
-                style="@style/edittext_userinfo"
-                android:background="@drawable/border_square"
-                android:hint="@string/prompt_email"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress"
-                android:textCursorDrawable="@null" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_edittxt_height"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="@dimen/activity_edittxt_height"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_email_or_phone" />
+
+                <EditText
+                    android:id="@+id/email"
+                    style="@style/edittext_userinfo"
+                    android:background="@drawable/border_square"
+                    android:hint="@string/prompt_email"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txt_pwd_tips"
@@ -57,6 +69,54 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@null" />
+
+            <TextView
+                android:id="@+id/txt_code_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/register_input_identify"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_edittxt_height"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/identify"
+                    style="@style/edittext_userinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/border_square"
+                    android:hint="@string/prompt_identify"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null" />
+
+                <TextView
+                    android:id="@+id/request_identify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:gravity="center|right"
+                    android:padding="5dp"
+                    android:text="@string/request_identify"
+                    android:textColor="@drawable/selector_text_fitband_style"
+                    android:textSize="@dimen/text_size_middle" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/selector_btn_fitband_style"
+                android:gravity="center"
+                android:text="@string/next_step" />
         </LinearLayout>
     </ScrollView>
 

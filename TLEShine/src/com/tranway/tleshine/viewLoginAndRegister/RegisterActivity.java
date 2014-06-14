@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -47,16 +48,19 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		mEmailTxt = (EditText) findViewById(R.id.email);
 		mPwdTxt = (EditText) findViewById(R.id.password);
 
+		TextView mRequestTxt = (TextView) findViewById(R.id.request_identify);
+		mRequestTxt.setOnClickListener(this);
+
 	}
 
 	private void initTitleView() {
-		ImageButton mPreBtn = (ImageButton) findViewById(R.id.btn_title_left);
+		ImageButton mPreBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
 		mPreBtn.setVisibility(View.VISIBLE);
 		mPreBtn.setOnClickListener(this);
-//		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
-//		mNextBtn.setText(R.string.next_step);
-//		mNextBtn.setOnClickListener(this);
-//		mNextBtn.setVisibility(View.VISIBLE);
+		Button mNextBtn = (Button) findViewById(R.id.btn_next);
+		mNextBtn.setText(R.string.next_step);
+		mNextBtn.setOnClickListener(this);
+		mNextBtn.setVisibility(View.VISIBLE);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.register);
 	}
@@ -67,8 +71,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		case R.id.btn_title_left:
 			finish();
 			break;
-		case R.id.btn_title_right:
+		case R.id.btn_next:
 			nextButtonClick();
+			break;
+		case R.id.request_identify:
+			// TODO ... request identify code
 			break;
 		default:
 			break;
@@ -79,7 +86,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		String email = mEmailTxt.getText().toString();
 		String password = mPwdTxt.getText().toString();
 
-		if (checkUserRegisterInfo(email, name, password, confirmPassword)) {
+		if (checkUserRegisterInfo(email, password)) {
 			checkEmailToServer(email);
 		}
 	}
@@ -122,7 +129,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		httpRequest.get(CHECK_EMAIL_URL + "/" + email, null);
 	}
 
-	private boolean checkUserRegisterInfo(String email, String name, String pwd, String cPwd) {
+	private boolean checkUserRegisterInfo(String email, String pwd) {
 		if (TextUtils.isEmpty(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_empty));
 			mEmailTxt.requestFocus();
@@ -133,21 +140,16 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mEmailTxt.requestFocus();
 			return false;
 		}
-		if (TextUtils.isEmpty(name)) {
-			mNameTxt.setError(getResources().getString(R.string.name_empty));
-			mNameTxt.requestFocus();
-			return false;
-		}
-		if (name.length() < 4 || name.length() > 20) {
-			mNameTxt.setError(getResources().getString(R.string.name_length_invalid));
-			mNameTxt.requestFocus();
-			return false;
-		}
-		if (!checkNameAvailable(name)) {
-			mNameTxt.setError(getResources().getString(R.string.name_invalid));
-			mNameTxt.requestFocus();
-			return false;
-		}
+		// if (name.length() < 4 || name.length() > 20) {
+		// mNameTxt.setError(getResources().getString(R.string.name_length_invalid));
+		// mNameTxt.requestFocus();
+		// return false;
+		// }
+		// if (!checkNameAvailable(name)) {
+		// mNameTxt.setError(getResources().getString(R.string.name_invalid));
+		// mNameTxt.requestFocus();
+		// return false;
+		// }
 		if (TextUtils.isEmpty(pwd)) {
 			mPwdTxt.setError(getResources().getString(R.string.password_empty));
 			mPwdTxt.requestFocus();
@@ -158,11 +160,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mPwdTxt.requestFocus();
 			return false;
 		}
-		if (!checkPasswordAvailable(pwd, cPwd)) {
-			mConfirmPwdTxt.setError(getResources().getString(R.string.password_invalid));
-			mConfirmPwdTxt.requestFocus();
-			return false;
-		}
+
+		// TODO ... check verification code
 
 		return true;
 	}
@@ -170,11 +169,9 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
-		String name = mNameTxt.getText().toString();
 		boolean p = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_EMAIL, email);
 		boolean e = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_PWD, password);
-		boolean n = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_NAME, name);
-		return p && e && n;
+		return p && e;
 	}
 
 	private boolean checkEmailAvailable(String email) {
@@ -197,20 +194,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(name);
 		return matcher.matches();
-	}
-
-	private boolean checkPasswordAvailable(String pwd, String confirmPwd) {
-		if (pwd == null || confirmPwd == null) {
-			return false;
-		}
-		if (!confirmPwd.equals(pwd)) {
-			return false;
-		}
-		if (TextUtils.isEmpty(pwd)) {
-			return false;
-		}
-
-		return true;
 	}
 
 }

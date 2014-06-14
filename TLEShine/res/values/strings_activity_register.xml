@@ -16,6 +16,7 @@
     
     <string name="register_input_email">please input your phone number or email</string>
     <string name="register_input_pwd">please input your password</string>
+    <string name="register_input_identify">please input your identify code</string>
     <string name="register_tips">请简单的介绍一下您自己</string>
     <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 
