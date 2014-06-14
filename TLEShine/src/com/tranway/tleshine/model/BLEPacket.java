@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.tranway.telshine.database.DBEvery15MinPacketHelper;
+import com.tranway.telshine.database.DBInfo;
 
 public class BLEPacket {
 	private static final String TAG = BLEPacket.class.getSimpleName();
@@ -158,9 +158,9 @@ public class BLEPacket {
 				calories += bytesToInt(new byte[] { byteArray[i] });
 			}
 		}
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime);
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_STEPS, steps);
-		every15MinData.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, calories);
+		every15MinData.put(DBInfo.KEY_UTC_TIME, utcTime);
+		every15MinData.put(DBInfo.KEY_STEPS, steps);
+		every15MinData.put(DBInfo.KEY_CALORIE, calories);
 		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps
 				+ ", calories:" + calories);
 		return every15MinData;

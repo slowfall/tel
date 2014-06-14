@@ -199,7 +199,7 @@ public class DBManager {
 	}
 
 	public static long addActivityInfo(ActivityInfo activityInfo) {
-		DBActivityInfoHelper helper = new DBActivityInfoHelper(MyApplication.getAppContext());
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		if (activityInfo == null || db == null) {
 			return -1;
@@ -209,11 +209,11 @@ public class DBManager {
 		db.beginTransaction();
 		try {
 			ContentValues mValues = new ContentValues();
-			mValues.put(DBActivityInfoHelper.KEY_UTC_TIME, activityInfo.getUtcTime());
-			mValues.put(DBActivityInfoHelper.KEY_STEPS, activityInfo.getSteps());
-			mValues.put(DBActivityInfoHelper.KEY_DISTANCE, activityInfo.getDistance());
-			mValues.put(DBActivityInfoHelper.KEY_CALORIE, activityInfo.getCalorie());
-			ret = db.replace(DBActivityInfoHelper.TABLE_NAME, null, mValues);
+			mValues.put(DBInfo.KEY_UTC_TIME, activityInfo.getUtcTime());
+			mValues.put(DBInfo.KEY_STEPS, activityInfo.getSteps());
+			mValues.put(DBInfo.KEY_DISTANCE, activityInfo.getDistance());
+			mValues.put(DBInfo.KEY_CALORIE, activityInfo.getCalorie());
+			ret = db.replace(DBInfo.TB_ACTIVITY_INFO, null, mValues);
 			db.setTransactionSuccessful();
 		} finally {
 			db.endTransaction();
@@ -223,7 +223,7 @@ public class DBManager {
 	}
 
 	public static List<ActivityInfo> queryActivityInfo() {
-		DBActivityInfoHelper helper = new DBActivityInfoHelper(MyApplication.getAppContext());
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		List<ActivityInfo> activityInfos = new ArrayList<ActivityInfo>();
 		if (db == null) {
@@ -232,17 +232,15 @@ public class DBManager {
 
 		db.beginTransaction();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBActivityInfoHelper.TABLE_NAME
-					+ " order by " + DBActivityInfoHelper.KEY_UTC_TIME + " ASC", null);
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_ACTIVITY_INFO + " order by "
+					+ DBInfo.KEY_UTC_TIME + " ASC", null);
 
 			while (cursor.moveToNext()) {
 				ActivityInfo info = new ActivityInfo();
-				info.setUtcTime(cursor.getLong(cursor
-						.getColumnIndex(DBActivityInfoHelper.KEY_UTC_TIME)));
-				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBActivityInfoHelper.KEY_STEPS)));
-				info.setDistance(cursor.getColumnIndex(DBActivityInfoHelper.KEY_DISTANCE));
-				info.setCalorie(cursor.getInt(cursor
-						.getColumnIndex(DBActivityInfoHelper.KEY_CALORIE)));
+				info.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
+				info.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
+				info.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
 				activityInfos.add(info);
 			}
 			cursor.close();
@@ -254,8 +252,7 @@ public class DBManager {
 	}
 
 	public static long addEvery15MinData(List<Map<String, Object>> every15MinDatas) {
-		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
-				MyApplication.getAppContext());
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		if (every15MinDatas == null || every15MinDatas.size() <= 0 || db == null) {
 			return -1;
@@ -266,19 +263,17 @@ public class DBManager {
 		try {
 			for (Map<String, Object> every15MinData : every15MinDatas) {
 				ContentValues mValues = new ContentValues();
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_UTC_TIME)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_UTC_TIME,
-							(Long) every15MinData.get(DBEvery15MinPacketHelper.KEY_UTC_TIME));
+				if (every15MinData.containsKey(DBInfo.KEY_UTC_TIME)) {
+					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME));
 				}
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_STEPS)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_STEPS,
-							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_STEPS));
+				if (every15MinData.containsKey(DBInfo.KEY_STEPS)) {
+					mValues.put(DBInfo.KEY_STEPS, (Integer) every15MinData.get(DBInfo.KEY_STEPS));
 				}
-				if (every15MinData.containsKey(DBEvery15MinPacketHelper.KEY_CAOLRIE)) {
-					mValues.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
-							(Integer) every15MinData.get(DBEvery15MinPacketHelper.KEY_CAOLRIE));
+				if (every15MinData.containsKey(DBInfo.KEY_CALORIE)) {
+					mValues.put(DBInfo.KEY_CALORIE,
+							(Integer) every15MinData.get(DBInfo.KEY_CALORIE));
 				}
-				ret = db.replace(DBEvery15MinPacketHelper.TABLE_NAME, null, mValues);
+				ret = db.replace(DBInfo.TB_EVERY_FIFTEEN_MIN, null, mValues);
 			}
 			db.setTransactionSuccessful();
 		} finally {
@@ -289,8 +284,7 @@ public class DBManager {
 	}
 
 	public static List<Map<String, Object>> queryEvery15MinPackets(long fromUTC, long toUTC) {
-		DBEvery15MinPacketHelper helper = new DBEvery15MinPacketHelper(
-				MyApplication.getAppContext());
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
 		if (db == null) {
@@ -299,20 +293,18 @@ public class DBManager {
 
 		db.beginTransaction();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBEvery15MinPacketHelper.TABLE_NAME
-					+ " where " + DBEvery15MinPacketHelper.KEY_UTC_TIME + " > ? and "
-					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " < ? " + " order by "
-					+ DBEvery15MinPacketHelper.KEY_UTC_TIME + " DESC",
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_EVERY_FIFTEEN_MIN + " where "
+					+ DBInfo.KEY_UTC_TIME + " > ? and " + DBInfo.KEY_UTC_TIME + " < ? "
+					+ " order by " + DBInfo.KEY_UTC_TIME + " DESC",
 					new String[] { String.valueOf(fromUTC), String.valueOf(toUTC) });
 
 			while (cursor.moveToNext()) {
 				Map<String, Object> data = new TreeMap<String, Object>();
-				data.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, cursor.getLong(cursor
-						.getColumnIndex(DBEvery15MinPacketHelper.KEY_UTC_TIME)));
-				data.put(DBEvery15MinPacketHelper.KEY_STEPS,
-						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_STEPS)));
-				data.put(DBEvery15MinPacketHelper.KEY_CAOLRIE,
-						cursor.getInt(cursor.getColumnIndex(DBEvery15MinPacketHelper.KEY_CAOLRIE)));
+				data.put(DBInfo.KEY_UTC_TIME,
+						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				data.put(DBInfo.KEY_STEPS, cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
+				data.put(DBInfo.KEY_CALORIE,
+						cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
 				every15MinPackets.add(data);
 			}
 			cursor.close();

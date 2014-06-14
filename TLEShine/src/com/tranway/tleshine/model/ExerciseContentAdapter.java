@@ -15,7 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tranway.telshine.database.DBEvery15MinPacketHelper;
+import com.tranway.telshine.database.DBInfo;
 import com.tranway.tleshine.R;
 
 public class ExerciseContentAdapter extends BaseAdapter {
@@ -72,7 +72,7 @@ public class ExerciseContentAdapter extends BaseAdapter {
 
 		final Map<String, Object> content = mContentList.get(position);
 		// holder.exerciseIcon.setImageDrawable();
-		int steps = (Integer) content.get(DBEvery15MinPacketHelper.KEY_STEPS);
+		int steps = (Integer) content.get(DBInfo.KEY_STEPS);
 		int intensitId = R.string.light_sport;
 		int iconId = R.drawable.walk;
 		if (steps > 1000) {
@@ -87,12 +87,12 @@ public class ExerciseContentAdapter extends BaseAdapter {
 		}
 		holder.exerciseIntensit.setText(intensitId);
 		holder.exerciseIcon.setImageResource(iconId);
-		long utcTime = (Long) content.get(DBEvery15MinPacketHelper.KEY_UTC_TIME);
+		long utcTime = (Long) content.get(DBInfo.KEY_UTC_TIME);
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 		String fromTime = format.format(new Date(utcTime * 1000));
 		String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
 		holder.exerciseTime.setText(fromTime + "~" + toTime);
-		holder.exercisePoint.setText(content.get(DBEvery15MinPacketHelper.KEY_STEPS) + "点");
+		holder.exercisePoint.setText(content.get(DBInfo.KEY_STEPS) + "点");
 
 		return convertView;
 	}
