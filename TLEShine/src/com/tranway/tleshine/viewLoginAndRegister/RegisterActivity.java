@@ -29,7 +29,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
 	private static final String CHECK_EMAIL_URL = "/CheckEmail";
 
-	private EditText mEmailTxt, mNameTxt, mPwdTxt, mConfirmPwdTxt;
+	private EditText mEmailTxt, mPwdTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		initTitleView();
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
-		mNameTxt = (EditText) findViewById(R.id.name);
 		mPwdTxt = (EditText) findViewById(R.id.password);
-		mConfirmPwdTxt = (EditText) findViewById(R.id.confirm_password);
 
 	}
 
@@ -79,8 +77,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 	private void nextButtonClick() {
 		String email = mEmailTxt.getText().toString();
-		String name = mNameTxt.getText().toString();
-		String confirmPassword = mConfirmPwdTxt.getText().toString();
 		String password = mPwdTxt.getText().toString();
 
 		if (checkUserRegisterInfo(email, name, password, confirmPassword)) {

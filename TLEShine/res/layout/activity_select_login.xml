@@ -5,41 +5,41 @@
     android:orientation="vertical"
     tools:context="com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_guide"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/loading" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_login_btns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:background="@null"
+            android:drawableTop="@drawable/btn_login"
+            android:textColor="@drawable/selector_text_orange_gray"
             android:text="@string/login" />
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"
+            android:background="@null"
+            android:drawableTop="@drawable/btn_register"
+            android:textColor="@drawable/selector_text_orange_gray"
             android:text="@string/register" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_guide_dots"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/ll_login_btns"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" />
+    </RelativeLayout>
 
 </RelativeLayout>

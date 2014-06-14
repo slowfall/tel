@@ -1,8 +1,13 @@
 package com.tranway.tleshine.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 public class Util {
+	private static final String SHARE_PREFERENCES_NAME = "tle.preferences";
+
 	/**
 	 * @param level
 	 *            level can be Log.INFO, Log.DEBUG, Log.VERBOSE, Log.WARN or
@@ -66,4 +71,26 @@ public class Util {
 		}
 		return new String(hexChars);
 	}
+
+	public static boolean readPreferences(Context context, String key, boolean defValue) {
+		if (context == null || key == null) {
+			return defValue;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
+		return preferences.getBoolean(key, defValue);
+	}
+
+	public static void writePreferences(Context context, String key, boolean value) {
+		if (context == null || key == null) {
+			return;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(SHARE_PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
+	
+
 }

@@ -40,29 +40,21 @@
                 android:inputType="textEmailAddress"
                 android:textCursorDrawable="@null" />
 
-            <EditText
-                android:id="@+id/name"
-                style="@style/edittext_userinfo"
+            <TextView
+                android:id="@+id/txt_pwd_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="@string/prompt_name"
-                android:imeOptions="actionNext"
-                android:textCursorDrawable="@null" />
+                android:gravity="center_vertical"
+                android:text="@string/register_input_pwd"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
 
             <EditText
                 android:id="@+id/password"
                 style="@style/edittext_userinfo"
-                android:layout_marginTop="20dp"
                 android:hint="@string/prompt_password"
                 android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:textCursorDrawable="@null" />
-
-            <EditText
-                android:id="@+id/confirm_password"
-                style="@style/edittext_userinfo"
-                android:layout_marginTop="20dp"
-                android:hint="@string/prompt_confirm_password"
-                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@null" />
         </LinearLayout>

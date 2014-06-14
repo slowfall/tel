@@ -55,7 +55,7 @@
                 android:id="@+id/txt_tips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/login_tips"
                 android:textColor="@color/black"
@@ -64,10 +64,11 @@
             <EditText
                 android:id="@+id/email"
                 style="@style/edittext_userinfo"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:gravity="center"
                 android:singleLine="true"
                 android:textCursorDrawable="@null" />
 
@@ -80,7 +81,15 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
+                android:gravity="center"
                 android:textCursorDrawable="@null" />
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_fitband_style"
+                android:text="@string/forgot_password"/>
         </LinearLayout>
     </ScrollView>
 

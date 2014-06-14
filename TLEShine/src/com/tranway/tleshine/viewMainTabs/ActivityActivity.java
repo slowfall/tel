@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -89,12 +90,12 @@ public class ActivityActivity extends Activity {
 		// }
 
 		mActivityInfos = DBManager.queryActivityInfo();
-//		ActivityInfo activityInfo = new ActivityInfo();
-//		activityInfo.setCalorie(100);
-//		activityInfo.setDistance(1000);
-//		activityInfo.setSteps(100);
-//		activityInfo.setUtcTime(System.currentTimeMillis() * 1000);
-//		mActivityInfos.add(activityInfo);
+		ActivityInfo activityInfo = new ActivityInfo();
+		activityInfo.setCalorie(100);
+		activityInfo.setDistance(1000);
+		activityInfo.setSteps(100);
+		activityInfo.setUtcTime(System.currentTimeMillis() * 1000);
+		mActivityInfos.add(activityInfo);
 
 	}
 
@@ -165,13 +166,13 @@ public class ActivityActivity extends Activity {
 		mEvery15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
 				* ONE_DAY_SECONDS);
 //		//TODO test
-//		for (int i = 0; i < 14; i++) {
-//			Map<String, Object> map = new TreeMap<String, Object>();
-//			map.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime - 3600 * i);
-//			map.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, 10 * i + 1);
-//			map.put(DBEvery15MinPacketHelper.KEY_STEPS, 100 * i + 10);
-//			mEvery15MinPackets.add(map);
-//		}
+		for (int i = 0; i < 14; i++) {
+			Map<String, Object> map = new TreeMap<String, Object>();
+			map.put(DBEvery15MinPacketHelper.KEY_UTC_TIME, utcTime - 3600 * i);
+			map.put(DBEvery15MinPacketHelper.KEY_CAOLRIE, 10 * i + 1);
+			map.put(DBEvery15MinPacketHelper.KEY_STEPS, 100 * i + 10);
+			mEvery15MinPackets.add(map);
+		}
 		mContentAdapter = new ExerciseContentAdapter(this);
 		mContentAdapter.setContentList(mEvery15MinPackets);
 		mListView.setAdapter(mContentAdapter);

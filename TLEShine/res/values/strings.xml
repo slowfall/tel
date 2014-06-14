@@ -39,13 +39,17 @@
     <string name="today">今天</string>
     <string name="yestoday">昨天</string>
     <string name="day_string_of_user_login">于%1$s使用</string>
-	<string name="cycle1_text">连续达标：1</string>
-	<string name="cycle2_text">最高分：1124</string>
-	<string name="cycle3_text">达标次数：1</string>
-	<string name="friends">friends</string>
-   	<string name="light_sport">轻微运动</string>
-   	<string name="right_sport">适量运动</string>
-   	<string name="overdose_sport">剧烈运动</string>
-   	<string name="activity">活动</string>
-   	<string name="sleep">睡眠</string>
-   	</resources>
+    <string name="cycle1_text">连续达标：1</string>
+    <string name="cycle2_text">最高分：1124</string>
+    <string name="cycle3_text">达标次数：1</string>
+    <string name="friends">friends</string>
+    <string name="light_sport">轻微运动</string>
+    <string name="right_sport">适量运动</string>
+    <string name="overdose_sport">剧烈运动</string>
+    <string name="activity">活动</string>
+    <string name="sleep">睡眠</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="now_use">马上体验</string>
+    <string name="title_activity_loading">LoadingActivity</string>
+
+</resources>
