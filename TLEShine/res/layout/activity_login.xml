@@ -55,7 +55,6 @@
                 android:id="@+id/txt_tips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/login_tips"
                 android:textColor="@color/black"
@@ -64,10 +63,10 @@
             <EditText
                 android:id="@+id/email"
                 style="@style/edittext_userinfo"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|phone"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textCursorDrawable="@null" />
@@ -75,7 +74,7 @@
             <EditText
                 android:id="@+id/password"
                 style="@style/edittext_userinfo"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:hint="@string/prompt_password"
                 android:imeActionId="@+id/login"
@@ -85,14 +84,17 @@
                 android:textCursorDrawable="@null" />
 
             <TextView
+                android:id="@+id/tv_forgot_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:clickable="true"
                 android:gravity="center"
                 android:text="@string/forgot_password"
                 android:textColor="@drawable/selector_text_fitband_style" />
 
             <Button
+                android:id="@+id/btn_login"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

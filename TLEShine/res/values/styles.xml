@@ -45,6 +45,11 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="FitbandBackground">
+        <item name="android:background">@color/fitband_background_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
     <style name="title" parent="android:Theme">
         <item name="android:windowTitleSize">60dp</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
@@ -115,7 +120,10 @@
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">30dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingBottom">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingTop">20dp</item>
     </style>
 
     <style name="LayoutSquareBorderTop">

@@ -51,5 +51,6 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="now_use">马上体验</string>
     <string name="title_activity_loading">LoadingActivity</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
 
 </resources>

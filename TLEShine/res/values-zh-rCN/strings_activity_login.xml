@@ -21,5 +21,6 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="forgot_password">找回密码</string>
-
+    <string name="forgot_password_tips">输入手机号码或电子邮箱并提交，找回密码</string>
+	<string name="submit">提交</string>
 </resources>
