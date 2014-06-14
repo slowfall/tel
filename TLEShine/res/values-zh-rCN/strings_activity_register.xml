@@ -7,12 +7,9 @@
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>
     
-    <string name="login_tips">请输入\n您的账户的详细信息</string>
     <string name="register_input_email">请输入手机号码或邮箱</string>
     <string name="register_input_pwd">请输入密码</string>
     <string name="register_input_identify">请输入验证码</string>
-    <string name="register_tips">请简单的介绍一下你自己</string>
-    <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 
     <string name="exit">退出</string>
     <string name="my_info">我的信息</string>
@@ -22,12 +19,15 @@
     
     <string name="male">男性</string>
     <string name="female">女性</string>
+    <string name="nickname">昵称</string>
     <string name="birthday">生日</string>
     <string name="prompt_birthday">请设置您的生日</string>
-    <string name="high">身高</string>
+    <string name="prompt_nikename">请设置您的昵称</string>
+    <string name="height">身高</string>
     <string name="prompt_high">请设置您的身高</string>
     <string name="weight">体重</string>
     <string name="prompt_weight">请设置您的体重</string>
+    <string name="prompt_step">请设置您的步长</string>
     
     <string name="complete">完成</string>
     

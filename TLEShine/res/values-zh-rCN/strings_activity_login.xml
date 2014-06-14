@@ -7,7 +7,7 @@
     <string name="prompt_identify">验证码</string>
     <string name="prompt_password">密码</string>
     <string name="prompt_confirm_password">确认密码</string>
-    <string name="prompt_name">用户名</string>
+    <string name="prompt_name">请设置您的用户名</string>
     <string name="login_tips">请输入\n“绽”手环的用户详细信息</string>
     <string name="action_sign_in_register">登录或注册</string>
     <string name="action_sign_in_short">登录</string>

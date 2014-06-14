@@ -63,7 +63,8 @@
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
             android:label="@string/title_activity_register"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -162,11 +163,6 @@
             android:name="com.tranway.tleshine.viewLoginAndRegister.LoadingActivity"
             android:label="@string/title_activity_loading"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.ForgotPasswordActivity"

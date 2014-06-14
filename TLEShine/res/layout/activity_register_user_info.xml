@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/FitbandBackground"
     android:orientation="vertical"
     tools:context="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity" >
 
@@ -15,89 +14,169 @@
         android:id="@+id/view_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/include_title"
-        android:background="@android:color/white" >
+        android:layout_below="@+id/include_title" >
 
         <LinearLayout
-            style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp" >
 
-            <TextView
-                android:id="@+id/txt_tips"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="@string/register_tips"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_middle" />
+                android:orientation="vertical"
+                android:padding="10dp" >
 
-            <TextView
-                android:id="@+id/txt_tips_privacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="@string/privacy_tips"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small" />
-
-            <com.android.segmented.SegmentedGroup
-                android:id="@+id/group_sex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:orientation="horizontal" >
-
-                <RadioButton
-                    android:id="@+id/radio_male"
-                    style="@style/SegmentRadioButton"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/male" />
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_middle" />
 
-                <RadioButton
-                    android:id="@+id/radio_female"
-                    style="@style/SegmentRadioButton"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/group_sex"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/female" />
-            </com.android.segmented.SegmentedGroup>
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp" >
+
+                    <RadioButton
+                        android:id="@+id/radio_male"
+                        style="@style/RadioButtonStyle"
+                        android:checked="true"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/radio_female"
+                        style="@style/RadioButtonStyle"
+                        android:text="@string/female" />
+                </RadioGroup>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/border_square"
-                android:orientation="vertical" >
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="5dp" >
 
-                <TextView
-                    android:id="@+id/txt_birthday"
-                    style="@style/textview_userinfo"
-                    android:hint="@string/prompt_birthday" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/textview_userinfo"
+                        android:layout_width="wrap_content"
+                        android:text="@string/nickname" />
+
+                    <EditText
+                        android:id="@+id/txt_nikename"
+                        style="@style/textview_userinfo"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/prompt_nikename"
+                        android:textCursorDrawable="@null" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
                     android:background="@color/border_square_color_gray" />
 
-                <TextView
-                    android:id="@+id/txt_high"
-                    style="@style/textview_userinfo"
-                    android:hint="@string/prompt_high" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/textview_userinfo"
+                        android:layout_width="wrap_content"
+                        android:text="@string/birthday" />
+
+                    <TextView
+                        android:id="@+id/txt_birthday"
+                        style="@style/textview_userinfo"
+                        android:layout_width="match_parent"
+                        android:hint="@string/prompt_birthday" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="0.7dp"
                     android:background="@color/border_square_color_gray" />
 
-                <TextView
-                    android:id="@+id/txt_weight"
-                    style="@style/textview_userinfo"
-                    android:hint="@string/prompt_weight" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/textview_userinfo"
+                        android:layout_width="wrap_content"
+                        android:text="@string/height" />
+
+                    <TextView
+                        android:id="@+id/txt_height"
+                        style="@style/textview_userinfo"
+                        android:hint="@string/prompt_high" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/border_square_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/textview_userinfo"
+                        android:layout_width="wrap_content"
+                        android:text="@string/weight" />
+
+                    <TextView
+                        android:id="@+id/txt_weight"
+                        style="@style/textview_userinfo"
+                        android:hint="@string/prompt_weight" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/border_square_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/textview_userinfo"
+                        android:layout_width="wrap_content"
+                        android:text="@string/step" />
+
+                    <TextView
+                        android:id="@+id/txt_step"
+                        style="@style/textview_userinfo"
+                        android:hint="@string/prompt_step" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

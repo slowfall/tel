@@ -47,7 +47,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 	private void initView() {
 		initTitleView();
 
-		mHighTxt = (TextView) findViewById(R.id.txt_high);
+		mHighTxt = (TextView) findViewById(R.id.txt_height);
 		mHighTxt.setOnClickListener(this);
 		mWeightTxt = (TextView) findViewById(R.id.txt_weight);
 		mWeightTxt.setOnClickListener(this);
@@ -113,7 +113,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 			savedUserInfoToSP();
 			finish();
 			break;
-		case R.id.txt_high:
+		case R.id.txt_height:
 			Intent intent1 = new Intent(this, SettingsUserHighActivity.class);
 			startActivityForResult(intent1, SettingsUserHighActivity.REQUEST_CODE);
 			break;

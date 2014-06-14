@@ -13,13 +13,13 @@
     <!--
         Base application theme, dependent on API level. This theme is replaced
 
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
          Theme customizations available in newer API levels can go in
          res/values-vXX/styles.xml, while customizations related to
-         backward-compatibility can go here.
+         backward-compatibility can go here.
         -->
     </style>
 
@@ -50,6 +50,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
     <style name="title" parent="android:Theme">
         <item name="android:windowTitleSize">60dp</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
@@ -170,16 +171,6 @@
 
     <style name="ButtonBarButton" />
 
-    <style name="SegmentRadioButton">
-        <item name="android:textColor">@drawable/button_text_color</item>
-        <item name="android:gravity">center</item>
-        <item name="android:button">@null</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
-        <item name="android:paddingLeft">40dp</item>
-        <item name="android:paddingRight">40dp</item>
-    </style>
-
     <style name="CustomizedProgressDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -203,6 +194,20 @@
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">3dp</item>
         <item name="android:animationDuration">400</item>
+    </style>
+
+    <style name="RadioButtonStyle">
+        <item name="android:textSize">@dimen/text_size_middle</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_radiobtn_fitband_style</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
 </resources>

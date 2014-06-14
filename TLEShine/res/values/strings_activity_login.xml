@@ -5,7 +5,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Phone Number or Email</string>
     <string name="prompt_identify">Identify Code</string>
-    <string name="prompt_name">UserName</string>
+    <string name="prompt_name">Enter Your UserName</string>
     <string name="prompt_password">Password</string>
     <string name="login_tips">Please Enter Your Account Details</string>
     <string name="prompt_confirm_password">Confirm Password</string>

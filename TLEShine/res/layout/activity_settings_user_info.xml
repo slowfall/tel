@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/FitbandBackground"
     android:orientation="vertical"
     tools:context="com.tranway.tleshine.viewSettings.SettingsUserInfoActivity" >
 
@@ -33,7 +32,7 @@
                 android:singleLine="true"
                 android:textSize="16sp" />
 
-            <com.android.segmented.SegmentedGroup
+            <!--   <com.android.segmented.SegmentedGroup
                 android:id="@+id/group_sex"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +41,7 @@
                 android:minHeight="80dp"
                 android:orientation="horizontal" >
 
-                <RadioButton
+              <RadioButton
                     android:id="@+id/radio_male"
                     style="@style/SegmentRadioButton"
                     android:layout_width="wrap_content"
@@ -56,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/female" />
-            </com.android.segmented.SegmentedGroup>
+            </com.android.segmented.SegmentedGroup> -->
 
             <LinearLayout
                 style="@style/LayoutSquareBorderTop"
@@ -81,10 +80,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/high" />
+                    android:text="@string/height" />
 
                 <TextView
-                    android:id="@+id/txt_high"
+                    android:id="@+id/txt_height"
                     style="@style/textview_userinfo"
                     android:hint="@string/prompt_high" />
             </LinearLayout>

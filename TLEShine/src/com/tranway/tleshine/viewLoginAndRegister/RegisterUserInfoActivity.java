@@ -5,6 +5,7 @@ import java.text.ParseException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +16,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.android.segmented.SegmentedGroup;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
@@ -28,8 +28,8 @@ import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
 public class RegisterUserInfoActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserInfoActivity.class.getSimpleName();
 
-	private TextView mHighTxt, mWeightTxt, mBirthdayTxt;
-	private SegmentedGroup mSexGroup;
+	private TextView mNameTxt, mHighTxt, mWeightTxt, mBirthdayTxt;
+	private RadioGroup mSexGroup;
 	private RadioButton mMaleRadio, mFemaleRadio;
 
 	private UserInfo userInfo;
@@ -51,7 +51,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private void initView() {
 		initTitleView();
 
-		mHighTxt = (TextView) findViewById(R.id.txt_high);
+		mNameTxt = (TextView) findViewById(R.id.txt_nikename);
+		mNameTxt.setOnClickListener(this);
+		mHighTxt = (TextView) findViewById(R.id.txt_height);
 		mHighTxt.setOnClickListener(this);
 		mWeightTxt = (TextView) findViewById(R.id.txt_weight);
 		mWeightTxt.setOnClickListener(this);
@@ -60,8 +62,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 		mMaleRadio = (RadioButton) findViewById(R.id.radio_male);
 		mFemaleRadio = (RadioButton) findViewById(R.id.radio_female);
-		mSexGroup = (SegmentedGroup) findViewById(R.id.group_sex);
-		mSexGroup.setTintColor(getResources().getColor(R.color.radio_button_bg_checked_color_gray));
+		mSexGroup = (RadioGroup) findViewById(R.id.group_sex);
 		mSexGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -92,6 +93,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private void updateUserInfoUI(UserInfo userInfo) {
 		if (userInfo == null) {
 			return;
+		}
+		if (TextUtils.isEmpty(userInfo.getName())) {
+			mNameTxt.setText(userInfo.getName());
 		}
 		try {
 			if (userInfo.getBirthday() >= 0) {
@@ -125,7 +129,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		case R.id.btn_title_right:
 			onNextButtonClick();
 			break;
-		case R.id.txt_high:
+		case R.id.txt_height:
 			Intent intent1 = new Intent(this, SettingsUserHighActivity.class);
 			startActivityForResult(intent1, SettingsUserHighActivity.REQUEST_CODE);
 			break;

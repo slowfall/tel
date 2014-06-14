@@ -2,40 +2,42 @@
 
     <string name="title_activity_register">RegisterActivity</string>
     <!-- Strings related to register -->
-    <string name="email_empty">请输入有效的邮箱地址</string>
-    <string name="email_invalid">邮箱格式错误</string>
-    <string name="name_invalid">用户名只能包含汉字、数字、字母和下划线</string>
-    <string name="name_length_invalid">用户名长度需在4~20个字符之间</string>
-    <string name="name_empty">请设置一个用户名</string>
-    <string name="password_invalid">两次输入密码不一致</string>
-    <string name="password_empty">请输入密码</string>
-    <string name="error_email_used">该邮箱已被使用</string>
-    <string name="success_register_user">恭喜你，注册成功</string>
-    <string name="get_register_info_failed">获取注册信息失败</string>
-    <string name="failed_register_user">很抱歉，注册失败</string>
+    <string name="email_empty">Please enter a vaild email address</string>
+    <string name="email_invalid">The email address is not in the correct format</string>
+    <string name="name_invalid">The user name can only contain letters,numbers,underline and Chinese characters</string>
+    <string name="name_length_invalid">The username length must between 4~20 characters</string>
+    <string name="name_empty">Please enter a nikename</string>
+    <string name="password_invalid">The two passwords do not match</string>
+    <string name="password_empty">Please enter password</string>
+    <string name="error_email_used">The email address is used</string>
+    <string name="success_register_user">Congratulations on your successful registration!</string>
+    <string name="get_register_info_failed">Get registration information failed!</string>
+    <string name="failed_register_user">I am sorry, failed to register!</string>
     
-    <string name="register_input_email">please input your phone number or email</string>
-    <string name="register_input_pwd">please input your password</string>
-    <string name="register_input_identify">please input your identify code</string>
-    <string name="register_tips">请简单的介绍一下您自己</string>
-    <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
+    <string name="register_input_email">Please input your phone number or email</string>
+    <string name="register_input_pwd">Please input your password</string>
+    <string name="register_input_identify">Please input your identify code</string>
 
-    <string name="exit">退出</string>
-    <string name="my_info">我的信息</string>
-    <string name="next_step">下一步</string>
-    <string name="pre_step">上一步</string>
-    <string name="edit_my_info">编辑我的信息</string>
+    <string name="exit">exit</string>
+    <string name="my_info">my information</string>
+    <string name="next_step">next</string>
+    <string name="pre_step">prevous</string>
+    <string name="edit_my_info">Edit my information</string>
     
-    <string name="male">男性</string>
-    <string name="female">女性</string>
-    <string name="birthday">生日</string>
-    <string name="prompt_birthday">请设置您的生日</string>
-    <string name="high">身高</string>
-    <string name="prompt_high">请设置您的身高</string>
-    <string name="weight">体重</string>
-    <string name="prompt_weight">请设置您的体重</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="nickname">Nickname</string>
+    <string name="birthday">Birthday</string>
+    <string name="prompt_birthday">Please enter your birthday</string>
+    <string name="prompt_nikename">Please enter your nikename</string>
+    <string name="height">Height</string>
+    <string name="prompt_high">Please enter your height</string>
+    <string name="weight">Weight</string>
+    <string name="step">Step</string>
+    <string name="prompt_weight">Please enter your weight</string>
+    <string name="prompt_step">Please enter your step length</string>
     
-    <string name="complete">完成</string>
+    <string name="complete">complete</string>
     
-    <string name="parse_date_exception">很抱歉，程序出现异常</string>
+    <string name="parse_date_exception">I am sorry, the programe appear exception</string>
 </resources>
