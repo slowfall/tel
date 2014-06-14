@@ -59,16 +59,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewSettings.SettingsUserHighActivity"

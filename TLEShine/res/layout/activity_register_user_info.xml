@@ -8,7 +8,7 @@
     <include
         android:id="@+id/include_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_control" />
 
     <ScrollView
