@@ -15,18 +15,23 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// create daily exercise table
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBInfo.TB_DAILY_EXERCISE
-				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT," + DBInfo.USE_ID + " LONG,"
+				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT," + DBInfo.USER_ID + " LONG,"
 				+ DBInfo.EXERCISE_DATE + " LONG," + DBInfo.EXERCISE_GOAL + " INTEGER,"
 				+ DBInfo.EXERCISE_ACHIEVE + " INTEGER)");
 		// create activity info table
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBInfo.TB_ACTIVITY_INFO + "("
-				+ DBInfo.KEY_UTC_TIME + " LONG PRIMARY KEY," + DBInfo.USE_ID + " LONG,"
-				+ DBInfo.KEY_STEPS + " INTEGER," + DBInfo.KEY_DISTANCE + " INTEGER,"
-				+ DBInfo.KEY_CALORIE + " INTEGER)");
+				+ DBInfo.KEY_UTC_TIME + " LONG PRIMARY KEY," + DBInfo.USER_ID + " LONG,"
+				+ DBInfo.EXERCISE_GOAL + " INTEGER," + DBInfo.KEY_STEPS + " INTEGER,"
+				+ DBInfo.KEY_DISTANCE + " INTEGER," + DBInfo.KEY_CALORIE + " INTEGER)");
 		// create every 15min table
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBInfo.TB_EVERY_FIFTEEN_MIN + "("
-				+ DBInfo.KEY_UTC_TIME + " LONG PRIMARY KEY," + DBInfo.USE_ID + " LONG,"
+				+ DBInfo.KEY_UTC_TIME + " LONG PRIMARY KEY," + DBInfo.USER_ID + " LONG,"
 				+ DBInfo.KEY_STEPS + " INTEGER," + DBInfo.KEY_CALORIE + " INTEGER)");
+		// create sleep data table
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBInfo.TB_ACTIVITY_INFO + "("
+				+ DBInfo.KEY_UTC_TIME + " LONG PRIMARY KEY," + DBInfo.USER_ID + " LONG,"
+				+ DBInfo.EXERCISE_GOAL + " INTEGER," + DBInfo.KEY_SLEEP_SHALLOW_TIME + " LONG,"
+				+ DBInfo.KEY_SLEEP_DEEP_TIME + " LONG)");
 	}
 
 	@Override

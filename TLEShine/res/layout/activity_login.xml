@@ -67,7 +67,7 @@
                 android:background="@drawable/border_square"
                 android:gravity="center"
                 android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress|phone"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textCursorDrawable="@null" />

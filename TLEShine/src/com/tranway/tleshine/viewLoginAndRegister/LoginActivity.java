@@ -30,6 +30,7 @@ import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.viewMainTabs.MainActivity;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -212,7 +213,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 							UserInfoKeeper.writeUserInfo(getApplicationContext(),
 									UserInfoKeeper.KEY_PWD, password);
 							Intent intent = new Intent(MyApplication.getAppContext(),
-									BLEConnectActivity.class);
+									MainActivity.class);
 							startActivity(intent);
 						} else {
 							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,

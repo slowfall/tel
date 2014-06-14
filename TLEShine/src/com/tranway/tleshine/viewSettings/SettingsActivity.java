@@ -259,7 +259,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		long todayUTC = utcTime / (3600 * 24);
 		currentActivityInfo.setUtcTime(todayUTC);
 		if (currentActivityInfo.getSteps() > 0) {
-			DBManager.addActivityInfo(currentActivityInfo);
+			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+			DBManager.addActivityInfo(userId, currentActivityInfo);
 			TLEHttpRequest request = TLEHttpRequest.instance();
 			Map<String, String> data = new TreeMap<String, String>();
 			data.put("StepCount", String.valueOf(currentActivityInfo.getSteps()));
@@ -273,8 +274,9 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	private void savePacketForEvery15Min(List<byte[]> packetForEvery15Min) {
 		BLEPacket blePacket = new BLEPacket();
 		List<Map<String, Object>> every15MinDatas = blePacket
-				.resovleEvery15MinPacket(packetForEvery15Min);
-		DBManager.addEvery15MinData(every15MinDatas);
+				.resolveEvery15MinPacket(packetForEvery15Min);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		DBManager.addEvery15MinData(userId, every15MinDatas);
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {

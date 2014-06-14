@@ -31,6 +31,7 @@ import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -89,7 +90,8 @@ public class ActivityActivity extends Activity {
 		// // }
 		// }
 
-		mActivityInfos = DBManager.queryActivityInfo();
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		mActivityInfos = DBManager.queryActivityInfo(userId);
 		ActivityInfo activityInfo = new ActivityInfo();
 		activityInfo.setCalorie(100);
 		activityInfo.setDistance(1000);
@@ -163,7 +165,8 @@ public class ActivityActivity extends Activity {
 		// mContentList.add(content);
 		long utcTime = System.currentTimeMillis() / 1000;
 		long dayUtc = utcTime / ONE_DAY_SECONDS;
-		mEvery15MinPackets = DBManager.queryEvery15MinPackets(dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
 				* ONE_DAY_SECONDS);
 //		//TODO test
 		for (int i = 0; i < 14; i++) {
