@@ -14,8 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,14 +52,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button mExsitBtn = (Button) findViewById(R.id.btn_title_left);
-		mExsitBtn.setText(R.string.pre_step);
-		mExsitBtn.setVisibility(View.VISIBLE);
-		mExsitBtn.setOnClickListener(this);
-		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
-		mNextBtn.setText(R.string.next_step);
-		mNextBtn.setOnClickListener(this);
-		mNextBtn.setVisibility(View.VISIBLE);
+		ImageButton mPreBtn = (ImageButton) findViewById(R.id.btn_title_left);
+		mPreBtn.setVisibility(View.VISIBLE);
+		mPreBtn.setOnClickListener(this);
+//		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
+//		mNextBtn.setText(R.string.next_step);
+//		mNextBtn.setOnClickListener(this);
+//		mNextBtn.setVisibility(View.VISIBLE);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setText(R.string.register);
 	}
