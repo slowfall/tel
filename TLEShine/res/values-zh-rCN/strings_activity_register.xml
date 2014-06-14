@@ -8,7 +8,9 @@
     <string name="password_empty">请输入密码</string>
     
     <string name="login_tips">请输入\n您的账户的详细信息</string>
-    <string name="register_accout_tips">成为一名 TeKit 用户</string>
+    <string name="register_input_email">请输入手机号码或邮箱</string>
+    <string name="register_input_pwd">请输入密码</string>
+    <string name="register_input_identify">请输入验证码</string>
     <string name="register_tips">请简单的介绍一下你自己</string>
     <string name="privacy_tips">请放心，我们不会共享此信息，它可以帮助我们使你的信息更准确。</string>
 

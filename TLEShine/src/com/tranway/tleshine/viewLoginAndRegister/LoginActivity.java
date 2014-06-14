@@ -99,10 +99,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void initTitleView() {
-		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
-		mPreBtn.setText(R.string.back);
-		mPreBtn.setVisibility(View.VISIBLE);
-		mPreBtn.setOnClickListener(this);
+		Button leftBtn = (Button) findViewById(R.id.btn_title_icon_left);
+//		mPreBtn.setText(R.string.back);
+		leftBtn.setVisibility(View.VISIBLE);
+		leftBtn.setOnClickListener(this);
 		// Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
 		// mNextBtn.setText(R.string.next_step);
 		// mNextBtn.setOnClickListener(this);
@@ -114,7 +114,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_title_left:
+		case R.id.btn_title_icon_left:
 			finish();
 			break;
 		case R.id.btn_title_right:

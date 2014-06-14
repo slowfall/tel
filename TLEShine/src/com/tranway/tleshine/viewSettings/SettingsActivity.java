@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -47,6 +48,7 @@ import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.viewMainTabs.MainActivity;
 
+@SuppressLint("NewApi")
 public class SettingsActivity extends Activity implements OnClickListener {
 	private static final String TAG = SettingsActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
