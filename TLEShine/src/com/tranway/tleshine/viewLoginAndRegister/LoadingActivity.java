@@ -1,18 +1,12 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
-import com.tranway.tleshine.R;
-import com.tranway.tleshine.R.layout;
-import com.tranway.tleshine.model.UserInfo;
-import com.tranway.tleshine.model.UserInfoKeeper;
-import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.welcome.WelcomeActivity;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.Util;
+import com.tranway.tleshine.welcome.WelcomeActivity;
 
 public class LoadingActivity extends Activity {
 	public static String FIRST_USE = "first_use";

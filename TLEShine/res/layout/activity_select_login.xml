@@ -27,8 +27,8 @@
             android:layout_marginRight="40dp"
             android:background="@null"
             android:drawableTop="@drawable/btn_login"
-            android:textColor="@drawable/selector_text_orange_gray"
-            android:text="@string/login" />
+            android:text="@string/login"
+            android:textColor="@drawable/selector_text_orange_gray" />
 
         <Button
             android:id="@+id/btn_register"
@@ -38,8 +38,8 @@
             android:layout_marginLeft="40dp"
             android:background="@null"
             android:drawableTop="@drawable/btn_register"
-            android:textColor="@drawable/selector_text_orange_gray"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:textColor="@drawable/selector_text_orange_gray" />
     </RelativeLayout>
 
 </RelativeLayout>
