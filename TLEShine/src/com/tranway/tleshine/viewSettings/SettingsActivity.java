@@ -39,20 +39,18 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.BLEPacket;
-import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.viewMainTabs.MainActivity;
 
 @SuppressLint("NewApi")
 public class SettingsActivity extends Activity implements OnClickListener {
 	private static final String TAG = SettingsActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
-	private static final long SCAN_PERIOD = 20000;
+	private static final long SCAN_PERIOD = 10000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 	private static final String ADD_SPORT_POINT_END_URL = "/AddSportPoint";
 	private boolean connState = false;
@@ -143,7 +141,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			mServiceConnection = null;
-			finish();
 			return;
 		}
 
@@ -152,7 +149,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		if (mBluetoothAdapter == null) {
 			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
 			mServiceConnection = null;
-			finish();
 			return;
 		}
 
@@ -223,9 +219,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 					ack = packet.makeReplyACK(sequenceNumber);
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
-					Intent intent = new Intent(MyApplication.getAppContext(),
-							MainActivity.class);
-					startActivity(intent);
 				}
 			}
 			break;
@@ -240,15 +233,11 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent intent = new Intent(MyApplication.getAppContext(), MainActivity.class);
-			startActivity(intent);
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
 			characteristicTx.setValue(ack);
 			mBluetoothLeService.writeCharacteristic(characteristicTx);
-			Intent bIntent = new Intent(MyApplication.getAppContext(), MainActivity.class);
-			startActivity(bIntent);
 			break;
 		}
 	}

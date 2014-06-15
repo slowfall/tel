@@ -25,6 +25,10 @@ public class DBInfo {
 	/**
 	 * unit is second
 	 */
+	public static String KEY_SLEEP_GOAL = "sleep_goal";
+	/**
+	 * unit is second
+	 */
 	public static final String KEY_SLEEP_SHALLOW_TIME = "sleep_shallow_time";
 	/**
 	 * unit is second
