@@ -38,6 +38,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private RadioButton mMaleRadio, mFemaleRadio;
 
 	private UserInfo userInfo;
+	private boolean isRegister = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,11 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_register_user_info);
 
+		Bundle bundle = new Bundle();
+		bundle = this.getIntent().getExtras();
+		isRegister = bundle.getBoolean("isRegister", false);
+
 		userInfo = UserInfoKeeper.readUserInfo(this);
-		userInfo.setSex(UserInfo.SEX_MALE); // set default sex
 
 		initView();
 		updateUserInfoUI(userInfo);
@@ -56,19 +60,19 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 	private void initView() {
 		initTitleView();
 
-		mUserNameTxt = (TextView)findViewById(R.id.txt_username);
+		mUserNameTxt = (TextView) findViewById(R.id.txt_username);
 		mNameTxt = (TextView) findViewById(R.id.txt_nikename);
 		mNameTxt.setOnClickListener(this);
 		mNameTxt.addTextChangedListener(new TextWatcher() {
-			
+
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable arg0) {
 				mUserNameTxt.setText(arg0);
@@ -137,6 +141,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		if (userInfo.getStride() >= 0) {
 			mStrideTxt.setText(userInfo.getStride() + " CM");
 		}
+		Log.d(TAG, "sex: " + userInfo.getSex());
 		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
 			mFemaleRadio.setChecked(true);
 			mMaleRadio.setChecked(false);
@@ -252,8 +257,12 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			return;
 		} else {
 			UserInfoKeeper.writeUserInfo(this, userInfo);
-			Intent intent = new Intent(this, RegisterUserGoal_Activity.class);
-			startActivity(intent);
+			if (isRegister) {
+				Intent intent = new Intent(this, RegisterUserGoal_Activity.class);
+				startActivity(intent);
+			} else {
+				finish();
+			}
 		}
 	}
 

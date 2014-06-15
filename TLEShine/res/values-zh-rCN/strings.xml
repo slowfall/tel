@@ -43,4 +43,7 @@
 	<string name="cycle2_text">最高分：1124</string>
 	<string name="cycle3_text">达标次数：1</string>
 	<string name="friends">朋友</string>
+	
+    <string name="positive">是</string>
+    <string name="negative">否</string>
 </resources>
