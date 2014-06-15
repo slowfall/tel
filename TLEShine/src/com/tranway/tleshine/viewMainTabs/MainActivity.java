@@ -5,8 +5,12 @@ import org.json.JSONObject;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
@@ -25,14 +29,15 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 	private static final String GET_INFO_END_URL = "/Get";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer,
-			R.id.rb_contacts, R.id.rb_preset };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer, R.id.rb_contacts,
+			R.id.rb_preset };
 
 	private static final String TAB_1 = "h007";
 	private static final String TAB_2 = "pedometer";
 	private static final String TAB_3 = "contacts";
 	private static final String TAB_4 = "preset";
 	private static final String[] TABS = { TAB_1, TAB_2, TAB_3, TAB_4 };
+	private static final int[] TABS_TITLE = { R.string.settings, R.string.activity, R.string.sleep, R.string.friends };
 
 	private Intent mH007Intent;
 	private Intent mPedometerIntent;
@@ -41,10 +46,13 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private Intent[] mIntents = new Intent[TABS.length];
 	private TabHost mHost;
 	private RadioGroup mRadioGroup;
+	private TextView mTitleTxt;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Util.logD(LOG_TAG, "come in onCreate method");
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		getUserInfoFromServer(UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, null));
@@ -64,13 +72,17 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	}
 
 	private void initTab() {
-		mHost=this.getTabHost();
+		mTitleTxt = (TextView) findViewById(R.id.txt_title);
+		mTitleTxt.setVisibility(View.VISIBLE);
+		
+		mHost = this.getTabHost();
 		for (int i = 0; i < TABS.length; i++) {
 			mHost.addTab(mHost.newTabSpec(TABS[i]).setIndicator(TABS[i]).setContent(mIntents[i]));
 		}
 
 		mRadioGroup = (RadioGroup) findViewById(R.id.rg_tabgroup);
 		mRadioGroup.setOnCheckedChangeListener(this);
+		mTitleTxt.setText(TABS_TITLE[mHost.getCurrentTab()]);
 	}
 
 	@Override
@@ -78,11 +90,12 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		for (int i = 0; i < RADIO_BTN_IDS.length; i++) {
 			if (checkedId == RADIO_BTN_IDS[i]) {
 				mHost.setCurrentTabByTag(TABS[i]);
+				mTitleTxt.setText(TABS_TITLE[i]);
 				break;
 			}
 		}
-	}	
-	
+	}
+
 	private void getUserInfoFromServer(String email) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {

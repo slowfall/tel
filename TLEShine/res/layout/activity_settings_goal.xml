@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/fitband_background_color"
     tools:context="com.tranway.tleshine.viewSettings.SettingsGoalActivity" >
 
     <include
         android:id="@+id/include_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_control" />
 
     <LinearLayout
