@@ -107,8 +107,10 @@ public class BLEPacket {
 			toList.add(fromArray[i]);
 		}
 	}
-	
-	public static final int EVERY_15_MIN_PACKET_UTC_TIME_LENGHT = 4;
+
+	public static final int CMD_AND_PACKET_INDEX_BYTES_LENGTH = 2;
+	public static final int PACKET_UTC_TIME_BYTES_LENGHT = 4;
+	public static final int CHECKSUM_BYTE_LENGTH = 1;
 
 	public List<Map<String, Object>> resolveEvery15MinPacket(List<byte[]> every15MinPackets) {
 		List<Map<String, Object>> every15MinDatas = new ArrayList<Map<String, Object>>();
@@ -123,10 +125,14 @@ public class BLEPacket {
 					every15MinBytes.clear();
 				}
 
-				copyBytesArrayToList(packetData, 2, packetData.length - 1, every15MinBytes);
+				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
+						packetData.length - CMD_AND_PACKET_INDEX_BYTES_LENGTH
+								- CHECKSUM_BYTE_LENGTH, every15MinBytes);
 				break;
 			case 0x02:
-				copyBytesArrayToList(packetData, 2, packetData.length - 1, every15MinBytes);
+				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
+						packetData.length - CMD_AND_PACKET_INDEX_BYTES_LENGTH
+								- CHECKSUM_BYTE_LENGTH, every15MinBytes);
 				break;
 			case 0x03:
 				if (every15MinBytes.size() > 0) {
@@ -141,18 +147,18 @@ public class BLEPacket {
 		}
 		return every15MinDatas;
 	}
-	
+
 	private Map<String, Object> resolveTimeStepAndCalorie(List<Byte> every15MinBytes) {
 		Map<String, Object> every15MinData = new TreeMap<String, Object>();
 		long utcTime = 0;
 		int steps = 0;
 		int calories = 0;
-		byte[] utcTimeBytes = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT];
-		for (int i = 0; i < EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i++) {
+		byte[] utcTimeBytes = new byte[PACKET_UTC_TIME_BYTES_LENGHT];
+		for (int i = 0; i < PACKET_UTC_TIME_BYTES_LENGHT; i++) {
 			utcTimeBytes[i] = every15MinBytes.get(i);
 		}
 		utcTime = bytesToInt(utcTimeBytes);
-		for (int i = EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i < every15MinBytes.size(); i++) {
+		for (int i = PACKET_UTC_TIME_BYTES_LENGHT; i < every15MinBytes.size(); i++) {
 			// even is step, odd is calorie
 			if ((i % 2) == 0) {
 				steps += bytesToInt(new byte[] { every15MinBytes.get(i) });
@@ -168,13 +174,45 @@ public class BLEPacket {
 		return every15MinData;
 	}
 
-	public Map<String, Object> resolveSleepPacket(List<byte[]> sleepBytesList) {
+	public Map<String, Object> resolveSleepPacket(List<byte[]> sleepPacket) {
 		Map<String, Object> sleepMap = new TreeMap<String, Object>();
-		
-		
+		List<Byte> sleepBytes = new ArrayList<Byte>();
+		long startTime = 0;
+		boolean isSetStartTime = false;
+		for (int i = 0; i < sleepPacket.size(); i++) {
+			byte[] packetData = sleepPacket.get(i);
+			byte packetIndex = packetData[1];
+			switch (packetIndex) {
+			case 0x01:
+				if (!isSetStartTime) {
+					isSetStartTime = true;
+					byte[] utcTimeBytes = new byte[4];
+					System.arraycopy(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH, utcTimeBytes,
+							0, utcTimeBytes.length);
+					startTime = bytesToInt(utcTimeBytes);
+				}
+				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
+						packetData.length - CMD_AND_PACKET_INDEX_BYTES_LENGTH
+								- CHECKSUM_BYTE_LENGTH, sleepBytes);
+				break;
+			case 0x02:
+				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
+						packetData.length - 1, sleepBytes);
+				break;
+			case 0x03:
+				// check total packets number
+				if (sleepBytes.size() > 0) {
+					sleepMap = resolveSleepBytes(startTime, sleepBytes);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
 		return sleepMap;
 	}
-	
+
 	private static final int SECONDS_OF_5_MINS = 5 * 60;
 
 	private Map<String, Object> resolveSleepBytes(long startUtcTime, List<Byte> sleepBytes) {

@@ -58,7 +58,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mDevice = null;
 	private String mDeviceAddress;
-	private List<byte[]> mPacketForEvery15Min = new ArrayList<byte[]>();
+	private List<byte[]> mEvery15MinPackect = new ArrayList<byte[]>();
+	private List<byte[]> mSleepPakect = new ArrayList<byte[]>();
 
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -111,7 +112,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 
-		if (!mBluetoothAdapter.isEnabled()) {
+		if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
@@ -209,9 +210,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 			break;
 		case 0x04:
 			if (packet.checkChecksum(data)) {
-				mPacketForEvery15Min.add(data);
+				mEvery15MinPackect.add(data);
 				if (data[1] == (byte) 0x03) {
-					savePacketForEvery15Min(mPacketForEvery15Min);
+					saveEvery15MinPacket(mEvery15MinPackect);
 					ack = packet.makeReplyACK(sequenceNumber);
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -226,9 +227,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case 0x06:
-			ack = packet.makeReplyACK(sequenceNumber);
-			characteristicTx.setValue(ack);
-			mBluetoothLeService.writeCharacteristic(characteristicTx);
+			if (packet.checkChecksum(data)) {
+				mSleepPakect.add(data);
+				if (data[1] == (byte) 0x03) {
+					saveSleepPacket(mSleepPakect);
+					ack = packet.makeReplyACK(sequenceNumber);
+					characteristicTx.setValue(ack);
+					mBluetoothLeService.writeCharacteristic(characteristicTx);
+				}
+			}
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
@@ -256,12 +263,20 @@ public class MenuActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void savePacketForEvery15Min(List<byte[]> packetForEvery15Min) {
+	private void saveEvery15MinPacket(List<byte[]> every15MinPacket) {
 		BLEPacket blePacket = new BLEPacket();
 		List<Map<String, Object>> every15MinDatas = blePacket
-				.resolveEvery15MinPacket(packetForEvery15Min);
+				.resolveEvery15MinPacket(every15MinPacket);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
 		DBManager.addEvery15MinData(userId, every15MinDatas);
+	}
+
+	private void saveSleepPacket(List<byte[]> sleepPacket) {
+		BLEPacket blePacket = new BLEPacket();
+		Map<String, Object> sleepData = blePacket.resolveSleepPacket(sleepPacket);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		// TODO add sleep goal to Map
+		DBManager.addSleepInfo(userId, sleepData);
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
