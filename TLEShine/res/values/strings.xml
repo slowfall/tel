@@ -52,5 +52,8 @@
     <string name="now_use">马上体验</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    
+    <string name="positive">yes</string>
+    <string name="negative">no</string>
 
 </resources>

@@ -109,7 +109,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							saveUserResgiterInfo();
-							Intent intent = new Intent(RegisterActivity.this, RegisterUserInfoActivity.class);
+							Intent intent = new Intent();
+							Bundle bundle = new Bundle();
+							bundle.putBoolean("isRegister", true);
+							intent.setClass(RegisterActivity.this, RegisterUserInfoActivity.class);
+							intent.putExtras(bundle);
 							startActivity(intent);
 						} else {
 							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);

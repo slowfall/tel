@@ -36,7 +36,7 @@ public class SettingsUserInfoActivity extends Activity implements OnClickListene
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_settings_user_info);
+		// setContentView(R.layout.activity_settings_user_info);
 
 		userInfo = UserInfoKeeper.readUserInfo(this);
 

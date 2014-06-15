@@ -219,7 +219,7 @@ public class UserInfoKeeper {
 		info.setAge(sp.getInt(KEY_AGE, -1));
 		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
 		info.setStride(sp.getInt(KEY_STRIDE, -1));
-		info.setSex(sp.getInt(KEY_SEX, 0));
+		info.setSex(sp.getInt(KEY_SEX, -1));
 		info.setStepsTarget(UserGoalKeeper.readExerciseGoalPoint(context));
 		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
 
