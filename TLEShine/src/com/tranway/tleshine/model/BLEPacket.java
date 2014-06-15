@@ -102,6 +102,12 @@ public class BLEPacket {
 		return activityInfo;
 	}
 
+	private void copyBytesArrayToList(byte[] fromArray, int fromPos, int length, List<Byte> toList) {
+		for (int i = fromPos; i < length; i++) {
+			toList.add(fromArray[i]);
+		}
+	}
+	
 	public static final int EVERY_15_MIN_PACKET_UTC_TIME_LENGHT = 4;
 
 	public List<Map<String, Object>> resolveEvery15MinPacket(List<byte[]> every15MinPackets) {
@@ -135,22 +141,17 @@ public class BLEPacket {
 		}
 		return every15MinDatas;
 	}
-
-	private void copyBytesArrayToList(byte[] fromArray, int fromPos, int length, List<Byte> toList) {
-		for (int i = fromPos; i < length; i++) {
-			toList.add(fromArray[i]);
-		}
-	}
-
+	
 	private Map<String, Object> resolveTimeStepAndCalorie(List<Byte> every15MinBytes) {
 		Map<String, Object> every15MinData = new TreeMap<String, Object>();
+		long utcTime = 0;
 		int steps = 0;
 		int calories = 0;
 		byte[] utcTimeBytes = new byte[EVERY_15_MIN_PACKET_UTC_TIME_LENGHT];
 		for (int i = 0; i < EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i++) {
 			utcTimeBytes[i] = every15MinBytes.get(i);
 		}
-		int utcTime = bytesToInt(utcTimeBytes);
+		utcTime = bytesToInt(utcTimeBytes);
 		for (int i = EVERY_15_MIN_PACKET_UTC_TIME_LENGHT; i < every15MinBytes.size(); i++) {
 			// even is step, odd is calorie
 			if ((i % 2) == 0) {
@@ -165,6 +166,57 @@ public class BLEPacket {
 		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps
 				+ ", calories:" + calories);
 		return every15MinData;
+	}
+
+	public Map<String, Object> resolveSleepPacket(List<byte[]> sleepBytesList) {
+		Map<String, Object> sleepMap = new TreeMap<String, Object>();
+		
+		
+		return sleepMap;
+	}
+	
+	private static final int SECONDS_OF_5_MINS = 5 * 60;
+
+	private Map<String, Object> resolveSleepBytes(long startUtcTime, List<Byte> sleepBytes) {
+		Map<String, Object> sleepMap = new TreeMap<String, Object>();
+		long sleepedTime = 0;
+		long sleepDeepTime = 0;
+		long sleepShallowTime = 0;
+		int sleepCount = 0;
+		int startSleepIndex = 0;
+		boolean isSetStartIndex = false;
+		for (int i = 0; i < sleepBytes.size(); i++) {
+			byte b = sleepBytes.get(i);
+			if (bytesToInt(new byte[] { b }) <= 1) {
+				sleepCount += 1;
+			} else {
+				sleepCount = 0;
+			}
+
+			// 四个连续的5分钟的数据小于等于1的时候表明已经开始进入深度睡眠，深度睡眠的时间
+			// 是错开的，因此，将这些时间累加起来就是整个晚上的深度睡眠时间，其余都是浅睡眠
+			// 时间；
+			if (sleepCount > 4) {
+				sleepDeepTime += SECONDS_OF_5_MINS;
+			} else if (sleepCount == 4) {
+				sleepDeepTime += SECONDS_OF_5_MINS * 4;
+			}
+			// 两个连续的5分钟的数据小于等于1的时候表明已经开始进入睡眠了
+			else if (sleepCount == 2 && !isSetStartIndex) {
+				isSetStartIndex = true;
+				startSleepIndex = i;
+			}
+		}
+
+		sleepedTime = (sleepBytes.size() - startSleepIndex) * SECONDS_OF_5_MINS;
+		long mod = startUtcTime % SECONDS_OF_5_MINS;
+		sleepedTime -= mod;
+		sleepShallowTime = sleepedTime - sleepDeepTime;
+		sleepMap.put(DBInfo.KEY_UTC_TIME, sleepedTime);
+		sleepMap.put(DBInfo.KEY_SLEEP_DEEP_TIME, sleepDeepTime);
+		sleepMap.put(DBInfo.KEY_SLEEP_SHALLOW_TIME, sleepShallowTime);
+
+		return sleepMap;
 	}
 
 	public byte[] makeReplyACK(byte sequenceNumber) {
