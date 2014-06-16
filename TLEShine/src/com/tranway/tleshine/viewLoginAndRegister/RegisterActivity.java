@@ -24,13 +24,19 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
-	private static final String CHECK_EMAIL_URL = "/CheckEmail";
+	private static final String CHECK_EMAIL_END_URL = "/CheckEmail";
+	private static final String GET_GENCODE_END_URL = "/GenCode";
+	private static final String CHECK_GENCODE_END_URL = "/CheckCode";
 
-	private EditText mEmailTxt, mPwdTxt;
+	private EditText mEmailTxt, mPwdTxt, mPhoneTxt, mCodeTxt;
+	private TextView mRequestTxt;
+
+	private String gencodeId = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,10 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		initTitleView();
 
 		mEmailTxt = (EditText) findViewById(R.id.email);
+		mPhoneTxt = (EditText) findViewById(R.id.phone);
+		mCodeTxt = (EditText) findViewById(R.id.identify_code);
+		mRequestTxt = (TextView) findViewById(R.id.request_identify);
+		mRequestTxt.setOnClickListener(this);
 		mPwdTxt = (EditText) findViewById(R.id.password);
 
 		TextView mRequestTxt = (TextView) findViewById(R.id.request_identify);
@@ -75,19 +85,36 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			nextButtonClick();
 			break;
 		case R.id.request_identify:
-			// TODO ... request identify code
+			requestGenCodeFromServer();
 			break;
 		default:
 			break;
 		}
 	}
 
+	private void requestGenCodeFromServer() {
+		String phone = mPhoneTxt.getText().toString();
+		if (TextUtils.isEmpty(phone)) {
+			mPhoneTxt.setError(getResources().getString(R.string.phone_empty));
+			mPhoneTxt.requestFocus();
+			return;
+		}
+		if (!checkPhoneAvailable(phone)) {
+			mPhoneTxt.setError(getResources().getString(R.string.phone_invalid));
+			mPhoneTxt.requestFocus();
+			return;
+		}
+
+		getGenCodeFromServer(phone);
+	}
+
 	private void nextButtonClick() {
 		String email = mEmailTxt.getText().toString();
 		String password = mPwdTxt.getText().toString();
+		String code = mCodeTxt.getText().toString();
 
-		if (checkUserRegisterInfo(email, password)) {
-			checkEmailToServer(email);
+		if (checkUserRegisterInfo(email, password, code)) {
+			checkEmailToServer(email, code);
 		}
 	}
 
@@ -98,7 +125,42 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	 * @param email
 	 *            Email address
 	 */
-	private void checkEmailToServer(String email) {
+	private void checkEmailToServer(String email, final String code) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+			@Override
+			public void onSuccess(String url, String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.has(TLEHttpRequest.STATUS_CODE)) {
+						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							checkGenCodeToServer(code);
+						} else {
+							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);
+							Log.e(TAG, "email is not available");
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+		}, this);
+		httpRequest.get(CHECK_EMAIL_END_URL + "/" + email, null);
+	}
+
+	/**
+	 * check GenCode to server
+	 * 
+	 * @param code
+	 *            GenCode
+	 */
+	private void checkGenCodeToServer(String code) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 			@Override
@@ -116,7 +178,43 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							intent.putExtras(bundle);
 							startActivity(intent);
 						} else {
-							ToastHelper.showToast(R.string.error_email_used, Toast.LENGTH_LONG);
+							ToastHelper.showToast(R.string.gencode_invalid, Toast.LENGTH_LONG);
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+		}, this);
+		httpRequest.get(CHECK_GENCODE_END_URL + "/" + gencodeId + "?code=" + code, null);
+	}
+
+	/**
+	 * get gencode from server by phone number
+	 * 
+	 * @param email
+	 *            GenCode
+	 */
+	private void getGenCodeFromServer(String phone) {
+		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+			@Override
+			public void onSuccess(String url, String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.has(TLEHttpRequest.STATUS_CODE)) {
+						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+							ToastHelper.showToast(R.string.get_gen_code_success, Toast.LENGTH_LONG);
+							Log.d(TAG, "get gencode: " + data.toString());
+							gencodeId = data.getString(UserInfo.SEVER_KEY_ID);
+						} else {
+							ToastHelper.showToast(R.string.get_gen_code_failed, Toast.LENGTH_LONG);
 							Log.e(TAG, "email is not available");
 						}
 					}
@@ -130,10 +228,10 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
 		}, this);
-		httpRequest.get(CHECK_EMAIL_URL + "/" + email, null);
+		httpRequest.get(GET_GENCODE_END_URL + "/" + phone, null);
 	}
 
-	private boolean checkUserRegisterInfo(String email, String pwd) {
+	private boolean checkUserRegisterInfo(String email, String pwd, String code) {
 		if (TextUtils.isEmpty(email)) {
 			mEmailTxt.setError(getResources().getString(R.string.email_empty));
 			mEmailTxt.requestFocus();
@@ -154,8 +252,11 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			mPwdTxt.requestFocus();
 			return false;
 		}
-
-		// TODO ... check verification code
+		if (TextUtils.isEmpty(code)) {
+			mCodeTxt.setError(getResources().getString(R.string.gencode_empty));
+			mCodeTxt.requestFocus();
+			return false;
+		}
 
 		return true;
 	}
@@ -176,6 +277,16 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		String regEx = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(email);
+		return matcher.matches();
+	}
+
+	private boolean checkPhoneAvailable(String phone) {
+		if (phone == null) {
+			return false;
+		}
+		String regEx = "^\\d{11}$";
+		Pattern p = Pattern.compile(regEx);
+		Matcher matcher = p.matcher(phone);
 		return matcher.matches();
 	}
 

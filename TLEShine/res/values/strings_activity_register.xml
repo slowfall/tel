@@ -4,6 +4,12 @@
     <!-- Strings related to register -->
     <string name="email_empty">Please enter a vaild email address</string>
     <string name="email_invalid">The email address is not in the correct format</string>
+    <string name="gencode_empty">Please enter your identifying code</string>
+    <string name="phone_empty">Please enter your phone number</string>
+    <string name="phone_invalid">Invalid phone number</string>
+    <string name="gencode_invalid">Invalid identifying code</string>
+    <string name="get_gen_code_success">Get identifying code success</string>
+    <string name="get_gen_code_failed">Get identifying code failure</string>
     <string name="name_invalid">The user name can only contain letters,numbers,underline and Chinese characters</string>
     <string name="name_length_invalid">The username length must between 4~20 characters</string>
     <string name="name_empty">Please enter a nikename</string>
@@ -14,7 +20,8 @@
     <string name="get_register_info_failed">Get registration information failed!</string>
     <string name="failed_register_user">I am sorry, failed to register!</string>
     
-    <string name="register_input_email">Please input your phone number or email</string>
+    <string name="register_input_email">Please input your email</string>
+    <string name="register_input_phone">Please input your phone number</string>
     <string name="register_input_pwd">Please input your password</string>
     <string name="register_input_identify">Please input your identify code</string>
 

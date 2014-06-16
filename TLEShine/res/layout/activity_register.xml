@@ -38,8 +38,9 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="@dimen/activity_edittxt_height"
+                    android:background="@drawable/border_square"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_email_or_phone" />
+                    android:src="@drawable/icon_email" />
 
                 <EditText
                     android:id="@+id/email"
@@ -48,6 +49,36 @@
                     android:hint="@string/prompt_email"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/register_input_phone"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_edittxt_height"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="@dimen/activity_edittxt_height"
+                    android:background="@drawable/border_square"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_email" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    style="@style/edittext_userinfo"
+                    android:background="@drawable/border_square"
+                    android:hint="@string/prompt_phone"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:textCursorDrawable="@null" />
             </LinearLayout>
 
@@ -85,7 +116,7 @@
                 android:orientation="horizontal" >
 
                 <EditText
-                    android:id="@+id/identify"
+                    android:id="@+id/identify_code"
                     style="@style/edittext_userinfo"
                     android:layout_width="wrap_content"
                     android:layout_weight="1.0"

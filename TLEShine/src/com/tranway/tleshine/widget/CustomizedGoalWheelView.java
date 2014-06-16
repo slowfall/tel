@@ -14,7 +14,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 	private WheelView mUnitWheel;
 
 	private String[] rightStr = { "000", "100", "200", "300", "400", "500", "600", "700", "800", "900" };
-	private int default_m = 0;
+	private int default_m = 5;
 	private int default_cm = 6;
 
 	public CustomizedGoalWheelView(Context context) {
@@ -29,7 +29,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 
 	private void initialize() {
 		mLeftWheel = (WheelView) findViewById(R.id.wheel_left);
-		mLeftWheel.setAdapter(new NumericWheelAdapter(0, 5, null));
+		mLeftWheel.setAdapter(new NumericWheelAdapter(0, 99, null));
 		mLeftWheel.setCyclic(false);
 		mLeftWheel.setCurrentItem(default_m);
 
@@ -39,7 +39,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 		mRightWheel.setCurrentItem(default_cm);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setLabel("点");
+		mUnitWheel.setLabel("步");
 		mUnitWheel.setCyclic(false);
 	}
 
@@ -48,7 +48,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 	 * 
 	 * @return return high, unit is centimeter
 	 */
-	public int getGoalPoint() {
+	public int getGoalStep() {
 		return mLeftWheel.getCurrentItem() * 1000 + mRightWheel.getCurrentItem() * 100;
 	}
 
@@ -59,12 +59,12 @@ public class CustomizedGoalWheelView extends LinearLayout {
 		}
 	}
 
-	public void setCurrentGoal(int point) {
-		if (point <= 0) {
+	public void setCurrentStep(int step) {
+		if (step <= 0) {
 			return;
 		}
-		int left = point / 1000;
-		int right = point % 1000 / 100;
+		int left = step / 1000;
+		int right = step % 1000 / 100;
 		mLeftWheel.setCurrentItem(left);
 		mRightWheel.setCurrentItem(right);
 	}

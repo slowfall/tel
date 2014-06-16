@@ -4,10 +4,17 @@
     <!-- Strings related to register -->
     <string name="email_empty">请输入有效的邮箱地址</string>
     <string name="email_invalid">邮箱格式错误</string>
+    <string name="gencode_empty">请输入验证码</string>
+    <string name="gencode_invalid">验证码错误</string>
+    <string name="get_gen_code_success">验证码获取成功</string>
+    <string name="get_gen_code_failed">验证码获取失败</string>
+    <string name="phone_empty">请输入手机号码</string>
+    <string name="phone_invalid">手机号码格式错误</string>
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>
     
-    <string name="register_input_email">请输入手机号码或邮箱</string>
+    <string name="register_input_email">请输入邮箱地址</string>
+    <string name="register_input_phone">请输入手机号码</string>
     <string name="register_input_pwd">请输入密码</string>
     <string name="register_input_identify">请输入验证码</string>
 

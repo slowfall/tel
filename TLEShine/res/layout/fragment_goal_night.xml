@@ -38,7 +38,7 @@
         android:layout_below="@+id/layout_point"
         android:background="@color/border_square_color_gray" />
 
-    <com.tranway.tleshine.widget.CustomizedTimeWheelView
+    <com.tranway.tleshine.widget.CustomizedSleepWheelView
         android:id="@+id/time_wheel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

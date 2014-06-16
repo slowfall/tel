@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
@@ -26,7 +25,7 @@ import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewMainTabs.MainActivity;
-import com.tranway.tleshine.widget.CustomizedTimeWheelView;
+import com.tranway.tleshine.widget.CustomizedSleepWheelView;
 import com.tranway.tleshine.widget.OnWheelScrollListener;
 import com.tranway.tleshine.widget.WheelView;
 
@@ -36,9 +35,10 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 	private static final String CHECK_REGISTER_USER_URL = "/add";
 
 	private TLEHttpRequest httpRequest;
-	private CustomizedTimeWheelView mTimeWheel;
+	private CustomizedSleepWheelView mTimeWheel;
 	private TextView mTimeTxt;
-	private int goalTime = 8 * 60;
+	private int goalTime = 0;
+	private String goalRange = "00:00-00:00";
 	private UserInfo userInfo;
 
 	@Override
@@ -56,7 +56,7 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 	private void initView() {
 		initTitleView();
 
-		mTimeWheel = (CustomizedTimeWheelView) findViewById(R.id.time_wheel);
+		mTimeWheel = (CustomizedSleepWheelView) findViewById(R.id.time_wheel);
 		mTimeWheel.setOnScrollLisenter(new OnWheelScrollListener() {
 			@Override
 			public void onScrollingStarted(WheelView wheel) {
@@ -89,15 +89,18 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 	private void setUserSleepTimeFromSP() {
 		userInfo = UserInfoKeeper.readUserInfo(this);
 		int userGoal = UserGoalKeeper.readSleepGoalTime(this);
-		if (userGoal != -1) {
+		String range = UserGoalKeeper.readSleepGoalTimeRange(this);
+		if (userGoal != -1 && range != null) {
 			goalTime = userGoal;
+			goalRange = range;
 		}
-		mTimeWheel.setCurrentGoal(goalTime);
+		mTimeWheel.setCurrentGoalRange(goalRange);
 		updateAchieveGoalTips(goalTime);
 	}
 
 	private void notifyWheelScroll() {
-		goalTime = mTimeWheel.getTime();
+		goalRange = mTimeWheel.getTime();
+		goalTime = UserInfoUtils.convertTimeRangeToTime(goalRange);
 		updateAchieveGoalTips(goalTime);
 	}
 
@@ -131,6 +134,7 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 			return;
 		}
 		UserGoalKeeper.writeSleepGoal(this, goalTime);
+		UserGoalKeeper.writeSleepGoalRange(this, goalRange);
 		syncUserInfoToServer(userInfo);
 	}
 

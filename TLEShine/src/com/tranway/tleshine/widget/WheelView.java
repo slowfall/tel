@@ -80,13 +80,13 @@ public class WheelView extends View {
 	private static final int ITEM_OFFSET = TEXT_SIZE / 5;
 
 	/** Additional width for items layout */
-	private static final int ADDITIONAL_ITEMS_SPACE = 25;
+	private static final int ADDITIONAL_ITEMS_SPACE = 10;
 
 	/** Label offset */
-	private static final int LABEL_OFFSET = 15;
+	private static final int LABEL_OFFSET = 10;
 
 	/** Left and right padding value */
-	private static final int PADDING = 15;
+	private static final int PADDING = 10;
 
 	/** Default count of visible items */
 	private static final int DEF_VISIBLE_ITEMS = 5;
