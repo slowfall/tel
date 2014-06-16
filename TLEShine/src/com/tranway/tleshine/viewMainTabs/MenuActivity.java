@@ -75,7 +75,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
-			Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
+			Util.logD(TAG, "onServiceConnected(), mBluetoothLeService:" + mBluetoothLeService);
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				finish();
@@ -121,6 +121,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 		initView();
 		checkBLE();
+		Intent gattServiceIntent = new Intent(this, RBLService.class);
+		getApplicationContext()
+				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
@@ -146,7 +149,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		unregisterReceiver(mGattUpdateReceiver);
 		if (mServiceConnection != null) {
-			unbindService(mServiceConnection);
+			getApplicationContext().unbindService(mServiceConnection);
 		}
 	}
 
@@ -169,8 +172,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 			return false;
 		}
 
-		Intent gattServiceIntent = new Intent(this, RBLService.class);
-		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		return true;
 	}
 
@@ -189,8 +190,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
 
-	private void handleBLEData(byte[] data) {
-		BLEPacket packet = new BLEPacket();
+	private void handleBLEData(final byte[] data) {
+		final BLEPacket packet = new BLEPacket();
 		byte sequenceMask = (byte) 0xf0;
 		byte typeMask = (byte) 0x0f;
 		int type = data[0] & typeMask;
@@ -223,7 +224,13 @@ public class MenuActivity extends Activity implements OnClickListener {
 		// total steps and calories since last sync.
 		case ActivityInfo.COMMAND:
 			if (packet.checkChecksum(data)) {
-				saveActivityInfo(packet.resolveCurrentActivityInfo(data));
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						saveActivityInfo(packet.resolveCurrentActivityInfo(data));
+					}
+				}).start();
 				ack = packet.makeReplyACK(sequenceNumber);
 				characteristicTx.setValue(ack);
 				mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -233,7 +240,13 @@ public class MenuActivity extends Activity implements OnClickListener {
 			if (packet.checkChecksum(data)) {
 				mEvery15MinPackect.add(data);
 				if (data[1] == (byte) 0x03) {
-					saveEvery15MinPacket(mEvery15MinPackect);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							saveEvery15MinPacket(mEvery15MinPackect);
+						}
+					}).start();
 					ack = packet.makeReplyACK(sequenceNumber);
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
@@ -242,21 +255,22 @@ public class MenuActivity extends Activity implements OnClickListener {
 			break;
 		case 0x05:
 			if (packet.checkChecksum(data)) {
-				ack = packet.makeReplyACK(sequenceNumber);
-				characteristicTx.setValue(ack);
-				mBluetoothLeService.writeCharacteristic(characteristicTx);
-			}
-			break;
-		case 0x06:
-			if (packet.checkChecksum(data)) {
 				mSleepPakect.add(data);
 				if (data[1] == (byte) 0x03) {
-					saveSleepPacket(mSleepPakect);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							saveSleepPacket(mSleepPakect);
+						}
+					}).start();
 					ack = packet.makeReplyACK(sequenceNumber);
 					characteristicTx.setValue(ack);
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
 				}
 			}
+			break;
+		case 0x06:
 			ToastHelper.showToast(R.string.sync_finished);
 			dismissConnectAndSyncDialog();
 			break;
@@ -301,7 +315,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		Map<String, Object> sleepData = blePacket.resolveSleepPacket(sleepPacket);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		// TODO add sleep goal to Map
-		long sleepGoal =  UserGoalKeeper.readSleepGoalTime(this) * 60l;
+		long sleepGoal = UserGoalKeeper.readSleepGoalTime(this) * 60l;
 		if (sleepGoal == -1) {
 			sleepGoal = 8 * 3600l;
 		}
@@ -396,14 +410,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 			}
 		}, SCAN_PERIOD);
 
-//		if (connState == false) {
-//			mBluetoothLeService.connect(mDeviceAddress);
-//		} else {
-//			mBluetoothLeService.disconnect();
-//			mBluetoothLeService.close();
-//		}
+		// if (connState == false) {
+		// mBluetoothLeService.connect(mDeviceAddress);
+		// } else {
+		// mBluetoothLeService.disconnect();
+		// mBluetoothLeService.close();
+		// }
 	}
 
+	private boolean isDoCheckDevice = false;
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
@@ -414,7 +429,10 @@ public class MenuActivity extends Activity implements OnClickListener {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					checkDevice(device);
+					if (!isDoCheckDevice) {
+						isDoCheckDevice = true;
+						checkDevice(device);
+					}
 				}
 			});
 		}
@@ -448,6 +466,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 				}
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 				dismissConnectAndSyncDialog();
+				isDoCheckDevice = false;
 			}
 
 			@Override
@@ -456,6 +475,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 				dismissConnectAndSyncDialog();
+				isDoCheckDevice = false;
 			}
 		}, null);
 		Map<String, String> data = new TreeMap<String, String>();

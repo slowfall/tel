@@ -169,8 +169,8 @@ public class BLEPacket {
 		every15MinData.put(DBInfo.KEY_UTC_TIME, utcTime);
 		every15MinData.put(DBInfo.KEY_STEPS, steps);
 		every15MinData.put(DBInfo.KEY_CALORIE, calories);
-		Util.logD(TAG, "in resovleEvery15MinPacket: utcTime:" + utcTime + ", steps:" + steps
-				+ ", calories:" + calories);
+//		Util.logD(TAG, "in resolveTimeStepAndCalorie: utcTime:" + utcTime + ", steps:" + steps
+//				+ ", calories:" + calories);
 		return every15MinData;
 	}
 
