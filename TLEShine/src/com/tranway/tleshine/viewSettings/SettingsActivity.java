@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity;
 import com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity;
 
@@ -73,14 +74,15 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		title.setText(getResources().getString(R.string.confirm_logout));
 		dialog.setContentView(dialogView);
 		dialog.show();
+		dialog.setTitle(R.string.app_name);
 		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
 		positiveBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				dialog.dismiss();
-				Intent intent = new Intent(SettingsActivity.this, SelectLoginActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Intent intent = new Intent(MyApplication.getAppContext(), SelectLoginActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
-				SettingsActivity.this.finish();
+//				SettingsActivity.this.finish();
 			}
 		});
 		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);

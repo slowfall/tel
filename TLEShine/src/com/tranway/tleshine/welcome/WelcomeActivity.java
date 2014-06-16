@@ -23,7 +23,7 @@ import com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity;
 
 public class WelcomeActivity extends Activity implements OnPageChangeListener, OnClickListener {
 	private static final int[] pics = { R.drawable.welcome_01, R.drawable.welcome_02,
-			R.drawable.welcome_03, R.drawable.welcome_04 };
+			R.drawable.welcome_03, R.drawable.welcome_04, R.drawable.welcome_05 };
 	private Button mFinishBtn;
 	private ViewPager mViewPager;
 	private ViewPagerAdapter mPagerAdapter;
@@ -65,6 +65,8 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener, O
 				rlParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 				finishBtn.setLayoutParams(rlParams);
 				finishBtn.setText(R.string.now_use);
+				finishBtn.setTextColor(getResources().getColor(android.R.color.white));
+				finishBtn.setBackgroundResource(R.drawable.btn_welcome_over);
 				finishBtn.setTag(LoadingActivity.FIRST_USE);
 				finishBtn.setOnClickListener(this);
 				layout.addView(finishBtn);

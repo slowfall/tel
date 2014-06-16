@@ -54,6 +54,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
+		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_ID, 12l);
 		getUserInfoFromServer(UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, null));
 		setup();
 	}

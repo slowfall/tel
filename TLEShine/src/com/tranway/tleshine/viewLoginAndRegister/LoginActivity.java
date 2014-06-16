@@ -214,6 +214,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 									UserInfoKeeper.KEY_PWD, password);
 							Intent intent = new Intent(MyApplication.getAppContext(),
 									MainActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 							startActivity(intent);
 						} else {
 							// ToastHelper.showToast(R.string.error_incorrect_email_passowrd,

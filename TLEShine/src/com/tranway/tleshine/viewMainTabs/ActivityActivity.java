@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -32,6 +31,7 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.model.ViewPagerAdapter;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
@@ -42,11 +42,11 @@ import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!
 public class ActivityActivity extends Activity {
-	// private static final String TAG = DayFragment.class.getSimpleName();
+	 private static final String TAG = ActivityActivity.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
-	private static final long ONE_DAY_SECONDS = 2400 * 36;
+	private static final long SECONDS_OF_ONE_DAY = 2400 * 36;
 	private static final float VIEWPAGE_HEIGHT_PERCENT = 0.5f;
 
 	// private JazzyViewPager mPager;
@@ -60,12 +60,7 @@ public class ActivityActivity extends Activity {
 	private boolean isInTop = true;
 	private ViewPagerAdapter mAdapter;
 
-	// private DBManager dbManager = new
-	// DBManager(MyApplication.getAppContext());
-
-//	private ArrayList<ExerciseContent> mContentList = new ArrayList<ExerciseContent>();
 	private List<Map<String, Object>> mEvery15MinPackets = new ArrayList<Map<String, Object>>();
-	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
 
 	private List<ActivityInfo> mActivityInfos = new ArrayList<ActivityInfo>();
 
@@ -73,36 +68,19 @@ public class ActivityActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activity);
-		// ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
-		// for (int i = 0; i <= 6; i++) {
-		// DailyExercise mExercise = new DailyExercise();
-		// mExercise.setDate(83834387L); // !!!
-		// mExercise.setGoal(1000);
-		// mExercise.setAchieve(800);
-		// exList.add(mExercise);
-		// }
-		//
-		// long ret = dbManager.addDailyExerciseInfo(exList);
-		// if (ret != -1) {
-		// mList.addAll(dbManager.queryDailyExerciseInfo());
-		// // for (DailyExercise ex : mList) {
-		// // Log.d("------", "date : " + ex.getDate());
-		// // }
-		// }
 
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
-		mActivityInfos = DBManager.queryActivityInfo(userId);
-		ActivityInfo activityInfo = new ActivityInfo();
-		activityInfo.setCalorie(100);
-		activityInfo.setDistance(1000);
-		activityInfo.setSteps(100);
-		activityInfo.setUtcTime(System.currentTimeMillis() * 1000);
-		mActivityInfos.add(activityInfo);
-
+		//Test code
+//		 ActivityInfo activityInfo = new ActivityInfo();
+//		 activityInfo.setCalorie(100);
+//		 activityInfo.setDistance(1000);
+//		 activityInfo.setSteps(100);
+//		 activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
+//		 DBManager.addActivityInfo(12, activityInfo);
 	}
 
 	@Override
 	public void onResume() {
+		Util.logD(TAG, "on Resume");
 		super.onResume();
 		initView();
 	}
@@ -126,6 +104,12 @@ public class ActivityActivity extends Activity {
 	private void initViewPagerLayout(int displayWidth, int displayHeight) {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new ViewPagerAdapter(this, mViewPager, mActivityInfos);
+		mPagerLayout = (LinearLayout) findViewById(R.id.layout_viewpager);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+		mActivityInfos = DBManager.queryActivityInfo(userId);
+		if (mActivityInfos.size() <= 0) {
+			return;
+		}
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(3);
@@ -134,7 +118,6 @@ public class ActivityActivity extends Activity {
 				(int) (displayHeight * VIEWPAGE_HEIGHT_PERCENT));
 		mViewPager.setLayoutParams(params);
 		mViewPager.setCurrentItem(mActivityInfos.size() - 1);
-		mPagerLayout = (LinearLayout) findViewById(R.id.layout_viewpager);
 		MyOnPageChangeListener pageChangeListener = new MyOnPageChangeListener();
 		mViewPager.setOnPageChangeListener(pageChangeListener);
 		mPagerLayout.setOnTouchListener(new OnTouchListener() {
@@ -149,33 +132,19 @@ public class ActivityActivity extends Activity {
 	private void initContentLayout() {
 		mListView = (ListView) findViewById(R.id.list_content);
 
-		// // for test
-		// ExerciseContent content = new ExerciseContent(11, 12, Sport.WALK,
-		// 200);
-		// mContentList.add(content);
-		// content = new ExerciseContent(12, 13, Sport.WALK, 400);
-		// mContentList.add(content);
-		// content = new ExerciseContent(13, 14, Sport.RUN, 500);
-		// mContentList.add(content);
-		// content = new ExerciseContent(14, 15, Sport.SWIM, 300);
-		// mContentList.add(content);
-		// content = new ExerciseContent(15, 16, Sport.SWIM, 200);
-		// mContentList.add(content);
-		// content = new ExerciseContent(16, 17, Sport.SWIM, 200);
-		// mContentList.add(content);
 		long utcTime = System.currentTimeMillis() / 1000;
-		long dayUtc = utcTime / ONE_DAY_SECONDS;
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
-		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * ONE_DAY_SECONDS, (dayUtc + 1)
-				* ONE_DAY_SECONDS);
-//		//TODO test
-		for (int i = 0; i < 14; i++) {
-			Map<String, Object> map = new TreeMap<String, Object>();
-			map.put(DBInfo.KEY_UTC_TIME, utcTime - 3600 * i);
-			map.put(DBInfo.KEY_CALORIE, 10 * i + 1);
-			map.put(DBInfo.KEY_STEPS, 100 * i + 10);
-			mEvery15MinPackets.add(map);
-		}
+		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
+				(dayUtc + 1) * SECONDS_OF_ONE_DAY);
+		// TODO test
+		// for (int i = 0; i < 14; i++) {
+		// Map<String, Object> map = new TreeMap<String, Object>();
+		// map.put(DBInfo.KEY_UTC_TIME, utcTime - 3600 * i);
+		// map.put(DBInfo.KEY_CALORIE, 10 * i + 1);
+		// map.put(DBInfo.KEY_STEPS, 100 * i + 10);
+		// mEvery15MinPackets.add(map);
+		// }
 		mContentAdapter = new ExerciseContentAdapter(this);
 		mContentAdapter.setContentList(mEvery15MinPackets);
 		mListView.setAdapter(mContentAdapter);
@@ -219,20 +188,21 @@ public class ActivityActivity extends Activity {
 		series.addPoint(new LinearPoint(6, 0));
 		series.addPoint(new LinearPoint(12, 0));
 		series.addPoint(new LinearPoint(18, 0));
-//		series.addPoint(new LinearPoint(24, 0));
+		// series.addPoint(new LinearPoint(24, 0));
 		for (Map<String, Object> every15MinPacket : mEvery15MinPackets) {
 			long utcTime = (Long) every15MinPacket.get(DBInfo.KEY_UTC_TIME);
 			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(utcTime * 1000);
-			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//			Util.logD(getTag(), "hour:" + hour + ", step:" + step);
-			series.addPoint(new LinearPoint(hour, step));
+			long second = utcTime % SECONDS_OF_ONE_DAY;
+			float x = second / 3600f;
+//			 Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second + ", x:" + x + ", step:" + step);
+			series.addPoint(new LinearPoint(x, step));
 		}
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
 		// Add chart view data
 		chartView.addSeries(series);
-		LabelAdapter mAdapter = new LabelAdapter(this,LabelOrientation.HORIZONTAL);
+		LabelAdapter mAdapter = new LabelAdapter(this, LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
 	}
@@ -272,9 +242,9 @@ public class ActivityActivity extends Activity {
 		@Override
 		public boolean handleMessage(Message msg) {
 			if (msg.what == MSG_SCROLL_BOTTOM) {
-				mHandler.postDelayed(toBottomRunnable, 10);
+				mHandler.postDelayed(toBottomRunnable, 1);
 			} else if (msg.what == MSG_SCROLL_TOP) {
-				mHandler.postDelayed(toTopRunnable, 10);
+				mHandler.postDelayed(toTopRunnable, 1);
 			} else if (msg.what == MSG_SCROLL_OVER) {
 				isScrolling = false;
 			}

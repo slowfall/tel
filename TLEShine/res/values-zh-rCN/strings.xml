@@ -19,8 +19,9 @@
     <string name="Servo">Servo</string>
     <string name="AnalogIn">Analog In</string>
     <string name="AIText">----</string>
-    <string name="connect">Connect</string>
-    <string name="loading">Refreshing......</string>
+    <string name="connect">连接</string>
+    <string name="connecting">正在连接.....</string>
+    <string name="loading">刷新中......</string>
     <string name="title_activity_select_login">SelectLoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -43,7 +44,10 @@
 	<string name="cycle2_text">最高分：1124</string>
 	<string name="cycle3_text">达标次数：1</string>
 	<string name="friends">朋友</string>
-	
+    <string name="activity">活动</string>
+	<string name="now_use">马上体验</string>
     <string name="positive">是</string>
     <string name="negative">否</string>
+    <string name="OK">好</string>
+	<string name="activity_record">运动记录</string>
 </resources>

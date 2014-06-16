@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -27,23 +28,30 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tranway.telshine.database.DBInfo;
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.bluetooth.RBLService;
 import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.BLEPacket;
 import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserGoalKeeper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
-import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.viewSettings.SettingsActivity;
 import com.tranway.tleshine.viewSettings.SettingsGoalActivity;
+import com.tranway.tleshine.widget.CustomizedProgressDialog;
 
 @SuppressLint("NewApi")
 public class MenuActivity extends Activity implements OnClickListener {
@@ -60,12 +68,14 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private String mDeviceAddress;
 	private List<byte[]> mEvery15MinPackect = new ArrayList<byte[]>();
 	private List<byte[]> mSleepPakect = new ArrayList<byte[]>();
+	private CustomizedProgressDialog mConnectAndSyncDialog;
 
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			mBluetoothLeService = ((RBLService.LocalBinder) service).getService();
+			Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				finish();
@@ -84,11 +94,14 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), R.string.disconnected, Toast.LENGTH_LONG)
+						.show();
+				dismissConnectAndSyncDialog();
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-				Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
-
+				Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_LONG)
+						.show();
+				showConnectAndSyncDialog(R.string.syncing);
 				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
 				byte[] data = intent.getByteArrayExtra(RBLService.EXTRA_DATA);
@@ -104,53 +117,61 @@ public class MenuActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
+
+		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 		initView();
 		checkBLE();
+		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
+		Util.logD(TAG, "on Resume");
 		if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		unregisterReceiver(mGattUpdateReceiver);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 
+		unregisterReceiver(mGattUpdateReceiver);
 		if (mServiceConnection != null) {
 			unbindService(mServiceConnection);
 		}
 	}
 
-	private void checkBLE() {
+	private boolean checkBLE() {
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(this, R.string.ble_not_supported,
+			// Toast.LENGTH_LONG).show();
+			ShowBleNotSupportDialog();
 			mServiceConnection = null;
-			return;
+			return false;
 		}
 
 		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = mBluetoothManager.getAdapter();
 		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, "Ble not supported", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(this, R.string.ble_not_supported,
+			// Toast.LENGTH_LONG).show();
+			ShowBleNotSupportDialog();
 			mServiceConnection = null;
-			return;
+			return false;
 		}
 
 		Intent gattServiceIntent = new Intent(this, RBLService.class);
 		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+		return true;
 	}
 
 	private void getGattService(BluetoothGattService gattService) {
@@ -236,6 +257,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 					mBluetoothLeService.writeCharacteristic(characteristicTx);
 				}
 			}
+			ToastHelper.showToast(R.string.sync_finished);
+			dismissConnectAndSyncDialog();
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
@@ -251,7 +274,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 		long todayUTC = utcTime / (3600 * 24);
 		currentActivityInfo.setUtcTime(todayUTC);
 		if (currentActivityInfo.getSteps() > 0) {
-			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+			currentActivityInfo.setSteps(DBManager.queryActivityInfoByTime(userId, todayUTC)
+					.getSteps());
 			DBManager.addActivityInfo(userId, currentActivityInfo);
 			TLEHttpRequest request = TLEHttpRequest.instance();
 			Map<String, String> data = new TreeMap<String, String>();
@@ -267,15 +292,20 @@ public class MenuActivity extends Activity implements OnClickListener {
 		BLEPacket blePacket = new BLEPacket();
 		List<Map<String, Object>> every15MinDatas = blePacket
 				.resolveEvery15MinPacket(every15MinPacket);
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		DBManager.addEvery15MinData(userId, every15MinDatas);
 	}
 
 	private void saveSleepPacket(List<byte[]> sleepPacket) {
 		BLEPacket blePacket = new BLEPacket();
 		Map<String, Object> sleepData = blePacket.resolveSleepPacket(sleepPacket);
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		// TODO add sleep goal to Map
+		long sleepGoal =  UserGoalKeeper.readSleepGoalTime(this) * 60l;
+		if (sleepGoal == -1) {
+			sleepGoal = 8 * 3600l;
+		}
+		sleepData.put(DBInfo.KEY_SLEEP_GOAL, sleepGoal);
 		DBManager.addSleepInfo(userId, sleepData);
 	}
 
@@ -310,7 +340,13 @@ public class MenuActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_connect_fitband:
-			scanAndConnectDevice();
+			Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
+			if (checkBLE()) {
+				scanAndConnectDevice();
+			}
+			// Test code
+			// saveEvery15MinPacket(Util.getTestBytesList());
+			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
 			break;
@@ -318,7 +354,28 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 	}
 
+	private void showConnectAndSyncDialog(int msgId) {
+		if (mConnectAndSyncDialog == null) {
+			mConnectAndSyncDialog = new CustomizedProgressDialog(this, msgId);
+			mConnectAndSyncDialog.setCancelable(false);
+		} else {
+			if (mConnectAndSyncDialog.isShowing()) {
+				mConnectAndSyncDialog.dismiss();
+			}
+			mConnectAndSyncDialog.setMsgId(msgId);
+		}
+
+		mConnectAndSyncDialog.show();
+	}
+
+	private void dismissConnectAndSyncDialog() {
+		if (mConnectAndSyncDialog != null && mConnectAndSyncDialog.isShowing()) {
+			mConnectAndSyncDialog.dismiss();
+		}
+	}
+
 	private void scanAndConnectDevice() {
+		showConnectAndSyncDialog(R.string.connecting);
 		scanLeDevice();
 
 		Timer mTimer = new Timer();
@@ -332,18 +389,19 @@ public class MenuActivity extends Activity implements OnClickListener {
 							Toast toast = Toast.makeText(MenuActivity.this,
 									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
 							toast.show();
+							dismissConnectAndSyncDialog();
 						}
 					});
 				}
 			}
 		}, SCAN_PERIOD);
 
-		if (connState == false) {
-			mBluetoothLeService.connect(mDeviceAddress);
-		} else {
-			mBluetoothLeService.disconnect();
-			mBluetoothLeService.close();
-		}
+//		if (connState == false) {
+//			mBluetoothLeService.connect(mDeviceAddress);
+//		} else {
+//			mBluetoothLeService.disconnect();
+//			mBluetoothLeService.close();
+//		}
 	}
 
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -389,11 +447,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+				dismissConnectAndSyncDialog();
 			}
 
 			@Override
 			public void onFailure(String url, int errorNo, String errorMsg) {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+
+				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+				dismissConnectAndSyncDialog();
 			}
 		}, null);
 		Map<String, String> data = new TreeMap<String, String>();
@@ -417,6 +479,28 @@ public class MenuActivity extends Activity implements OnClickListener {
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 			}
 		}.start();
+	}
+
+	private void ShowBleNotSupportDialog() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
+		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
+		TextView title = (TextView) dialogView.findViewById(R.id.layout_content);
+		title.setText(getResources().getString(R.string.ble_not_supported_tips));
+		dialog.setContentView(dialogView);
+		dialog.setTitle(R.string.app_name);
+		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
+		positiveBtn.setVisibility(View.GONE);
+		ImageView line = (ImageView) dialogView.findViewById(R.id.line_btn);
+		line.setVisibility(View.GONE);
+		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);
+		negativeBtn.setText(R.string.OK);
+		negativeBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
 	}
 
 }

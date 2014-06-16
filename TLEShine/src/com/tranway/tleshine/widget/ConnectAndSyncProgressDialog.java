@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.tranway.tleshine.R;
 
-public class CustomizedProgressDialog extends ProgressDialog {
+public class ConnectAndSyncProgressDialog extends ProgressDialog {
 	private Context context = null;
 	private int msgId = R.string.is_loading;
 
-	public CustomizedProgressDialog(Context context, int msgId) {
+	public ConnectAndSyncProgressDialog(Context context, int msgId) {
 		super(context);
 		this.context = context;
 		this.msgId = msgId;
@@ -32,10 +32,10 @@ public class CustomizedProgressDialog extends ProgressDialog {
 
 			@Override
 			public void onShow(DialogInterface dialog) {
-				ImageView image = (ImageView) CustomizedProgressDialog.this.findViewById(R.id.loading_imgeview);
+				ImageView image = (ImageView) ConnectAndSyncProgressDialog.this.findViewById(R.id.loading_imgeview);
 				Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim_progress);
 				image.startAnimation(animation);
-				TextView tipsTxt = (TextView) CustomizedProgressDialog.this.findViewById(R.id.txt_tips);
+				TextView tipsTxt = (TextView) ConnectAndSyncProgressDialog.this.findViewById(R.id.txt_tips);
 				if (tipsTxt != null) {
 					tipsTxt.setText(context.getResources().getString(msgId));
 				}
@@ -44,10 +44,6 @@ public class CustomizedProgressDialog extends ProgressDialog {
 //		this.setCancelable(false);
 	}
 
-	public void setMsgId(int msgId) {
-		this.msgId = msgId;
-	}
-	
 	private void setScreenBrightness() {
 		Window window = getWindow();
 		WindowManager.LayoutParams lp = window.getAttributes();

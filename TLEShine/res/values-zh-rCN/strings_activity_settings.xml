@@ -38,4 +38,11 @@
 	<string name="my_exercise_goal">我的运动目标</string>
 	<string name="my_sleep_goal">我的睡眠目标</string>
 	<string name="crrent_situation">每天当前情况： </string>
+	
+	<string name="exercise">运动</string>
+	<string name="sleep">睡眠</string>
+	<string name="exercise_goal_cannot_null">目标运动点数不能设置为0</string>
+	<string name="sleep_goal_cannot_null">目标睡眠时间不能设置为0</string>
+	
+	<string name="is_loading">正在加载&#8230;</string>
 </resources>

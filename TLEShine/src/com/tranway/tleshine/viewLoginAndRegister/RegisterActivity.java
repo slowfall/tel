@@ -68,7 +68,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_title_left:
+		case R.id.btn_title_icon_left:
 			finish();
 			break;
 		case R.id.btn_next:

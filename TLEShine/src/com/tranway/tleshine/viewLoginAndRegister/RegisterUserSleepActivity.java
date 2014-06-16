@@ -162,6 +162,7 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 					if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 						ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
 						Intent intent = new Intent(RegisterUserSleepActivity.this, MainActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 						startActivity(intent);
 						finish();
 					} else {

@@ -264,6 +264,40 @@ public class DBManager {
 		return activityInfos;
 	}
 
+	public static ActivityInfo queryActivityInfoByTime(long userId, long utcTime) {
+		ActivityInfo activityInfo = new ActivityInfo();
+		if (userId < 0) {
+			return activityInfo;
+		}
+		DBHelper helper = new DBHelper(MyApplication.getAppContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
+		if (db == null) {
+			return activityInfo;
+		}
+
+		db.beginTransaction();
+		try {
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_ACTIVITY_INFO + " where "
+					+ DBInfo.USER_ID + "=? and " + DBInfo.KEY_UTC_TIME + "=? " + " order by "
+					+ DBInfo.KEY_UTC_TIME + " ASC",
+					new String[] { String.valueOf(userId), String.valueOf(utcTime) });
+
+			while (cursor.moveToNext()) {
+				activityInfo.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				activityInfo.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
+				activityInfo.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
+				activityInfo.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
+				break;
+			}
+			cursor.close();
+		} finally {
+			db.endTransaction();
+		}
+		db.close();
+
+		return activityInfo;
+	}
+
 	public static long addEvery15MinData(long userId, List<Map<String, Object>> every15MinDatas) {
 		if (userId < 0 || every15MinDatas == null || every15MinDatas.size() <= 0) {
 			return -1;
@@ -312,6 +346,8 @@ public class DBManager {
 			return every15MinPackets;
 		}
 
+		fromUTC = 0;
+		toUTC = 100000000000l;
 		db.beginTransaction();
 		try {
 			Cursor cursor = db.rawQuery(
@@ -363,6 +399,9 @@ public class DBManager {
 				mValues.put(DBInfo.KEY_SLEEP_DEEP_TIME,
 						(Long) sleepData.get(DBInfo.KEY_SLEEP_DEEP_TIME));
 			}
+			if (sleepData.containsKey(DBInfo.KEY_SLEEP_GOAL)) {
+				mValues.put(DBInfo.KEY_SLEEP_GOAL, (Long) sleepData.get(DBInfo.KEY_SLEEP_GOAL));
+			}
 			if (sleepData.containsKey(DBInfo.KEY_SLEEP_SHALLOW_TIME)) {
 				mValues.put(DBInfo.KEY_SLEEP_SHALLOW_TIME,
 						(Long) sleepData.get(DBInfo.KEY_SLEEP_SHALLOW_TIME));
@@ -389,16 +428,20 @@ public class DBManager {
 
 		db.beginTransaction();
 		try {
-			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_EVERY_FIFTEEN_MIN + " where "
-					+ DBInfo.USER_ID + "=? " + " order by " + DBInfo.KEY_UTC_TIME + " DESC",
+			Cursor cursor = db.rawQuery("select * from " + DBInfo.TB_SLEEP_INFO + " where "
+					+ DBInfo.USER_ID + "=? " + " order by " + DBInfo.KEY_UTC_TIME + " ASC",
 					new String[] { String.valueOf(userId) });
 
 			while (cursor.moveToNext()) {
 				Map<String, Object> data = new TreeMap<String, Object>();
 				data.put(DBInfo.KEY_UTC_TIME,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				if (cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)) != -1) {
 				data.put(DBInfo.KEY_SLEEP_GOAL,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)));
+				} else {
+					data.put(DBInfo.KEY_SLEEP_GOAL, 0);
+				}
 				data.put(DBInfo.KEY_SLEEP_DEEP_TIME,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_DEEP_TIME)));
 				data.put(DBInfo.KEY_SLEEP_SHALLOW_TIME,

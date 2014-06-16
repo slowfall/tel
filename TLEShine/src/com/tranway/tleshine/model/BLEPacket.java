@@ -103,7 +103,7 @@ public class BLEPacket {
 	}
 
 	private void copyBytesArrayToList(byte[] fromArray, int fromPos, int length, List<Byte> toList) {
-		for (int i = fromPos; i < length; i++) {
+		for (int i = fromPos; i < length + fromPos; i++) {
 			toList.add(fromArray[i]);
 		}
 	}
@@ -186,18 +186,20 @@ public class BLEPacket {
 			case 0x01:
 				if (!isSetStartTime) {
 					isSetStartTime = true;
-					byte[] utcTimeBytes = new byte[4];
+					byte[] utcTimeBytes = new byte[PACKET_UTC_TIME_BYTES_LENGHT];
 					System.arraycopy(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH, utcTimeBytes,
 							0, utcTimeBytes.length);
 					startTime = bytesToInt(utcTimeBytes);
 				}
-				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
-						packetData.length - CMD_AND_PACKET_INDEX_BYTES_LENGTH
-								- CHECKSUM_BYTE_LENGTH, sleepBytes);
+				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH
+						+ PACKET_UTC_TIME_BYTES_LENGHT, packetData.length
+						- CMD_AND_PACKET_INDEX_BYTES_LENGTH - PACKET_UTC_TIME_BYTES_LENGHT
+						- CHECKSUM_BYTE_LENGTH, sleepBytes);
 				break;
 			case 0x02:
 				copyBytesArrayToList(packetData, CMD_AND_PACKET_INDEX_BYTES_LENGTH,
-						packetData.length - 1, sleepBytes);
+						packetData.length - CMD_AND_PACKET_INDEX_BYTES_LENGTH
+								- CHECKSUM_BYTE_LENGTH, sleepBytes);
 				break;
 			case 0x03:
 				// check total packets number
@@ -250,7 +252,7 @@ public class BLEPacket {
 		long mod = startUtcTime % SECONDS_OF_5_MINS;
 		sleepedTime -= mod;
 		sleepShallowTime = sleepedTime - sleepDeepTime;
-		sleepMap.put(DBInfo.KEY_UTC_TIME, sleepedTime);
+		sleepMap.put(DBInfo.KEY_UTC_TIME, startUtcTime);
 		sleepMap.put(DBInfo.KEY_SLEEP_DEEP_TIME, sleepDeepTime);
 		sleepMap.put(DBInfo.KEY_SLEEP_SHALLOW_TIME, sleepShallowTime);
 

@@ -307,7 +307,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		long todayUTC = utcTime / (3600 * 24);
 		currentActivityInfo.setUtcTime(todayUTC);
 		if (currentActivityInfo.getSteps() > 0) {
-			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 			DBManager.addActivityInfo(userId, currentActivityInfo);
 			TLEHttpRequest request = TLEHttpRequest.instance();
 			Map<String, String> data = new TreeMap<String, String>();
@@ -323,7 +323,7 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 		BLEPacket blePacket = new BLEPacket();
 		List<Map<String, Object>> every15MinDatas = blePacket
 				.resolveEvery15MinPacket(packetForEvery15Min);
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		DBManager.addEvery15MinData(userId, every15MinDatas);
 	}
 
@@ -377,7 +377,6 @@ public class BLEConnectActivity extends Activity implements OnClickListener {
 				if (mDevice == null) {
 					runOnUiThread(new Runnable() {
 						public void run() {
-
 							Toast toast = Toast.makeText(BLEConnectActivity.this,
 									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
 							toast.show();

@@ -1,12 +1,7 @@
 package com.tranway.tleshine.viewMainTabs;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -17,21 +12,21 @@ public class FriendsActivity extends Activity {
 	private static final String TAG_INFO = "info";
 	private static final String TAG_TODAY = "today";
 	private static final String TAG_YESTERDAY = "yesterday";
-	private static final String SAVED_TAG = "fragment_tag";
+	public static final String SAVED_TAG = "fragment_tag";
 
 	private SocialInfoFragment mInfoFragment;
-	private SocialRankFragment mTodayRankFragment, mYesterdayRankFragment;
+	private SocialRankFragment mDayRankFragment, mYesterdayRankFragment;
 
 	private String mRadioTag = null;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
 		initView();
-
-		showInfoFragment();
+		//		showInfoFragment();
+		showFragment(R.id.radio_my_info);
 	}
 
 	@Override
@@ -45,23 +40,31 @@ public class FriendsActivity extends Activity {
 		mGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup arg0, int arg1) {
-				switch (arg1) {
-				case R.id.radio_my_info:
-					showInfoFragment();
-					break;
-				case R.id.radio_rank_today:
-					showTodayRankFragment();
-					break;
-				case R.id.radio_rank_yesterday:
-					showTodayRankFragment();
-					break;
-				default:
-					break;
-				}
+				showFragment(arg1);
 			}
 		});
 	}
 
+	private void showFragment(int radioId) {
+		switch (radioId) {
+		case R.id.radio_my_info:
+			mInfoFragment = new SocialInfoFragment();
+			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment)
+					.commit();
+			break;
+		case R.id.radio_rank_today:
+		case R.id.radio_rank_yesterday:
+			mDayRankFragment = new SocialRankFragment();
+			Bundle bundle = new Bundle();
+			bundle.putInt(SAVED_TAG, radioId);
+			mDayRankFragment.setArguments(bundle);
+			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment)
+					.commit();
+			break;
+		default:
+			break;
+		}
+	}
 	private void showInfoFragment() {
 		mRadioTag = TAG_INFO;
 		mInfoFragment = new SocialInfoFragment();
@@ -71,8 +74,8 @@ public class FriendsActivity extends Activity {
 
 	private void showTodayRankFragment() {
 		mRadioTag = TAG_TODAY;
-		mTodayRankFragment = new SocialRankFragment();
-		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mTodayRankFragment)
+		mDayRankFragment = new SocialRankFragment();
+		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment)
 				.commit();
 	}
 }

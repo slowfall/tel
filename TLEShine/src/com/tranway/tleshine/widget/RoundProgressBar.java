@@ -208,7 +208,7 @@ public class RoundProgressBar extends View {
 		}
 	}
 
-	public synchronized void setProgress(int current, int total) {
+	public synchronized void setProgress(long current, long total) {
 		textCurrent = String.valueOf(current);
 		textTotal = "共 " + total + " 点";
 		float progress = 0;

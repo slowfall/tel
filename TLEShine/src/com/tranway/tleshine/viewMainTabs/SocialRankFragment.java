@@ -2,7 +2,6 @@ package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -21,9 +20,9 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.FriendInfo;
 import com.tranway.tleshine.model.RankAdapter;
 import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
-import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class SocialRankFragment extends Fragment {
@@ -34,6 +33,7 @@ public class SocialRankFragment extends Fragment {
 	private RankAdapter mAdapter;
 	private List<FriendInfo> mRankList = new ArrayList<FriendInfo>();
 	private UserInfo mUserInfo;
+	private int mDayOffset = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +42,20 @@ public class SocialRankFragment extends Fragment {
 		mUserInfo = UserInfoKeeper.readUserInfo(getActivity());
 
 		initView(v);
-
-		getRankFromServer(mUserInfo.getId(), "2014-06-05", "2014-06-06");
+		
+		Bundle bundle = getArguments();
+		switch (bundle.getInt(FriendsActivity.SAVED_TAG)) {
+		case R.id.radio_rank_today:
+			mDayOffset = 0;
+			break;
+		case R.id.radio_rank_yesterday:
+			mDayOffset = -1;
+			break;
+		default:
+			break;
+		}
+		
+		getRankFromServer(mUserInfo.getId());
 
 		return v;
 	}
@@ -55,7 +67,7 @@ public class SocialRankFragment extends Fragment {
 		mAdapter.notifyDataSetChanged();
 	}
 
-	private void getRankFromServer(long userId, String begin, String end) {
+	private void getRankFromServer(long userId) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 			@Override
@@ -73,8 +85,8 @@ public class SocialRankFragment extends Fragment {
 				ToastHelper.showToast(R.string.get_rank_list_failed, Toast.LENGTH_LONG);
 			}
 		}, getActivity());
-		httpRequest.get(GET_RANK_END_URL + "/" + 1 + "?begintime=" + getDateTime(-1) + "&endtime=" + getDateTime(0),
-				null);
+		httpRequest.get(GET_RANK_END_URL + "/" + 1 + "?begintime=" + getDateTime(mDayOffset - 1)
+				+ "&endtime=" + getDateTime(mDayOffset), null);
 	}
 
 	private void getRankListFromJSON(String result) throws JSONException {

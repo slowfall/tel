@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@android:color/transparent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -28,6 +28,7 @@
             RoundProgressBar:style="STROKE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             RoundProgressBar:roundColor="@color/gray"
             RoundProgressBar:roundProgressColor="@color/yellow"
             RoundProgressBar:roundWidth="12dp"
@@ -36,5 +37,17 @@
             RoundProgressBar:textTotalColor="@color/gray"
             RoundProgressBar:textTotalSize="18sp" />
     </LinearLayout>
+
+    <com.tranway.tleshine.widget.chartview.ChartView
+        xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
+        android:id="@+id/chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        chartview:bottomLabelHeight="20dp"
+        chartview:gridLineColor="#C0C0C0"
+        chartview:gridLineWidth="3dp"
+        chartview:gridLinesHorizontal="5"
+        chartview:gridLinesVertical="5" />
 
 </LinearLayout>

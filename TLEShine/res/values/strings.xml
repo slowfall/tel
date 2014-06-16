@@ -20,6 +20,7 @@
     <string name="AnalogIn">Analog In</string>
     <string name="AIText">----</string>
     <string name="connect">Connect</string>
+    <string name="connecting">connecting.....</string>
     <string name="loading">Refreshing......</string>
     <string name="title_activity_select_login">SelectLoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
@@ -47,13 +48,13 @@
     <string name="right_sport">适量运动</string>
     <string name="overdose_sport">剧烈运动</string>
     <string name="activity">活动</string>
-    <string name="sleep">睡眠</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="now_use">马上体验</string>
+    <string name="now_use">Start</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
     
     <string name="positive">yes</string>
     <string name="negative">no</string>
-
+	<string name="OK">OK</string>
+	<string name="activity_record">Activity Record</string>
 </resources>

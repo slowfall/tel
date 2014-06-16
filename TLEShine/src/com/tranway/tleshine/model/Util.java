@@ -1,5 +1,8 @@
 package com.tranway.tleshine.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -93,4 +96,29 @@ public class Util {
 	}
 	
 
+	public static List<byte[]> getTestBytesList() {
+		byte[] info = new byte[] { (byte) 0x04, (byte) 0x01, (byte) 0x54, (byte) 0x43, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x0F, (byte) 0xFF, (byte) 0x1D, (byte) 0xBC,
+				(byte) 0x5A, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x20,
+				(byte) 0x20, (byte) 0x20, (byte) 0x20 };
+		byte[] info2 = new byte[] { (byte) 0x04, (byte) 0x02, (byte) 0x54, 0x20 };
+		byte[] info3 = new byte[] { (byte) 0x04, (byte) 0x03, (byte) 0x54,(byte) 0x20 };
+		List<byte[]> list = new ArrayList<byte[]>();
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info);
+		list.add(info2);
+		list.add(info3);
+		return list;
+	}
 }
