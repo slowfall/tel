@@ -1,5 +1,8 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -145,7 +148,9 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 			return;
 		}
 		Map<String, String> params = UserInfoUtils.convertUserInfoToParamsMap(userInfo);
-
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		String createDate = simpleDateFormat.format(new Date());
+		params.put(UserInfo.SEVER_KEY_CREATE_DATE, createDate);
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 
 			@Override
@@ -161,7 +166,8 @@ public class RegisterUserSleepActivity extends Activity implements OnClickListen
 					int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 					if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 						ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
-						Intent intent = new Intent(RegisterUserSleepActivity.this, MainActivity.class);
+						Intent intent = new Intent(RegisterUserSleepActivity.this,
+								MainActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 						startActivity(intent);
 						finish();

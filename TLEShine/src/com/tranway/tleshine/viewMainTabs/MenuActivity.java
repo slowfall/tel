@@ -60,7 +60,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private static final long SCAN_PERIOD = 10000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 	private static final String ADD_SPORT_POINT_END_URL = "/AddSportPoint";
-	private boolean connState = false;
+//	private boolean connState = false;
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -287,8 +287,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		long todayUTC = utcTime / (3600 * 24);
 		currentActivityInfo.setUtcTime(todayUTC);
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		if (currentActivityInfo.getSteps() > 0) {
-			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 			currentActivityInfo.setSteps(DBManager.queryActivityInfoByTime(userId, todayUTC)
 					.getSteps());
 			DBManager.addActivityInfo(userId, currentActivityInfo);

@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class Util {
 	private static final String SHARE_PREFERENCES_NAME = "tle.preferences";
+	public static final long SECONDS_OF_ONE_DAY = 24 * 3600;
 
 	/**
 	 * @param level

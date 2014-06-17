@@ -203,7 +203,7 @@ public class DBManager {
 		db.close();
 	}
 
-	public static long addActivityInfo(long userId, ActivityInfo activityInfo) {
+	synchronized public static long addActivityInfo(long userId, ActivityInfo activityInfo) {
 		if (userId < 0 || activityInfo == null) {
 			return -1;
 		}
@@ -231,7 +231,7 @@ public class DBManager {
 		return ret;
 	}
 
-	public static List<ActivityInfo> queryActivityInfo(long userId) {
+	synchronized public static List<ActivityInfo> queryActivityInfo(long userId) {
 		List<ActivityInfo> activityInfos = new ArrayList<ActivityInfo>();
 		if (userId < 0) {
 			return activityInfos;
@@ -264,7 +264,7 @@ public class DBManager {
 		return activityInfos;
 	}
 
-	public static ActivityInfo queryActivityInfoByTime(long userId, long utcTime) {
+	synchronized public static ActivityInfo queryActivityInfoByTime(long userId, long utcTime) {
 		ActivityInfo activityInfo = new ActivityInfo();
 		if (userId < 0) {
 			return activityInfo;
@@ -298,7 +298,7 @@ public class DBManager {
 		return activityInfo;
 	}
 
-	public static long addEvery15MinData(long userId, List<Map<String, Object>> every15MinDatas) {
+	synchronized public static long addEvery15MinData(long userId, List<Map<String, Object>> every15MinDatas) {
 		if (userId < 0 || every15MinDatas == null || every15MinDatas.size() <= 0) {
 			return -1;
 		}
@@ -334,7 +334,7 @@ public class DBManager {
 		return ret;
 	}
 
-	public static List<Map<String, Object>> queryEvery15MinPackets(long userId, long fromUTC,
+	synchronized public static List<Map<String, Object>> queryEvery15MinPackets(long userId, long fromUTC,
 			long toUTC) {
 		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
 		if (userId < 0 || fromUTC < 0 || toUTC < 0 || fromUTC > toUTC) {
@@ -374,7 +374,7 @@ public class DBManager {
 		return every15MinPackets;
 	}
 
-	public static long addSleepInfo(long userId, Map<String, Object> sleepData) {
+	synchronized public static long addSleepInfo(long userId, Map<String, Object> sleepData) {
 		if (userId < 0 || sleepData == null || sleepData.size() <= 0) {
 			return -1;
 		}
@@ -415,7 +415,7 @@ public class DBManager {
 		return ret;
 	}
 
-	public static List<Map<String, Object>> queryAllSleepInfos(long userId) {
+	synchronized public static List<Map<String, Object>> queryAllSleepInfos(long userId) {
 		List<Map<String, Object>> sleepInfos = new ArrayList<Map<String, Object>>();
 		if (userId < 0) {
 			return sleepInfos;

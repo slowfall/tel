@@ -76,13 +76,22 @@ public class ActivityActivity extends Activity {
 //		 activityInfo.setSteps(100);
 //		 activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
 //		 DBManager.addActivityInfo(12, activityInfo);
+		initView();
 	}
 
 	@Override
 	public void onResume() {
 		Util.logD(TAG, "on Resume");
 		super.onResume();
-		initView();
+
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+		mActivityInfos = DBManager.queryActivityInfo(userId);
+		long utcTime = System.currentTimeMillis() / 1000;
+		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
+		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
+				(dayUtc + 1) * SECONDS_OF_ONE_DAY);
+		mAdapter.notifyDataSetChanged();
+		mContentAdapter.notifyDataSetChanged();
 	}
 
 	private void initView() {
@@ -105,8 +114,6 @@ public class ActivityActivity extends Activity {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new ViewPagerAdapter(this, mViewPager, mActivityInfos);
 		mPagerLayout = (LinearLayout) findViewById(R.id.layout_viewpager);
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		mActivityInfos = DBManager.queryActivityInfo(userId);
 		if (mActivityInfos.size() <= 0) {
 			return;
 		}
@@ -132,11 +139,6 @@ public class ActivityActivity extends Activity {
 	private void initContentLayout() {
 		mListView = (ListView) findViewById(R.id.list_content);
 
-		long utcTime = System.currentTimeMillis() / 1000;
-		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
-				(dayUtc + 1) * SECONDS_OF_ONE_DAY);
 		// TODO test
 		// for (int i = 0; i < 14; i++) {
 		// Map<String, Object> map = new TreeMap<String, Object>();

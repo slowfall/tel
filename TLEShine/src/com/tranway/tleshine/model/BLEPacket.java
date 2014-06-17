@@ -84,7 +84,7 @@ public class BLEPacket {
 
 		byte[] utcBytes = new byte[4];
 		System.arraycopy(byteActivityInfo, 1, utcBytes, 0, utcBytes.length);
-		activityInfo.setUtcTime(bytesToInt(utcBytes));
+		activityInfo.setUtcTime(bytesToInt(utcBytes) / Util.SECONDS_OF_ONE_DAY);
 
 		byte[] stepsBytes = new byte[3];
 		System.arraycopy(byteActivityInfo, 5, stepsBytes, 0, stepsBytes.length);
