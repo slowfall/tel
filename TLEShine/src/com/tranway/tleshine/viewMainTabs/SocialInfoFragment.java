@@ -94,7 +94,7 @@ public class SocialInfoFragment extends Fragment {
 				ToastHelper.showToast(R.string.get_user_friend_list_failed, Toast.LENGTH_LONG);
 			}
 		}, getActivity());
-		httpRequest.get(GET_FRIENDS_END_URL + "/" + 78, null);
+		httpRequest.get(GET_FRIENDS_END_URL + "/" + userId, null);
 	}
 
 	private void getFriendListFromJSON(String result) throws JSONException {

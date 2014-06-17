@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +26,8 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.TLEHttpRequest;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
-import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.model.Util;
 
 public class RegisterActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -48,6 +50,19 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		initView();
 	}
 
+	@Override
+	protected void onResume() {
+		isRunning = true;
+		setRequestTxt();
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		isRunning = false;
+		super.onStop();
+	}
+
 	private void initView() {
 		initTitleView();
 
@@ -55,13 +70,66 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		mPhoneTxt = (EditText) findViewById(R.id.phone);
 		mCodeTxt = (EditText) findViewById(R.id.identify_code);
 		mRequestTxt = (TextView) findViewById(R.id.request_identify);
-		mRequestTxt.setOnClickListener(this);
+
 		mPwdTxt = (EditText) findViewById(R.id.password);
 
 		TextView mRequestTxt = (TextView) findViewById(R.id.request_identify);
 		mRequestTxt.setOnClickListener(this);
 
 	}
+
+	private void setRequestTxt() {
+		long gencodeGetTime = UserInfoKeeper.readUserInfo(getApplicationContext(),
+				UserInfoKeeper.KEY_GEN_CODE_GET_TIME, -1l);
+		final int seconds = (int) ((System.currentTimeMillis() - gencodeGetTime) / 1000);
+		if (seconds > 60) {
+			mRequestTxt.setClickable(true);
+			mRequestTxt.setOnClickListener(this);
+			mRequestTxt.setText(R.string.request_identify);
+		} else {
+			mRequestTxt.setClickable(false);
+			String text = String.format(getString(R.string.wait_n_seconds_get_again),60 - seconds);
+			mRequestTxt.setText(text);
+			mRequestTxtThread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					int s = 60 - seconds;
+					do {
+						try {
+							Thread.sleep(1000);
+							s -= 1;
+							mRequestTxtHandler.sendEmptyMessage(s);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} while (s >= 0);
+				}
+			});
+			mRequestTxtThread.start();
+		}
+	}
+
+	private boolean isRunning = true;
+	private Thread mRequestTxtThread;
+	private Handler mRequestTxtHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (isRunning == false) {
+				return;
+			}
+			Util.logD(TAG, "msg.what:" + msg.what);
+			if (msg.what <= 0) {
+				mRequestTxt.setClickable(true);
+				mRequestTxt.setText(R.string.request_identify);
+				mRequestTxt.setOnClickListener(RegisterActivity.this);
+			} else {
+				mRequestTxt.setClickable(false);
+				String text = String.format(getString(R.string.wait_n_seconds_get_again), msg.what);
+				mRequestTxt.setText(text);
+			}
+		};
+	};
 
 	private void initTitleView() {
 		ImageButton mPreBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
@@ -214,6 +282,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							ToastHelper.showToast(R.string.get_gen_code_success, Toast.LENGTH_LONG);
 							Log.d(TAG, "get gencode: " + data.toString());
 							gencodeId = data.getString(TLEHttpRequest.MSG);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(),
+									UserInfoKeeper.KEY_GEN_CODE, gencodeId);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(),
+									UserInfoKeeper.KEY_GEN_CODE_GET_TIME,
+									System.currentTimeMillis());
+							setRequestTxt();
 						} else {
 							ToastHelper.showToast(R.string.get_gen_code_failed, Toast.LENGTH_LONG);
 							Log.e(TAG, "email is not available");

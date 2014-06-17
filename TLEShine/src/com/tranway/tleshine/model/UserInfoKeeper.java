@@ -22,12 +22,16 @@ public class UserInfoKeeper {
 	public static final String KEY_STRIDE = "stride";
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_STEPSTARGET = "stepsTarget";
+	public static final String KEY_GEN_CODE = "genCode";
+	public static final String KEY_GEN_CODE_GET_TIME ="genCodeGetTime";
 
 	public static void writeUserInfo(Context context, JSONObject data) throws JSONException {
 		UserInfo info = new UserInfo();
 		info.setId(data.getLong(UserInfo.SEVER_KEY_ID));
 		info.setEmail(data.getString(UserInfo.SEVER_KEY_EMAIL));
-		info.setName(data.getString(UserInfo.SEVER_KEY_NAME));
+		if (data.isNull(UserInfo.SEVER_KEY_NAME)) {
+			info.setName(data.getString(UserInfo.SEVER_KEY_NAME));
+		}
 		info.setPassword(data.getString(UserInfo.SEVER_KEY_PASSWORD));
 		info.setSex(data.getInt(UserInfo.SEVER_KEY_SEX));
 		info.setBirthday(data.getLong(UserInfo.SEVER_KEY_BIRTHDAY));
