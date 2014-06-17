@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.tranway.tleshine.widget.CustomizedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
+	style="@style/FitbandBackground"
     android:scrollbars="none" >
 
     <LinearLayout
@@ -40,6 +38,7 @@
             <Button
                 android:id="@+id/btn_scroll"
                 android:layout_width="fill_parent"
+                android:layout_marginTop="@dimen/activity_title_height"
                 android:layout_height="40dp"
                 android:background="@drawable/selector_btn_fitband_style"
                 android:textColor="@android:color/white"

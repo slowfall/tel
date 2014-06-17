@@ -6,6 +6,6 @@
     <string name="disconnected">断开连接</string>
     <string name="connected">已连接</string>
     <string name="ble_not_supported_tips">很抱歉，您的设备不支持该应用的使用。使用该应用需要设备支持蓝牙4.0，系统版本在android4.3及以上。</string>
-	<string name="sync_finished">同步完成。</string>
+	<string name="sync_finished">同步完成</string>
 	<string name="syncing">同步中.....</string>
 </resources>

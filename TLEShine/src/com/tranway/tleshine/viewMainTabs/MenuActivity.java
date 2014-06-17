@@ -1,8 +1,10 @@
 package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
@@ -60,7 +62,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private static final long SCAN_PERIOD = 10000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 	private static final String ADD_SPORT_POINT_END_URL = "/AddSportPoint";
-//	private boolean connState = false;
+	// private boolean connState = false;
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -94,13 +96,11 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				Toast.makeText(getApplicationContext(), R.string.disconnected, Toast.LENGTH_LONG)
-						.show();
+//				ToastHelper.showToast(R.string.disconnected);
 				dismissConnectAndSyncDialog();
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-				Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_LONG)
-						.show();
+				ToastHelper.showToast(R.string.connected);
 				showConnectAndSyncDialog(R.string.syncing);
 				getGattService(mBluetoothLeService.getSupportedGattService());
 			} else if (RBLService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -121,9 +121,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 		initView();
 		checkBLE();
-		Intent gattServiceIntent = new Intent(this, RBLService.class);
-		getApplicationContext()
-				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
@@ -172,6 +169,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 			return false;
 		}
 
+		Intent gattServiceIntent = new Intent(this, RBLService.class);
+		getApplicationContext()
+				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		return true;
 	}
 
@@ -211,7 +211,11 @@ public class MenuActivity extends Activity implements OnClickListener {
 		case 0x02:
 			if (packet.checkChecksum(data)) {
 				long getUtcTime = packet.resolveUTCTime(data);
-				long utcTime = System.currentTimeMillis() / 1000;
+
+				Calendar calendar = Calendar.getInstance();
+				TimeZone zone = calendar.getTimeZone();
+				long offset = zone.getOffset(calendar.getTimeInMillis());
+				long utcTime = (calendar.getTimeInMillis() + offset) / 1000;
 				// boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
@@ -228,7 +232,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 					@Override
 					public void run() {
-						saveActivityInfo(packet.resolveCurrentActivityInfo(data));
+						saveActivityInfo(data);
 					}
 				}).start();
 				ack = packet.makeReplyACK(sequenceNumber);
@@ -271,6 +275,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case 0x06:
+			mBluetoothLeService.disconnect();
 			ToastHelper.showToast(R.string.sync_finished);
 			dismissConnectAndSyncDialog();
 			break;
@@ -282,19 +287,25 @@ public class MenuActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void saveActivityInfo(ActivityInfo currentActivityInfo) {
-		long utcTime = System.currentTimeMillis() / 1000;
-
-		long todayUTC = utcTime / (3600 * 24);
-		currentActivityInfo.setUtcTime(todayUTC);
+	private void saveActivityInfo(byte[] byteData) {
+		BLEPacket packet = new BLEPacket();
+		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		if (currentActivityInfo.getSteps() > 0) {
-			currentActivityInfo.setSteps(DBManager.queryActivityInfoByTime(userId, todayUTC)
-					.getSteps());
-			DBManager.addActivityInfo(userId, currentActivityInfo);
+		if (activityInfo.getSteps() > 0) {
+			ActivityInfo activityInfo2 = DBManager.queryActivityInfoByTime(userId,
+					activityInfo.getUtcTime());
+			int steps = activityInfo2.getSteps() + activityInfo.getSteps();
+			int calorie = activityInfo2.getCalorie() + activityInfo.getCalorie();
+			int distance = activityInfo2.getDistance() + activityInfo.getDistance();
+			activityInfo.setSteps(steps);
+			activityInfo.setCalorie(calorie);
+			activityInfo.setDistance(distance);
+			DBManager.addActivityInfo(userId, activityInfo);
+
 			TLEHttpRequest request = TLEHttpRequest.instance();
+			request.setOnHttpRequestListener(null, null);
 			Map<String, String> data = new TreeMap<String, String>();
-			data.put("StepCount", String.valueOf(currentActivityInfo.getSteps()));
+			data.put("StepCount", String.valueOf(activityInfo.getSteps()));
 			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
 					UserInfoKeeper.KEY_ID, 0l)));
 			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
@@ -354,13 +365,13 @@ public class MenuActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_connect_fitband:
-			Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 			if (checkBLE()) {
 				scanAndConnectDevice();
 			}
 			// Test code
-			// saveEvery15MinPacket(Util.getTestBytesList());
-			// saveSleepPacket(Util.getTestBytesList());
+//			 saveEvery15MinPacket(Util.getTestBytesList());
+//			 saveSleepPacket(Util.getTestBytesList());
+//			saveActivityInfo(Util.getActivityInfoTestData());
 			break;
 		default:
 			break;

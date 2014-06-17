@@ -36,6 +36,17 @@ public class ViewPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
+	public int getItemPosition(Object object) {
+		return POSITION_NONE;
+	}
+	
+	public void refresh(List<ActivityInfo> mList) {
+		
+		this.mActivityInfos = mList;
+		notifyDataSetChanged();
+	}
+
+	@Override
 	public Object instantiateItem(ViewGroup container, final int position) {
 		this.position = position;
 		ViewHolder holder = new ViewHolder();

@@ -95,7 +95,6 @@ public class Util {
 		editor.putBoolean(key, value);
 		editor.commit();
 	}
-	
 
 	public static List<byte[]> getTestBytesList() {
 		byte[] info = new byte[] { (byte) 0x04, (byte) 0x01, (byte) 0x54, (byte) 0x43, (byte) 0x00,
@@ -103,7 +102,7 @@ public class Util {
 				(byte) 0x5A, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x20,
 				(byte) 0x20, (byte) 0x20, (byte) 0x20 };
 		byte[] info2 = new byte[] { (byte) 0x04, (byte) 0x02, (byte) 0x54, 0x20 };
-		byte[] info3 = new byte[] { (byte) 0x04, (byte) 0x03, (byte) 0x54,(byte) 0x20 };
+		byte[] info3 = new byte[] { (byte) 0x04, (byte) 0x03, (byte) 0x54, (byte) 0x20 };
 		List<byte[]> list = new ArrayList<byte[]>();
 		list.add(info);
 		list.add(info2);
@@ -121,5 +120,12 @@ public class Util {
 		list.add(info2);
 		list.add(info3);
 		return list;
+	}
+
+	public static byte[] getActivityInfoTestData() {
+		byte[] info = new byte[] { (byte) 0x23, (byte) 0x53, (byte) 0x9F, (byte) 0x9F, (byte) 0xCF,
+				(byte) 0x00, (byte) 0x00, (byte) 0x24, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x2E, (byte) 0xD5 };
+		return info;
 	}
 }

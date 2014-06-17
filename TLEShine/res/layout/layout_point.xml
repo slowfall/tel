@@ -28,14 +28,14 @@
             RoundProgressBar:style="STROKE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             RoundProgressBar:roundColor="@color/gray"
             RoundProgressBar:roundProgressColor="@color/yellow"
             RoundProgressBar:roundWidth="12dp"
             RoundProgressBar:textCurrentColor="@color/yellow"
             RoundProgressBar:textCurrentSize="45sp"
             RoundProgressBar:textTotalColor="@color/gray"
-            RoundProgressBar:textTotalSize="18sp" />
+            RoundProgressBar:textTotalSize="18sp"
+            android:background="@android:color/transparent" />
     </LinearLayout>
 
     <com.tranway.tleshine.widget.chartview.ChartView

@@ -33,6 +33,7 @@ import com.tranway.tleshine.model.ExerciseContentAdapter;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.model.ViewPagerAdapter;
+import com.tranway.tleshine.widget.chartview.AbstractSeries;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
 import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
@@ -54,6 +55,7 @@ public class ActivityActivity extends Activity {
 	private Button mScrollBtn;
 	private LinearLayout mPagerLayout, mChartLayout;
 	private ScrollView mScrollView;
+	private ChartView chartView;
 	private ListView mListView;
 	private ExerciseContentAdapter mContentAdapter;
 	private boolean isScrolling = false;
@@ -85,13 +87,22 @@ public class ActivityActivity extends Activity {
 		super.onResume();
 
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		mActivityInfos = DBManager.queryActivityInfo(userId);
+		mActivityInfos.clear();
+		mActivityInfos.addAll(DBManager.queryActivityInfo(userId));
 		long utcTime = System.currentTimeMillis() / 1000;
 		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
-		mEvery15MinPackets = DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
-				(dayUtc + 1) * SECONDS_OF_ONE_DAY);
+		mEvery15MinPackets.clear();
+		mEvery15MinPackets.addAll(DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
+				(dayUtc + 1) * SECONDS_OF_ONE_DAY));
 		mAdapter.notifyDataSetChanged();
+		if (mActivityInfos.size() > 0) {
+			mViewPager.setCurrentItem(mActivityInfos.size() - 1);
+		}
 		mContentAdapter.notifyDataSetChanged();
+		AbstractSeries series = makeSeries(mEvery15MinPackets);
+		chartView.clearSeries();
+		// Add chart view data
+		chartView.addSeries(series);
 	}
 
 	private void initView() {
@@ -114,9 +125,6 @@ public class ActivityActivity extends Activity {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new ViewPagerAdapter(this, mViewPager, mActivityInfos);
 		mPagerLayout = (LinearLayout) findViewById(R.id.layout_viewpager);
-		if (mActivityInfos.size() <= 0) {
-			return;
-		}
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setPageMargin(10);
 		mViewPager.setOffscreenPageLimit(3);
@@ -175,7 +183,7 @@ public class ActivityActivity extends Activity {
 		chartLayoutParams.height = displayHeight - statusHeight;
 		mChartLayout.setLayoutParams(chartLayoutParams);
 
-		ChartView chartView = (ChartView) findViewById(R.id.chart_view);
+		chartView = (ChartView) findViewById(R.id.chart_view);
 		ViewGroup.LayoutParams chartParams = chartView.getLayoutParams();
 		chartParams.width = displayWidth - 40;
 		chartParams.height = displayHeight / 4 + 20;
@@ -183,6 +191,13 @@ public class ActivityActivity extends Activity {
 		chartView.setLayoutParams(chartParams);
 		chartView.setGridLinesHorizontal(3);
 		chartView.setGridLinesVertical(0);
+		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
+		LabelAdapter mAdapter = new LabelAdapter(this, LabelOrientation.HORIZONTAL);
+		mAdapter.setLabelValues(labels);
+		chartView.setBottomLabelAdapter(mAdapter);
+	}
+	
+	private AbstractSeries makeSeries(List<Map<String, Object>> packets) {
 		LinearSeries series = new LinearSeries();
 		series.setLineColor(getResources().getColor(R.color.yellow));
 		series.setLineWidth(5);
@@ -191,7 +206,7 @@ public class ActivityActivity extends Activity {
 		series.addPoint(new LinearPoint(12, 0));
 		series.addPoint(new LinearPoint(18, 0));
 		// series.addPoint(new LinearPoint(24, 0));
-		for (Map<String, Object> every15MinPacket : mEvery15MinPackets) {
+		for (Map<String, Object> every15MinPacket : packets) {
 			long utcTime = (Long) every15MinPacket.get(DBInfo.KEY_UTC_TIME);
 			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);
 			Calendar calendar = Calendar.getInstance();
@@ -201,12 +216,7 @@ public class ActivityActivity extends Activity {
 //			 Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second + ", x:" + x + ", step:" + step);
 			series.addPoint(new LinearPoint(x, step));
 		}
-		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
-		// Add chart view data
-		chartView.addSeries(series);
-		LabelAdapter mAdapter = new LabelAdapter(this, LabelOrientation.HORIZONTAL);
-		mAdapter.setLabelValues(labels);
-		chartView.setBottomLabelAdapter(mAdapter);
+		return series;
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {
@@ -244,9 +254,9 @@ public class ActivityActivity extends Activity {
 		@Override
 		public boolean handleMessage(Message msg) {
 			if (msg.what == MSG_SCROLL_BOTTOM) {
-				mHandler.postDelayed(toBottomRunnable, 1);
+				mHandler.postDelayed(toBottomRunnable, 10);
 			} else if (msg.what == MSG_SCROLL_TOP) {
-				mHandler.postDelayed(toTopRunnable, 1);
+				mHandler.postDelayed(toTopRunnable, 10);
 			} else if (msg.what == MSG_SCROLL_OVER) {
 				isScrolling = false;
 			}
