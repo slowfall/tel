@@ -70,7 +70,7 @@
                     android:layout_height="@dimen/activity_edittxt_height"
                     android:background="@drawable/border_square"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_email" />
+                    android:src="@drawable/icon_phone" />
 
                 <EditText
                     android:id="@+id/phone"

@@ -191,7 +191,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
 		}, this);
-		httpRequest.get(CHECK_GENCODE_END_URL + "/" + gencodeId + "?code=" + code, null);
+		httpRequest.get(TLEHttpRequest.SERVER_ADDRESS + ":4480/api/User" + CHECK_GENCODE_END_URL
+				+ "/" + gencodeId + "?code=" + code);
 	}
 
 	/**
@@ -212,7 +213,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 							ToastHelper.showToast(R.string.get_gen_code_success, Toast.LENGTH_LONG);
 							Log.d(TAG, "get gencode: " + data.toString());
-							gencodeId = data.getString(UserInfo.SEVER_KEY_ID);
+							gencodeId = data.getString(TLEHttpRequest.MSG);
 						} else {
 							ToastHelper.showToast(R.string.get_gen_code_failed, Toast.LENGTH_LONG);
 							Log.e(TAG, "email is not available");
@@ -228,7 +229,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 			}
 		}, this);
-		httpRequest.get(GET_GENCODE_END_URL + "/" + phone, null);
+		httpRequest.get(TLEHttpRequest.SERVER_ADDRESS + ":4480/api/User" + GET_GENCODE_END_URL
+				+ "/" + phone);
 	}
 
 	private boolean checkUserRegisterInfo(String email, String pwd, String code) {

@@ -19,7 +19,7 @@ import com.tranway.tleshine.widget.CustomizedProgressDialog;
 
 public class TLEHttpRequest {
 	private static final String LOG_CAT = TLEHttpRequest.class.getSimpleName();
-	private static final String SERVER_ADDRESS = "http://113.105.115.30";
+	public static final String SERVER_ADDRESS = "http://113.105.115.30";
 	private static final int SERVER_PORT = 5520;
 
 	public static final String STATUS = "Status";
@@ -48,7 +48,7 @@ public class TLEHttpRequest {
 	private TLEHttpRequest() {
 		finalHttp = new FinalHttp();
 		finalHttp.configCookieStore(new BasicCookieStore());
-		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/user";
+		mainUrl = SERVER_ADDRESS + ":" + SERVER_PORT + "/api/User";
 	}
 
 	public interface OnHttpRequestListener {
@@ -91,6 +91,16 @@ public class TLEHttpRequest {
 		Log.d(LOG_CAT, buildUrl);
 		// String encodeUrl = URLEncoder.encode(url, HTTP.UTF_8);
 		finalHttp.get(buildUrl, new MyAjaxCallBack(buildUrl));
+	}
+	
+	public void get(String fullUrl) {
+		if (dialog != null) {
+			dialog.show();
+		}
+
+		// String encodeUrl = URLEncoder.encode(url, HTTP.UTF_8);
+		Util.logD(LOG_CAT, fullUrl);
+		finalHttp.get(fullUrl, new MyAjaxCallBack(fullUrl));
 	}
 
 	public void post(String endUrl, Map<String, String> data) {

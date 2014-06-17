@@ -23,4 +23,5 @@
 	<string name="forgot_password">forgot password</string>
 	<string name="submit">Submit</string>
 	<string name="request_identify">get identify code</string>
+	<string name="error_server_return">error server return</string>
 </resources>
