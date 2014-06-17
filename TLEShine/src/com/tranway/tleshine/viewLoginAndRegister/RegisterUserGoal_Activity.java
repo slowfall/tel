@@ -80,25 +80,25 @@ public class RegisterUserGoal_Activity extends Activity implements OnClickListen
 		if (userGoal != 0) {
 			goalPoint = userGoal;
 		}
-		mGoalWheel.setCurrentGoal(goalPoint);
+		mGoalWheel.setCurrentStep(goalPoint);
 		updateAchieveGoalTips(goalPoint);
 	}
 
 	private void notifyWheelScroll() {
-		goalPoint = mGoalWheel.getGoalPoint();
+		goalPoint = mGoalWheel.getGoalStep();
 		updateAchieveGoalTips(goalPoint);
 	}
 
-	private void updateAchieveGoalTips(int point) {
-		if (point < 0) {
+	private void updateAchieveGoalTips(int step) {
+		if (step < 0) {
 			return;
 		}
-		mPointTxt.setText(point + " 点");
-		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
+		mPointTxt.setText(step + " 步");
+		int time = ExerciseUtils.getAchieveGoalTime(step, Sport.WALK);
 		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
-		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
+		time = ExerciseUtils.getAchieveGoalTime(step, Sport.RUN);
 		mRunTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
-		time = ExerciseUtils.getAchieveGoalTime(point, Sport.SWIM);
+		time = ExerciseUtils.getAchieveGoalTime(step, Sport.SWIM);
 		mSwimTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 	}
 

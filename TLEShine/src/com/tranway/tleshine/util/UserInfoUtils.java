@@ -160,4 +160,71 @@ public class UserInfoUtils {
 		data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
 		return data;
 	}
+
+	/**
+	 * convert format time to time
+	 * 
+	 * @param range
+	 *            such as 20:00-08:00
+	 * @return time
+	 */
+	public static int convertTimeRangeToTime(String range) {
+		int len = 0;
+		if (range == null) {
+			return len;
+		}
+
+		range = range.replaceAll("-", ":");
+		String[] time = range.split(":");
+
+		if (time.length != 4) {
+			return len;
+		}
+
+		try {
+			int from = Integer.valueOf(time[0]) * 60 + Integer.valueOf(time[1]);
+			int to = Integer.valueOf(time[2]) * 60 + Integer.valueOf(time[3]);
+			len = to - from;
+			if (from >= to) {
+				len += 24 * 60;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return len;
+		}
+
+		return len;
+	}
+
+	/**
+	 * convert time range to array
+	 * 
+	 * @param range
+	 *            such as 20:00-08:00
+	 * @return time array, such as {20, 00, 08, 00}
+	 */
+	public static int[] convertTimeRangeToTimeArray(String range) {
+		if (range == null) {
+			return null;
+		}
+
+		range = range.replaceAll("-", ":");
+		String[] str = range.split(":");
+
+		if (str.length != 4) {
+			return null;
+		}
+
+		int[] time = new int[str.length];
+		try {
+			for (int i = 0; i < str.length; i++) {
+				time[i] = Integer.valueOf(str[i]);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return time;
+	}
 }

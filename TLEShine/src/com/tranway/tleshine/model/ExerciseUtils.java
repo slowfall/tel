@@ -13,9 +13,9 @@ public class ExerciseUtils {
 	public static int GOAL_POINT_STRENUOUS = 1600;
 
 	// The time required for the complete moving goal, unit is minute
-	private static final int TIME_WALK_PER_100 = 10;
-	private static final int TIME_RUN_PER_100 = 4;
-	private static final int TIME_SWIM_PER_100 = 5;
+	private static final float TIME_WALK_PER_100 = 1.0f;
+	private static final float TIME_RUN_PER_100 = 0.4f;
+	private static final float TIME_SWIM_PER_100 = 0.5f;
 
 	/**
 	 * exercise method
@@ -32,13 +32,13 @@ public class ExerciseUtils {
 
 		switch (sport) {
 		case WALK:
-			time = goal * TIME_WALK_PER_100 / 100;
+			time = (int) (goal * TIME_WALK_PER_100 / 100);
 			break;
 		case RUN:
-			time = goal * TIME_RUN_PER_100 / 100;
+			time = (int) (goal * TIME_RUN_PER_100 / 100);
 			break;
 		case SWIM:
-			time = goal * TIME_SWIM_PER_100 / 100;
+			time = (int) (goal * TIME_SWIM_PER_100 / 100);
 			break;
 		}
 

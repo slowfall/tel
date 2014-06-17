@@ -3,7 +3,8 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Phone Number or Email</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_phone">Phone Number</string>
     <string name="prompt_identify">Identify Code</string>
     <string name="prompt_name">Enter Your UserName</string>
     <string name="prompt_password">Password</string>

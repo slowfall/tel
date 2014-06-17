@@ -49,7 +49,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 		Bundle bundle = new Bundle();
 		bundle = this.getIntent().getExtras();
-		isRegister = bundle.getBoolean("isRegister", false);
+		if (bundle != null) {
+			isRegister = bundle.getBoolean("isRegister", false);
+		}
 
 		userInfo = UserInfoKeeper.readUserInfo(this);
 

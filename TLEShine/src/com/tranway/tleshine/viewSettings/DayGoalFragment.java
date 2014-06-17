@@ -76,12 +76,12 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 		if (userGoal != 0) {
 			goalPoint = userGoal;
 		}
-		mGoalWheel.setCurrentGoal(goalPoint);
+		mGoalWheel.setCurrentStep(goalPoint);
 		updateAchieveGoalTips(goalPoint);
 	}
 
 	private void notifyWheelScroll() {
-		goalPoint = mGoalWheel.getGoalPoint();
+		goalPoint = mGoalWheel.getGoalStep();
 		updateAchieveGoalTips(goalPoint);
 	}
 

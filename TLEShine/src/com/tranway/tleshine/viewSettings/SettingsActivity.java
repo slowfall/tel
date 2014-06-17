@@ -60,7 +60,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		case R.id.btn_logout:
 			confirmLogoutDialog();
 			break;
-		case R.id.btn_title_left:
+		case R.id.btn_title_icon_left:
 			finish();
 			break;
 		}

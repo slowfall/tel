@@ -10,16 +10,19 @@ import android.widget.TextView;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
+import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsGoalActivity.OnTitleButtonClickListener;
-import com.tranway.tleshine.widget.CustomizedTimeWheelView;
+import com.tranway.tleshine.widget.CustomizedSleepWheelView;
 import com.tranway.tleshine.widget.OnWheelScrollListener;
 import com.tranway.tleshine.widget.WheelView;
 
 public class NightGoalFragment extends Fragment implements OnTitleButtonClickListener {
 
-	private CustomizedTimeWheelView mTimeWheel;
+	private CustomizedSleepWheelView mTimeWheel;
 	private TextView mTimeTxt;
-	private int goalTime = 8 * 60;
+	private int goalTime = 0;
+	private String goalRange = "00:00-00:00";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +35,7 @@ public class NightGoalFragment extends Fragment implements OnTitleButtonClickLis
 	}
 
 	private void initView(View v) {
-		mTimeWheel = (CustomizedTimeWheelView) v.findViewById(R.id.time_wheel);
+		mTimeWheel = (CustomizedSleepWheelView) v.findViewById(R.id.time_wheel);
 		mTimeWheel.setOnScrollLisenter(new OnWheelScrollListener() {
 			@Override
 			public void onScrollingStarted(WheelView wheel) {
@@ -68,20 +71,27 @@ public class NightGoalFragment extends Fragment implements OnTitleButtonClickLis
 			ToastHelper.showToast(R.string.sleep_goal_cannot_null);
 			return false;
 		}
-		return UserGoalKeeper.writeSleepGoal(getActivity(), goalTime);
+
+		UserGoalKeeper.writeSleepGoal(getActivity(), goalTime);
+		UserGoalKeeper.writeSleepGoalRange(getActivity(), goalRange);
+
+		return true;
 	}
 
 	private void setUserSleepTimeFromSP() {
 		int userGoal = UserGoalKeeper.readSleepGoalTime(getActivity());
-		if (userGoal != -1) {
+		String range = UserGoalKeeper.readSleepGoalTimeRange(getActivity());
+		if (userGoal != -1 && range != null) {
 			goalTime = userGoal;
+			goalRange = range;
 		}
-		mTimeWheel.setCurrentGoal(goalTime);
+		mTimeWheel.setCurrentGoalRange(goalRange);
 		updateAchieveGoalTips(goalTime);
 	}
 
 	private void notifyWheelScroll() {
-		goalTime = mTimeWheel.getTime();
+		goalRange = mTimeWheel.getTime();
+		goalTime = UserInfoUtils.convertTimeRangeToTime(goalRange);
 		updateAchieveGoalTips(goalTime);
 	}
 
