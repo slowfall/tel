@@ -43,7 +43,7 @@ import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!
 public class ActivityActivity extends Activity {
-	 private static final String TAG = ActivityActivity.class.getSimpleName();
+	private static final String TAG = ActivityActivity.class.getSimpleName();
 	private static final int MSG_SCROLL_OVER = 0;
 	private static final int MSG_SCROLL_BOTTOM = 1;
 	private static final int MSG_SCROLL_TOP = 2;
@@ -71,13 +71,14 @@ public class ActivityActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activity);
 
-		//Test code
-//		 ActivityInfo activityInfo = new ActivityInfo();
-//		 activityInfo.setCalorie(100);
-//		 activityInfo.setDistance(1000);
-//		 activityInfo.setSteps(100);
-//		 activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
-//		 DBManager.addActivityInfo(12, activityInfo);
+		// Test code
+		ActivityInfo activityInfo = new ActivityInfo();
+		activityInfo.setCalorie(100);
+		activityInfo.setDistance(1000);
+		activityInfo.setSteps(100);
+		activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
+		DBManager.addActivityInfo(12, activityInfo);
+
 		initView();
 	}
 
@@ -92,8 +93,8 @@ public class ActivityActivity extends Activity {
 		long utcTime = System.currentTimeMillis() / 1000;
 		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
 		mEvery15MinPackets.clear();
-		mEvery15MinPackets.addAll(DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY,
-				(dayUtc + 1) * SECONDS_OF_ONE_DAY));
+		mEvery15MinPackets.addAll(DBManager.queryEvery15MinPackets(userId, dayUtc * SECONDS_OF_ONE_DAY, (dayUtc + 1)
+				* SECONDS_OF_ONE_DAY));
 		mAdapter.notifyDataSetChanged();
 		if (mActivityInfos.size() > 0) {
 			mViewPager.setCurrentItem(mActivityInfos.size() - 1);
@@ -108,8 +109,7 @@ public class ActivityActivity extends Activity {
 	private void initView() {
 		Rect rect = new Rect();
 		getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-		int statusHeight = rect.top
-				+ (int) getResources().getDimension(R.dimen.activity_title_height);
+		int statusHeight = rect.top + (int) getResources().getDimension(R.dimen.activity_title_height);
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int displayWidth = displayMetrics.widthPixels;
 		int displayHeight = displayMetrics.heightPixels;
@@ -196,7 +196,7 @@ public class ActivityActivity extends Activity {
 		mAdapter.setLabelValues(labels);
 		chartView.setBottomLabelAdapter(mAdapter);
 	}
-	
+
 	private AbstractSeries makeSeries(List<Map<String, Object>> packets) {
 		LinearSeries series = new LinearSeries();
 		series.setLineColor(getResources().getColor(R.color.yellow));
@@ -213,7 +213,8 @@ public class ActivityActivity extends Activity {
 			calendar.setTimeInMillis(utcTime * 1000);
 			long second = utcTime % SECONDS_OF_ONE_DAY;
 			float x = second / 3600f;
-//			 Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second + ", x:" + x + ", step:" + step);
+			// Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second +
+			// ", x:" + x + ", step:" + step);
 			series.addPoint(new LinearPoint(x, step));
 		}
 		return series;
