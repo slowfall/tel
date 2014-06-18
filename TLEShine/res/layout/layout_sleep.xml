@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FitbandBackground"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_sleep_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/tv_sync_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_middle" />
+
+        <TextView
+            android:id="@+id/tv_sleep_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_big" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_sleep_zzz"
+            android:gravity="center_vertical"
+            android:text="@string/sleep"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_big" />
+
+        <com.tranway.tleshine.widget.RoundProgressBar
+            xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.tleshine"
+            android:id="@+id/progress"
+            RoundProgressBar:style="STROKE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            RoundProgressBar:roundColor="@color/gray"
+            RoundProgressBar:roundProgressColor="@color/yellow"
+            RoundProgressBar:roundWidth="12dp"
+            RoundProgressBar:textCurrentColor="@color/yellow"
+            RoundProgressBar:textCurrentSize="45sp"
+            RoundProgressBar:textTotalColor="@color/gray"
+            RoundProgressBar:textTotalSize="18sp"
+            android:background="@android:color/transparent"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_sleep_deep"
+                android:drawablePadding="2dp"
+                android:text="@string/sleep_deep"
+                android:textColor="@color/fitband_main_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_sleep_shallow"
+                android:drawablePadding="2dp"
+                android:text="@string/sleep_shallow"
+                android:textColor="@color/fitband_main_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_sleep_no"
+                android:drawablePadding="2dp"
+                android:text="@string/sleep_no"
+                android:textColor="@color/fitband_main_color" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_total_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/sleep_no"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_sleep_time_total_title"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_max" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_sleep_time_total"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/hour"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_shallow_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/sleep_shallow"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_shallow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_sleep_time_shallow_title"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_max" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_sleep_time_shallow"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/hour"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_deep_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/sleep_deep"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_deep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_sleep_time_deep_title"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_max" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_sleep_time_deep"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/hour"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/tv_sleep_wake_times_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/sleep_wake_times"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_middle" />
+
+                <TextView
+                    android:id="@+id/tv_sleep_wake_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_sleep_wake_times_title"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_max" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_sleep_wake_times"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="2dp"
+                    android:text="@string/sleep_wake_times_unit"
+                    android:textColor="@color/fitband_main_color"
+                    android:textSize="@dimen/text_size_small" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

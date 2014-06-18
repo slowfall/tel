@@ -3,13 +3,22 @@ package com.tranway.tleshine.viewMainTabs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.TabActivity;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,21 +31,23 @@ import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
 
 @SuppressWarnings("deprecation")
+@SuppressLint("NewApi")
 public class MainActivity extends TabActivity implements OnCheckedChangeListener {
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 	private static final String GET_INFO_END_URL = "/Get";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer, R.id.rb_contacts,
-			R.id.rb_preset };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer,
+			R.id.rb_contacts, R.id.rb_preset };
 
 	private static final String TAB_1 = "h007";
 	private static final String TAB_2 = "pedometer";
 	private static final String TAB_3 = "contacts";
 	private static final String TAB_4 = "preset";
 	private static final String[] TABS = { TAB_1, TAB_2, TAB_3, TAB_4 };
-	private static final int[] TABS_TITLE = { R.string.settings, R.string.activity, R.string.sleep, R.string.friends };
+	private static final int[] TABS_TITLE = { R.string.settings, R.string.activity, R.string.sleep,
+			R.string.friends };
 
 	private Intent mH007Intent;
 	private Intent mPedometerIntent;
@@ -57,6 +68,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_ID, 12l);
 		getUserInfoFromServer(UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, null));
 		setup();
+		checkBLE();
 	}
 
 	private void setup() {
@@ -74,7 +86,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private void initTab() {
 		mTitleTxt = (TextView) findViewById(R.id.txt_title);
 		mTitleTxt.setVisibility(View.VISIBLE);
-		
+
 		mHost = this.getTabHost();
 		for (int i = 0; i < TABS.length; i++) {
 			mHost.addTab(mHost.newTabSpec(TABS[i]).setIndicator(TABS[i]).setContent(mIntents[i]));
@@ -105,6 +117,8 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 				try {
 					JSONObject data = new JSONObject(result);
 					UserInfoKeeper.writeUserInfo(getApplicationContext(), data);
+					UserInfoKeeper.writeUserInfo(getApplicationContext(),
+							UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, 0l);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.get_register_info_failed);
@@ -119,6 +133,41 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		if (email != null) {
 			httpRequest.get(GET_INFO_END_URL + "/" + email, null);
 		}
+	}
+
+	private void checkBLE() {
+		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+			ShowBleNotSupportDialog();
+			return;
+		}
+
+		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		
+		if (mBluetoothManager.getAdapter() == null) {
+			ShowBleNotSupportDialog();
+			return;
+		}
+	}
+	
+	private void ShowBleNotSupportDialog() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
+		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
+		TextView title = (TextView) dialogView.findViewById(R.id.layout_content);
+		title.setText(getResources().getString(R.string.ble_not_supported_tips));
+		dialog.setContentView(dialogView);
+		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
+		positiveBtn.setVisibility(View.GONE);
+		ImageView line = (ImageView) dialogView.findViewById(R.id.line_btn);
+		line.setVisibility(View.GONE);
+		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);
+		negativeBtn.setText(R.string.OK);
+		negativeBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
 	}
 
 }

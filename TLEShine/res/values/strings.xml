@@ -57,4 +57,12 @@
     <string name="negative">no</string>
 	<string name="OK">OK</string>
 	<string name="activity_record">Activity Record</string>
+	
+	<!-- Sleep Activity strings -->
+	<string name="sleep_deep">深度睡眠</string>
+	<string name="sleep_shallow">浅度睡眠</string>
+	<string name="sleep_no">无睡眠</string>
+	<string name="sleep_total">总睡眠</string>
+	<string name="sleep_wake_times">醒次数</string>
+	<string name="sleep_wake_times_unit">次</string>
 </resources>

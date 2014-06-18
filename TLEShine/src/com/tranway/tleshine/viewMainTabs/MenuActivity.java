@@ -96,7 +96,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-//				ToastHelper.showToast(R.string.disconnected);
+				// ToastHelper.showToast(R.string.disconnected);
 				dismissConnectAndSyncDialog();
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -120,7 +120,10 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 		initView();
-		checkBLE();
+//		checkBLE();
+		Intent gattServiceIntent = new Intent(this, RBLService.class);
+		getApplicationContext()
+				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
@@ -169,9 +172,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 			return false;
 		}
 
-		Intent gattServiceIntent = new Intent(this, RBLService.class);
-		getApplicationContext()
-				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		return true;
 	}
 
@@ -291,26 +291,26 @@ public class MenuActivity extends Activity implements OnClickListener {
 		BLEPacket packet = new BLEPacket();
 		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		if (activityInfo.getSteps() > 0) {
-			ActivityInfo activityInfo2 = DBManager.queryActivityInfoByTime(userId,
-					activityInfo.getUtcTime());
-			int steps = activityInfo2.getSteps() + activityInfo.getSteps();
-			int calorie = activityInfo2.getCalorie() + activityInfo.getCalorie();
-			int distance = activityInfo2.getDistance() + activityInfo.getDistance();
-			activityInfo.setSteps(steps);
-			activityInfo.setCalorie(calorie);
-			activityInfo.setDistance(distance);
-			DBManager.addActivityInfo(userId, activityInfo);
+		int goal = UserGoalKeeper.readExerciseGoalPoint(this);
+		ActivityInfo activityInfo2 = DBManager.queryActivityInfoByTime(userId,
+				activityInfo.getUtcTime());
+		int steps = activityInfo2.getSteps() + activityInfo.getSteps();
+		int calorie = activityInfo2.getCalorie() + activityInfo.getCalorie();
+		int distance = activityInfo2.getDistance() + activityInfo.getDistance();
+		activityInfo.setGoal(goal);
+		activityInfo.setSteps(steps);
+		activityInfo.setCalorie(calorie);
+		activityInfo.setDistance(distance);
+		DBManager.addActivityInfo(userId, activityInfo);
 
-			TLEHttpRequest request = TLEHttpRequest.instance();
-			request.setOnHttpRequestListener(null, null);
-			Map<String, String> data = new TreeMap<String, String>();
-			data.put("StepCount", String.valueOf(activityInfo.getSteps()));
-			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
-					UserInfoKeeper.KEY_ID, 0l)));
-			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
-			request.post(ADD_SPORT_POINT_END_URL, data);
-		}
+		TLEHttpRequest request = TLEHttpRequest.instance();
+		request.setOnHttpRequestListener(null, null);
+		Map<String, String> data = new TreeMap<String, String>();
+		data.put("StepCount", String.valueOf(activityInfo.getSteps()));
+		data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
+				UserInfoKeeper.KEY_ID, 0l)));
+		data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
+		request.post(ADD_SPORT_POINT_END_URL, data);
 	}
 
 	private void saveEvery15MinPacket(List<byte[]> every15MinPacket) {
@@ -369,9 +369,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-//			 saveEvery15MinPacket(Util.getTestBytesList());
-//			 saveSleepPacket(Util.getTestBytesList());
-//			saveActivityInfo(Util.getActivityInfoTestData());
+			// saveEvery15MinPacket(Util.getTestBytesList());
+			// saveSleepPacket(Util.getTestBytesList());
+			// saveActivityInfo(Util.getActivityInfoTestData());
 			break;
 		default:
 			break;

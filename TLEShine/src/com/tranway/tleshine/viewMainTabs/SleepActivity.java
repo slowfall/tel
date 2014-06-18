@@ -48,22 +48,7 @@ public class SleepActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sleep);
-		// ArrayList<DailyExercise> exList = new ArrayList<DailyExercise>();
-		// for (int i = 0; i <= 6; i++) {
-		// DailyExercise mExercise = new DailyExercise();
-		// mExercise.setDate(83834387L); // !!!
-		// mExercise.setGoal(1000);
-		// mExercise.setAchieve(800);
-		// exList.add(mExercise);
-		// }
-		//
-		// long ret = dbManager.addDailyExerciseInfo(exList);
-		// if (ret != -1) {
-		// mList.addAll(dbManager.queryDailyExerciseInfo());
-		// // for (DailyExercise ex : mList) {
-		// // Log.d("------", "date : " + ex.getDate());
-		// // }
-		// }
+
 		initView();
 	}
 

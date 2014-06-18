@@ -22,6 +22,7 @@ public class UserInfoKeeper {
 	public static final String KEY_STRIDE = "stride";
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_STEPSTARGET = "stepsTarget";
+	public static final String KEY_SYNC_BLUETOOTH_TIME = "syncBluetoothTime";
 	public static final String KEY_GEN_CODE = "genCode";
 	public static final String KEY_GEN_CODE_GET_TIME ="genCodeGetTime";
 
@@ -73,7 +74,6 @@ public class UserInfoKeeper {
 		edit.putInt(KEY_STRIDE, info.getStride());
 		edit.putInt(KEY_SEX, info.getSex());
 		edit.putInt(KEY_STEPSTARGET, info.getStepsTarget());
-
 		return edit.commit();
 	}
 

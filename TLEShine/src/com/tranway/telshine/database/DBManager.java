@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.tranway.tleshine.model.ActivityInfo;
-import com.tranway.tleshine.model.DailyExercise;
-import com.tranway.tleshine.model.MyApplication;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.tranway.tleshine.model.ActivityInfo;
+import com.tranway.tleshine.model.DailyExercise;
+import com.tranway.tleshine.model.MyApplication;
 
 public class DBManager {
 	private DBHelper helper;
@@ -218,6 +218,7 @@ public class DBManager {
 		try {
 			ContentValues mValues = new ContentValues();
 			mValues.put(DBInfo.USER_ID, userId);
+			mValues.put(DBInfo.EXERCISE_GOAL, activityInfo.getGoal());
 			mValues.put(DBInfo.KEY_UTC_TIME, activityInfo.getUtcTime());
 			mValues.put(DBInfo.KEY_STEPS, activityInfo.getSteps());
 			mValues.put(DBInfo.KEY_DISTANCE, activityInfo.getDistance());
@@ -251,6 +252,7 @@ public class DBManager {
 			while (cursor.moveToNext()) {
 				ActivityInfo info = new ActivityInfo();
 				info.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				info.setGoal(cursor.getInt(cursor.getColumnIndex(DBInfo.EXERCISE_GOAL)));
 				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
 				info.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
 				info.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
@@ -284,6 +286,7 @@ public class DBManager {
 
 			while (cursor.moveToNext()) {
 				activityInfo.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
+				activityInfo.setGoal(cursor.getInt(cursor.getColumnIndex(DBInfo.EXERCISE_GOAL)));
 				activityInfo.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
 				activityInfo.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
 				activityInfo.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
