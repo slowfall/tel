@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="my_goal">我的目标</string>
     <string name="my_fitband">My Fitband</string>
 	<string name="ble_not_supported">Ble not supported</string>
 	<string name="disconnected">Disconnected</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
@@ -20,14 +20,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="10dp" >
 
         <com.tranway.tleshine.widget.RoundProgressBar
             xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.tleshine"
             android:id="@+id/progress"
             RoundProgressBar:style="STROKE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             RoundProgressBar:roundColor="@color/gray"
             RoundProgressBar:roundProgressColor="@color/yellow"
             RoundProgressBar:roundWidth="12dp"
@@ -37,17 +38,5 @@
             RoundProgressBar:textTotalSize="18sp"
             android:background="@android:color/transparent" />
     </LinearLayout>
-
-    <com.tranway.tleshine.widget.chartview.ChartView
-        xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
-        android:id="@+id/chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        chartview:bottomLabelHeight="20dp"
-        chartview:gridLineColor="#C0C0C0"
-        chartview:gridLineWidth="3dp"
-        chartview:gridLinesHorizontal="5"
-        chartview:gridLinesVertical="5" />
 
 </LinearLayout>

@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="my_goal">我的目标</string>
     <string name="my_fitband">我的 fitband</string>
     <string name="ble_not_supported">该设备不支持BLE</string>
     <string name="disconnected">断开连接</string>

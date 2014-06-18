@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tranway.tleshine.widget.CustomizedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
+    style="@style/FitbandBackground"
+    android:scrollbars="none" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:clipChildren="false" />
+
+</com.tranway.tleshine.widget.CustomizedScrollView>
