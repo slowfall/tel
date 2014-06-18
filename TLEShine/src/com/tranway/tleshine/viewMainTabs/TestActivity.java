@@ -9,15 +9,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.ListView;
+import android.util.Log;
 
 import com.tranway.telshine.database.DBInfo;
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
-import com.tranway.tleshine.model.ActivityAdapter;
 import com.tranway.tleshine.model.ActivityInfo;
+import com.tranway.tleshine.model.MyViewPagerAdapter;
 import com.tranway.tleshine.model.UserInfoKeeper;
-import com.tranway.tleshine.model.VPagerAdapter;
 import com.tranway.tleshine.widget.chartview.AbstractSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
@@ -32,7 +31,7 @@ public class TestActivity extends Activity {
 
 	// private JazzyViewPager mPager;
 	private ViewPager mViewPager;
-	private VPagerAdapter mAdapter;
+	private MyViewPagerAdapter mAdapter;
 
 	private List<List<Map<String, Object>>> m15MinPackets = new ArrayList<List<Map<String, Object>>>();
 	private List<AbstractSeries> mChartSeries = new ArrayList<AbstractSeries>();
@@ -42,7 +41,6 @@ public class TestActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activity_test);
-//		setContentView(R.layout.layout_viewpager);
 
 		// Test code
 		ActivityInfo activityInfo = new ActivityInfo();
@@ -57,6 +55,12 @@ public class TestActivity extends Activity {
 		mActivityInfos.clear();
 		mActivityInfos.addAll(DBManager.queryActivityInfo(userId));
 
+		// ----- test for add more view pager -----
+		mActivityInfos.add(activityInfo);
+		mActivityInfos.add(activityInfo);
+		Log.d(TAG, "----Activity info : " + mActivityInfos.size());
+		// ----- test for add more view pager -----
+
 		long utcTime = System.currentTimeMillis() / 1000;
 		long dayUtc = utcTime / SECONDS_OF_ONE_DAY;
 		mEvery15MinPackets.clear();
@@ -64,11 +68,11 @@ public class TestActivity extends Activity {
 				* SECONDS_OF_ONE_DAY));
 
 		AbstractSeries series = makeSeries(mEvery15MinPackets);
-//		mChartSeries.add(series);
+		mChartSeries.add(series);
 		m15MinPackets.add(mEvery15MinPackets);
 
-
-		// for test
+		// ----- for test chart view
+		mChartSeries.clear();
 		LinearSeries mSseries = new LinearSeries();
 		mSseries.setLineColor(getResources().getColor(R.color.yellow));
 		mSseries.setLineWidth(5);
@@ -78,6 +82,7 @@ public class TestActivity extends Activity {
 		mSseries.addPoint(new LinearPoint(18, 70));
 		mSseries.addPoint(new LinearPoint(24, 200));
 		mChartSeries.add(mSseries);
+		// ----- for test chart view
 
 		initView();
 	}
@@ -89,10 +94,9 @@ public class TestActivity extends Activity {
 
 	private void initView() {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
-		mAdapter = new VPagerAdapter(this, mActivityInfos, mChartSeries, m15MinPackets);
+		mAdapter = new MyViewPagerAdapter(this, mActivityInfos, mChartSeries, m15MinPackets);
 		mViewPager.setAdapter(mAdapter);
-		// mViewPager.setPageMargin(10);
-		// mViewPager.setOffscreenPageLimit(3);
+		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setCurrentItem(0);
 		mAdapter.notifyDataSetChanged();
 	}

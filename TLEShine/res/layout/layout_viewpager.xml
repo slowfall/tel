@@ -1,18 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/activity_list"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/gray"
-        android:dividerHeight="0.5dp"
-        android:listSelector="@android:color/transparent"
-        android:padding="10dp" />
+        android:layout_height="fill_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_big" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <com.tranway.tleshine.widget.RoundProgressBar
+                    xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.tleshine"
+                    android:id="@+id/progress"
+                    RoundProgressBar:style="STROKE"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    RoundProgressBar:roundColor="@color/gray"
+                    RoundProgressBar:roundProgressColor="@color/yellow"
+                    RoundProgressBar:roundWidth="12dp"
+                    RoundProgressBar:textCurrentColor="@color/yellow"
+                    RoundProgressBar:textCurrentSize="45sp"
+                    RoundProgressBar:textTotalColor="@color/gray"
+                    RoundProgressBar:textTotalSize="18sp"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/activity_record"
+                android:textColor="@color/fitband_main_color"
+                android:textSize="@dimen/text_size_middle" />
+
+            <com.tranway.tleshine.widget.chartview.ChartView
+                xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
+                android:id="@+id/chart_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                chartview:bottomLabelHeight="20dp"
+                chartview:gridLineColor="#C0C0C0"
+                chartview:gridLineWidth="3dp"
+                chartview:gridLinesHorizontal="5"
+                chartview:gridLinesVertical="5" />
+
+            <com.tranway.tleshine.widget.CustomizedListView
+                android:id="@+id/act_solution_3_mylinearlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
