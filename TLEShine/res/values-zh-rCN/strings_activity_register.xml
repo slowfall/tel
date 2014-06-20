@@ -12,7 +12,11 @@
     <string name="phone_invalid">手机号码格式错误</string>
     <string name="password_invalid">两次输入密码不一致</string>
     <string name="password_empty">请输入密码</string>
+        <string name="name_empty">请输入一个昵称</string>
     
+    <string name="success_register_user">恭喜，注册成功！</string>
+    <string name="get_register_info_failed">错误的注册信息。</string>
+    <string name="failed_register_user">抱歉，注册失败</string>
     <string name="register_input_email">请输入邮箱地址</string>
     <string name="register_input_phone">请输入手机号码</string>
     <string name="register_input_pwd">请输入密码</string>
@@ -37,8 +41,8 @@
     <string name="prompt_high">请设置您的身高</string>
     <string name="weight">体重</string>
     <string name="prompt_weight">请设置您的体重</string>
-    <string name="prompt_step">请设置您的步长</string>
-    <string name="night_late_tips">夜深了...</string>
+    <string name="prompt_stride">请设置您的步长</string>
+    <string name="night_late_tips">夜深了&#8230;</string>
     <string name="good_night_tips">晚安~~~</string>
      <string name="health_sleep_tips">健康的生活习惯，从合理的睡眠模式开启</string>
     

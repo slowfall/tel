@@ -26,55 +26,55 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="facebook">facebook</string>
-    <string name="toast_auth_success">授权成功</string>
-    <string name="toast_auth_failed">授权失败</string>
-    <string name="toast_auth_canceled">取消授权</string>
+    <string name="toast_auth_success">auth success</string>
+    <string name="toast_auth_failed">auth failed</string>
+    <string name="toast_auth_canceled">auth canceled</string>
     <string name="app_id">497906953566757</string>
     <string name="title_activity_main_tabs">MainTabsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_bleconnect">BLEConnectActivity</string>
-    <string name="error_device_address">无效设备。</string>
-    <string name="scanning">搜索中......</string>
-    <string name="connect_device">连接设备</string>
-    <string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
-    <string name="today">今天</string>
-    <string name="yestoday">昨天</string>
-    <string name="day_string_of_user_login">于%1$s使用</string>
-    <string name="cycle1_text">连续达标：0</string>
-    <string name="cycle2_text">最高分：0</string>
-    <string name="cycle3_text">达标次数：0</string>
+    <string name="error_device_address">Error device.</string>
+    <string name="scanning">Scanning......</string>
+    <string name="connect_device">Connect device</string>
+    <string name="couldnot_search_ble_device">Could not search ble device.</string>
+    <string name="today">Today</string>
+    <string name="yestoday">Yestoday</string>
+    <string name="day_string_of_user_login">Use in %1$s</string>
+    <string name="cycle1_text">Continuous compliance：0</string>
+    <string name="cycle2_text">The most high：0</string>
+    <string name="cycle3_text">Compliance time：0</string>
     <string name="friends">friends</string>
-    <string name="light_sport">轻微运动</string>
-    <string name="right_sport">适量运动</string>
-    <string name="overdose_sport">剧烈运动</string>
-    <string name="activity">活动</string>
+    <string name="light_sport">light activity</string>
+    <string name="right_sport">right activity</string>
+    <string name="overdose_sport">overdose activity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="now_use">Start</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
-    
+    <string name="activity">activity</string>
+    <string name="now_use">Start</string>
     <string name="positive">yes</string>
     <string name="negative">no</string>
-	<string name="OK">OK</string>
-	<string name="activity_record">Activity Record</string>
-	
-	<!-- Activity Activity strings -->
-	<string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
-	<string name="activity_steps_goal">目标:%1$d步</string>
-	<string name="activity_steps_finished">已完成：%1$d步</string>
-	<string name="n_km_activity_distance">%1$s千米</string>
-	<string name="n_calorie_activity">消耗%1$d卡路里</string>
-	<string name="n_steps_activity">%1$d步</string>
+    <string name="OK">OK</string>
+    <string name="activity_record">Activity Record</string>
 
-	<!-- Sleep Activity strings -->
-	<string name="sleep_deep">深度睡眠</string>
-	<string name="sleep_shallow">浅度睡眠</string>
-	<string name="sleep_no">无睡眠</string>
-	<string name="sleep_total">总睡眠</string>
-	<string name="sleep_wake_times">醒次数</string>
-	<string name="sleep_wake_times_unit">次</string>
-	<string name="n_hour_sleep_goal">%1$s小时睡眠目标</string>
-	<string name="sleep_good">睡眠质量好</string>
-	<string name="sleep_normal">睡眠质量一般</string>
-	<string name="sleep_bad">睡眠质量差</string>
+    <!-- Activity Activity strings -->
+    <string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
+    <string name="activity_steps_goal">目标:%1$d步</string>
+    <string name="activity_steps_finished">已完成：%1$d步</string>
+    <string name="n_km_activity_distance">%1$s千米</string>
+    <string name="n_calorie_activity">消耗%1$d卡路里</string>
+    <string name="n_steps_activity">%1$d步</string>
+
+    <!-- Sleep Activity strings -->
+    <string name="sleep_deep">深度睡眠</string>
+    <string name="sleep_shallow">浅度睡眠</string>
+    <string name="sleep_no">无睡眠</string>
+    <string name="sleep_total">总睡眠</string>
+    <string name="sleep_wake_times">醒次数</string>
+    <string name="sleep_wake_times_unit">次</string>
+    <string name="n_hour_sleep_goal">%1$s小时睡眠目标</string>
+    <string name="sleep_good">睡眠质量好</string>
+    <string name="sleep_normal">睡眠质量一般</string>
+    <string name="sleep_bad">睡眠质量差</string>
+
 </resources>

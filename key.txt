@@ -1,0 +1,4 @@
+[2014-06-20 20:28:47 - TLEShine] New keystore C:\Users\zh\Desktop\TLEShine.apk has been created.
+[2014-06-20 20:28:47 - TLEShine] Certificate fingerprints:
+[2014-06-20 20:28:47 - TLEShine]   MD5 : 1F:AC:A2:D0:57:0F:F4:26:12:A1:DA:52:C2:B6:68:74
+[2014-06-20 20:28:47 - TLEShine]   SHA1: 2F:55:FB:62:CB:A0:0A:B1:23:A4:CC:39:96:F8:7C:8C:4B:47:DD:1F

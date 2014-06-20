@@ -40,14 +40,41 @@
     <string name="today">今天</string>
     <string name="yestoday">昨天</string>
     <string name="day_string_of_user_login">于%1$s使用</string>
-	<string name="cycle1_text">连续达标：0</string>
-	<string name="cycle2_text">最高分：0</string>
-	<string name="cycle3_text">达标次数：0</string>
-	<string name="friends">朋友</string>
+    <string name="cycle1_text">连续达标：0</string>
+    <string name="cycle2_text">最高分：0</string>
+    <string name="cycle3_text">达标次数：0</string>
+    <string name="friends">朋友</string>
     <string name="activity">活动</string>
-	<string name="now_use">马上体验</string>
+    <string name="now_use">马上体验</string>
     <string name="positive">是</string>
     <string name="negative">否</string>
     <string name="OK">好</string>
-	<string name="activity_record">运动记录</string>
+    <string name="activity_record">运动记录</string>
+    <string name="light_sport">轻微运动</string>
+    <string name="right_sport">适量运动</string>
+    <string name="overdose_sport">剧烈运动</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+
+    <!-- Activity Activity strings -->
+    <string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
+    <string name="activity_steps_goal">目标:%1$d步</string>
+    <string name="activity_steps_finished">已完成：%1$d步</string>
+    <string name="n_km_activity_distance">%1$s千米</string>
+    <string name="n_calorie_activity">消耗%1$d卡路里</string>
+    <string name="n_steps_activity">%1$d步</string>
+
+    <!-- Sleep Activity strings -->
+    <string name="sleep_deep">深度睡眠</string>
+    <string name="sleep_shallow">浅度睡眠</string>
+    <string name="sleep_no">无睡眠</string>
+    <string name="sleep_total">总睡眠</string>
+    <string name="sleep_wake_times">醒次数</string>
+    <string name="sleep_wake_times_unit">次</string>
+    <string name="n_hour_sleep_goal">%1$s小时睡眠目标</string>
+    <string name="sleep_good">睡眠质量好</string>
+    <string name="sleep_normal">睡眠质量一般</string>
+    <string name="sleep_bad">睡眠质量差</string>
+
 </resources>

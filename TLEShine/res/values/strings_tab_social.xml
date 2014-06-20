@@ -1,15 +1,15 @@
 <resources>
 
-    <string name="get_user_friend_list_failed">获取好友列表失败</string>
-    <string name="get_rank_list_failed">获取好友排名失败</string>
-    <string name="add_friend">添加好友</string>
-    <string name="search">搜索</string>
-    <string name="back">返回</string>
-    <string name="search_friend_failed">搜索好友失败</string>
-    <string name="input_search_info">请输入搜索信息</string>
-    <string name="promte_search_friend">输入要搜索的好友名字或邮箱</string>
-    <string name="search_result_empty">未搜索到匹配的用户信息!</string>
-	<string name="add_friend_failed">添加好友失败</string>
-	<string name="add_friend_success">添加好友成功</string>
-    
+    <string name="get_user_friend_list_failed">Failed to get friends list.</string>
+    <string name="get_rank_list_failed">Failed to get friends rank.</string>
+    <string name="add_friend">Add Friends</string>
+    <string name="search">search</string>
+    <string name="back">back</string>
+    <string name="search_friend_failed">search failed</string>
+    <string name="input_search_info">Please input some word.</string>
+    <string name="promte_search_friend">Input a name or email</string>
+    <string name="search_result_empty">Can not find any one</string>
+    <string name="add_friend_failed">Failed to add friend</string>
+    <string name="add_friend_success">Success for add friend</string>
+
 </resources>
