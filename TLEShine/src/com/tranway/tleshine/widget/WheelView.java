@@ -74,7 +74,7 @@ public class WheelView extends View {
 	private static final int ADDITIONAL_ITEM_HEIGHT = 45;
 
 	/** Text size */
-	private static final int TEXT_SIZE = 30;
+	private static final int TEXT_SIZE = 18;
 
 	/** Top and bottom items offset (to hide that) */
 	private static final int ITEM_OFFSET = TEXT_SIZE / 5;

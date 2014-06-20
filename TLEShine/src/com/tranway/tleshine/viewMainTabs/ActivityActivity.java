@@ -72,12 +72,12 @@ public class ActivityActivity extends Activity {
 		setContentView(R.layout.activity_activity);
 
 		// Test code
-		ActivityInfo activityInfo = new ActivityInfo();
-		activityInfo.setCalorie(100);
-		activityInfo.setDistance(1000);
-		activityInfo.setSteps(100);
-		activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
-		DBManager.addActivityInfo(12, activityInfo);
+//		ActivityInfo activityInfo = new ActivityInfo();
+//		activityInfo.setCalorie(100);
+//		activityInfo.setDistance(1000);
+//		activityInfo.setSteps(100);
+//		activityInfo.setUtcTime(System.currentTimeMillis() / 1000 / (3600 * 24));
+//		DBManager.addActivityInfo(12, activityInfo);
 
 		initView();
 	}

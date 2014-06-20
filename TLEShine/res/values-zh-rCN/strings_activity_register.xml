@@ -18,6 +18,9 @@
     <string name="register_input_pwd">请输入密码</string>
     <string name="register_input_identify">请输入验证码</string>
 
+	<string name="request_identify">获取验证码</string>
+	<string name="wait_n_seconds_get_again">等待%1$d秒重新获取</string>
+	
     <string name="exit">退出</string>
     <string name="my_info">我的信息</string>
     <string name="next_step">下一步</string>

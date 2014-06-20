@@ -6,7 +6,8 @@
     <string name="read_user_info_exception">很抱歉，程序读取用户信息失败，请重新尝试</string>
     <string name="connect_fitband">连接 fitband</string>
     <string name="logout">注销</string>
-    <string name="confirm_logout">确认注销?</string>
+    <string name="logout_current_account">退出当前帐号</string>
+    <string name="confirm_logout">你确定退出当前帐号吗?</string>
     <string name="unit">单位</string>
     <string name="distance">距离</string>
     <string name="mile">英里</string>
@@ -20,7 +21,7 @@
 	<string name="provision">使用条款</string>
 	
 	<string name="setting_goal">设定目标</string>
-	<string name="how_achieve_goal">以下是实现目标的方式：</string>
+	<string name="how_achieve_goal">以下是推荐的实现方式：</string>
 	<string name="walk">步行</string>
 	<string name="run">跑步</string>
 	<string name="swim">游泳</string>
@@ -36,7 +37,8 @@
 	<string name="my_goal">我的目标</string>
 	<string name="my_exercise_goal">我的运动目标</string>
 	<string name="my_sleep_goal">我的睡眠目标</string>
-	<string name="crrent_situation">每天当前情况： </string>
+	<string name="current_exercise_situation">我的运动目标： </string>
+	<string name="current_sleep_situation">我的睡眠目标： </string>
 	
 	<string name="exercise">运动</string>
 	<string name="sleep">睡眠</string>

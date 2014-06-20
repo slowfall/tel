@@ -13,12 +13,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,25 +38,26 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	public static final String LOG_ACTIVITY_SERVICE = "=====MainActivity====";
 	private static final String GET_INFO_END_URL = "/Get";
 
-	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_h007, R.id.rb_pedometer,
-			R.id.rb_contacts, R.id.rb_preset };
+	private static final int[] RADIO_BTN_IDS = new int[] { R.id.rb_activity, R.id.rb_sleep,
+			R.id.rb_friends, R.id.rb_settings };
 
-	private static final String TAB_1 = "h007";
-	private static final String TAB_2 = "pedometer";
-	private static final String TAB_3 = "contacts";
-	private static final String TAB_4 = "preset";
+	private static final String TAB_1 = "activity";
+	private static final String TAB_2 = "sleep";
+	private static final String TAB_3 = "friends";
+	private static final String TAB_4 = "settings";
 	private static final String[] TABS = { TAB_1, TAB_2, TAB_3, TAB_4 };
-	private static final int[] TABS_TITLE = { R.string.settings, R.string.activity, R.string.sleep,
-			R.string.friends };
+	private static final int[] TABS_TITLE = { R.string.activity, R.string.sleep, R.string.friends,
+			R.string.settings };
 
-	private Intent mH007Intent;
-	private Intent mPedometerIntent;
-	private Intent mContactsIntent;
-	private Intent mPresetIntent;
+	private Intent mActivityIntent;
+	private Intent mSleepIntent;
+	private Intent mFriendsIntent;
+	private Intent mSettingsIntent;
 	private Intent[] mIntents = new Intent[TABS.length];
 	private TabHost mHost;
 	private RadioGroup mRadioGroup;
 	private TextView mTitleTxt;
+	private Dialog mCheckBLEDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +66,27 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_ID, 12l);
 		getUserInfoFromServer(UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, null));
 		setup();
 		checkBLE();
 	}
 
+	@Override
+	protected void onDestroy() {
+		if (mCheckBLEDialog != null && mCheckBLEDialog.isShowing()) {
+			mCheckBLEDialog.dismiss();
+		}
+		super.onDestroy();
+	}
+
 	private void setup() {
 		Util.logD(LOG_TAG, "come in setup method");
 
-		mH007Intent = new Intent(this, MenuActivity.class);
-		mPedometerIntent = new Intent(this, ActivityActivity.class);
-		mContactsIntent = new Intent(this, SleepActivity.class);
-		mPresetIntent = new Intent(this, FriendsActivity.class);
-		mIntents = new Intent[] { mH007Intent, mPedometerIntent, mContactsIntent, mPresetIntent, };
+		mActivityIntent = new Intent(this, TestActivity.class);
+		mSleepIntent = new Intent(this, SleepActivity.class);
+		mFriendsIntent = new Intent(this, FriendsActivity.class);
+		mSettingsIntent = new Intent(this, MenuActivity.class);
+		mIntents = new Intent[] { mActivityIntent, mSleepIntent, mFriendsIntent, mSettingsIntent };
 		initTab();
 		Util.logD(LOG_TAG, "go out setup method");
 	}
@@ -142,20 +150,20 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		}
 
 		final BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-		
+
 		if (mBluetoothManager.getAdapter() == null) {
 			ShowBleNotSupportDialog();
 			return;
 		}
 	}
-	
+
 	private void ShowBleNotSupportDialog() {
 		LayoutInflater inflater = getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
-		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
+		mCheckBLEDialog = new Dialog(this, R.style.DialogTheme);
 		TextView title = (TextView) dialogView.findViewById(R.id.layout_content);
 		title.setText(getResources().getString(R.string.ble_not_supported_tips));
-		dialog.setContentView(dialogView);
+		mCheckBLEDialog.setContentView(dialogView);
 		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
 		positiveBtn.setVisibility(View.GONE);
 		ImageView line = (ImageView) dialogView.findViewById(R.id.line_btn);
@@ -164,10 +172,10 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		negativeBtn.setText(R.string.OK);
 		negativeBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				dialog.dismiss();
+				mCheckBLEDialog.dismiss();
 			}
 		});
-		dialog.show();
+		mCheckBLEDialog.show();
 	}
 
 }

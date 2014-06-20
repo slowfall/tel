@@ -85,7 +85,7 @@ public class SocialRankFragment extends Fragment {
 				ToastHelper.showToast(R.string.get_rank_list_failed, Toast.LENGTH_LONG);
 			}
 		}, getActivity());
-		httpRequest.get(GET_RANK_END_URL + "/" + 1 + "?begintime=" + getDateTime(mDayOffset - 1)
+		httpRequest.get(GET_RANK_END_URL + "/" + userId + "?begintime=" + getDateTime(mDayOffset - 1)
 				+ "&endtime=" + getDateTime(mDayOffset), null);
 	}
 

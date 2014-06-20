@@ -23,7 +23,7 @@ public class ActivityListAdapter extends BaseAdapter {
 	private static final String TAG = "ActivityAdapter";
 
 	private LayoutInflater mInflater;
-	private String[] testStr = { "one", "two", "three", "four" };
+//	private String[] testStr = { "one", "two", "three", "four" };
 
 	/** current ViewPager activity every 15Min packets */
 	private List<Map<String, Object>> mEvery15MinPackets = new ArrayList<Map<String, Object>>();
@@ -39,9 +39,8 @@ public class ActivityListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		// return mEvery15MinPackets.size();
-		return testStr.length;
+		 return mEvery15MinPackets.size();
+//		return testStr.length;
 	}
 
 	@Override
@@ -85,34 +84,32 @@ public class ActivityListAdapter extends BaseAdapter {
 			holder = (ViewContentHolder) convertView.getTag();
 		}
 
-		// final Map<String, Object> mPacket = mEvery15MinPackets.get(position -
-		// 2);
-		// // holder.exerciseIcon.setImageDrawable();
-		// int steps = (Integer) mPacket.get(DBInfo.KEY_STEPS);
-		// int intensitId = R.string.light_sport;
-		// int iconId = R.drawable.walk;
-		// if (steps > 1000) {
-		// intensitId = R.string.overdose_sport;
-		// iconId = R.drawable.run;
-		// } else if (steps > 500) {
-		// intensitId = R.string.right_sport;
-		// iconId = R.drawable.little_run;
-		// } else {
-		// intensitId = R.string.light_sport;
-		// iconId = R.drawable.walk;
-		// }
-		// holder.exerciseIntensit.setText(intensitId);
-		// holder.exerciseIcon.setImageResource(iconId);
-		// long utcTime = (Long) mPacket.get(DBInfo.KEY_UTC_TIME);
-		// SimpleDateFormat format = new SimpleDateFormat("HH:mm",
-		// Locale.getDefault());
-		// String fromTime = format.format(new Date(utcTime * 1000));
-		// String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
-		// holder.exerciseTime.setText(fromTime + "~" + toTime);
-		// holder.exercisePoint.setText(mPacket.get(DBInfo.KEY_STEPS) + "点");
+		final Map<String, Object> mPacket = mEvery15MinPackets.get(position);
+		// holder.exerciseIcon.setImageDrawable();
+		int steps = (Integer) mPacket.get(DBInfo.KEY_STEPS);
+		int intensitId = R.string.light_sport;
+		int iconId = R.drawable.walk;
+		if (steps > 1000) {
+			intensitId = R.string.overdose_sport;
+			iconId = R.drawable.run;
+		} else if (steps > 500) {
+			intensitId = R.string.right_sport;
+			iconId = R.drawable.little_run;
+		} else {
+			intensitId = R.string.light_sport;
+			iconId = R.drawable.walk;
+		}
+		holder.exerciseIntensit.setText(intensitId);
+		holder.exerciseIcon.setImageResource(iconId);
+		long utcTime = (Long) mPacket.get(DBInfo.KEY_UTC_TIME);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+		String fromTime = format.format(new Date(utcTime * 1000));
+		String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
+		holder.exerciseTime.setText(fromTime + "~" + toTime);
+		holder.exercisePoint.setText(mPacket.get(DBInfo.KEY_STEPS) + "步");
 
 		// for test
-		holder.exerciseTime.setText(testStr[position]);
+		// holder.exerciseTime.setText(testStr[position]);
 		return convertView;
 	}
 

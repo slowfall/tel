@@ -80,7 +80,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			Util.logD(TAG, "onServiceConnected(), mBluetoothLeService:" + mBluetoothLeService);
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
-				finish();
+				// finish();
 			}
 		}
 
@@ -120,7 +120,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
 		initView();
-//		checkBLE();
+		// checkBLE();
 		Intent gattServiceIntent = new Intent(this, RBLService.class);
 		getApplicationContext()
 				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -327,7 +327,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		// TODO add sleep goal to Map
 		long sleepGoal = UserGoalKeeper.readSleepGoalTime(this) * 60l;
-		if (sleepGoal == -1) {
+		if (sleepGoal <= 0) {
 			sleepGoal = 8 * 3600l;
 		}
 		sleepData.put(DBInfo.KEY_SLEEP_GOAL, sleepGoal);
@@ -414,10 +414,10 @@ public class MenuActivity extends Activity implements OnClickListener {
 							Toast toast = Toast.makeText(MenuActivity.this,
 									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
 							toast.show();
-							dismissConnectAndSyncDialog();
 						}
 					});
 				}
+				dismissConnectAndSyncDialog();
 			}
 		}, SCAN_PERIOD);
 

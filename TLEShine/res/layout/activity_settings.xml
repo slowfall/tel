@@ -22,7 +22,7 @@
             android:id="@+id/btn_userinfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@drawable/selector_btn_white_orange"
             android:gravity="center"
             android:includeFontPadding="false"
             android:padding="10dp"
@@ -35,11 +35,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@android:color/white"
+            android:background="@drawable/selector_btn_white_orange"
             android:gravity="center"
             android:includeFontPadding="false"
             android:padding="10dp"
-            android:text="@string/logout"
+            android:text="@string/logout_current_account"
             android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_middle" />
     </LinearLayout>

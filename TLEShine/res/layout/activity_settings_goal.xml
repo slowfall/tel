@@ -29,37 +29,28 @@
     <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:gravity="center"
         android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radio_day"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/main_tab_bottom"
             android:layout_weight="1.0"
-            android:button="@null"
             android:checked="true"
             android:drawableTop="@drawable/radio_button_day"
-            android:gravity="center"
-            android:padding="5dp"
             android:text="@string/exercise"
-            android:textColor="@drawable/radio_text_color"
-            android:textSize="@dimen/text_size_small" />
+            android:textColor="@drawable/radio_text_color" />
 
         <RadioButton
             android:id="@+id/radio_night"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/main_tab_bottom"
             android:layout_weight="1.0"
-            android:button="@null"
             android:drawableTop="@drawable/radio_button_night"
-            android:gravity="center"
-            android:padding="5dp"
             android:text="@string/sleep"
-            android:textColor="@drawable/radio_text_color"
-            android:textSize="@dimen/text_size_small" />
+            android:textColor="@drawable/radio_text_color" />
     </RadioGroup>
 
 </RelativeLayout>

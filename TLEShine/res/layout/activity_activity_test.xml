@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/FitbandBackground"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FitbandBackground" >
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -10,4 +9,14 @@
         android:layout_gravity="center"
         android:clipChildren="false" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_no_activity_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/fitband_second_color"
+        android:textSize="@dimen/text_size_small"
+        android:text="@string/no_activity_tips" />
+
+</RelativeLayout>

@@ -35,8 +35,8 @@
 	<string name="my_goal">我的目标</string>
 	<string name="my_exercise_goal">我的运动目标</string>
 	<string name="my_sleep_goal">我的睡眠目标</string>
-	<string name="current_exercise_situation">每天当前情况： </string>
-	<string name="current_sleep_situation">每晚当前情况： </string>
+	<string name="current_exercise_situation">我的运动目标： </string>
+	<string name="current_sleep_situation">我的睡眠目标： </string>
 	
 	<string name="exercise">运动</string>
 	<string name="sleep">睡眠</string>

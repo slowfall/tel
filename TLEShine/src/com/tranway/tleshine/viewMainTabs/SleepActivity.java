@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,53 +22,47 @@ import com.tranway.telshine.database.DBInfo;
 import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.model.Util;
+import com.tranway.tleshine.widget.MultiRoundProgressBar;
 import com.tranway.tleshine.widget.RoundProgressBar;
 
-@SuppressLint("NewApi")
-// !!!!!!!!!!!!!!!!!!
 public class SleepActivity extends Activity {
-	// private static final String TAG = DayFragment.class.getSimpleName();
-	private static final long SECONDS_OF_ONE_DAY = 24 * 3600;
-
-	// private JazzyViewPager mPager;
 	private ViewPager mViewPager;
 	private ViewPagerAdapter mAdapter;
 
+	private List<Map<String, Object>> mSleepData = new ArrayList<Map<String, Object>>();
 
-	// private DBManager dbManager = new
-	// DBManager(MyApplication.getAppContext());
-
-	// private ArrayList<DailyExercise> mList = new ArrayList<DailyExercise>();
-
-	private List<Map<String, Object>> mSleepData = new ArrayList<Map<String,Object>>();
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sleep);
 
 		initView();
 	}
 
-	private void initView() {
-		initViewPagerLayout();
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateViewPager();
 	}
 
-	private void initViewPagerLayout() {
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		mSleepData = DBManager.queryAllSleepInfos(userId);
-		if (mSleepData.size() <= 0) {
-			return;
-		}
+	private void initView() {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new ViewPagerAdapter(this, mViewPager, mSleepData);
 		mViewPager.setAdapter(mAdapter);
-		mViewPager.setPageMargin(10);
-		mViewPager.setOffscreenPageLimit(3);
-		mViewPager.setCurrentItem(mSleepData.size() - 1);
 		MyOnPageChangeListener pageChangeListener = new MyOnPageChangeListener();
 		mViewPager.setOnPageChangeListener(pageChangeListener);
+	}
+
+	private void updateViewPager() {
+		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+
+		mSleepData.clear();
+		mSleepData.addAll(DBManager.queryAllSleepInfos(userId));
+		mAdapter.notifyDataSetChanged();
+		if (mSleepData.size() > 0) {
+			mViewPager.setCurrentItem(mSleepData.size() - 1);
+		}
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {
@@ -103,8 +96,13 @@ public class SleepActivity extends Activity {
 		}
 
 		class ViewHolder {
-			RoundProgressBar mProgress;
+			RoundProgressBar  mProgress;
 			TextView mTimeTxt;
+		}
+
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
 		}
 
 		@Override
@@ -115,20 +113,15 @@ public class SleepActivity extends Activity {
 			holder.mProgress = (RoundProgressBar) view.findViewById(R.id.progress);
 			holder.mTimeTxt = (TextView) view.findViewById(R.id.txt_date);
 
-			// DailyExercise ex = mList.get(position);
-			// holder.mProgress.setProgress(ex.getAchieve(), ex.getGoal());
-			//
-			// SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.CHINA);
-			// Date date = new Date(ex.getDate() * 1000);
-			// holder.mTimeTxt.setText(df.format(date));
 			Map<String, Object> info = mSleepDatas.get(position);
 			long deepSleepTime = (Long) info.get(DBInfo.KEY_SLEEP_DEEP_TIME);
 			long shallowSleepTime = (Long) info.get(DBInfo.KEY_SLEEP_SHALLOW_TIME);
 			long sleepGoal = (Long) info.get(DBInfo.KEY_SLEEP_GOAL);
-			holder.mProgress.setProgress(deepSleepTime, deepSleepTime + shallowSleepTime);
-			long todayUtcTime = System.currentTimeMillis() / 1000 / SECONDS_OF_ONE_DAY;
+			holder.mProgress.setProgress(deepSleepTime + shallowSleepTime, sleepGoal);
+
+			long todayUtcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
 			long sleepUtcTime = (Long) info.get(DBInfo.KEY_UTC_TIME);
-			long utcTime = sleepUtcTime / SECONDS_OF_ONE_DAY;
+			long utcTime = sleepUtcTime / Util.SECONDS_OF_ONE_DAY;
 			if (todayUtcTime == utcTime) {
 				holder.mTimeTxt.setText(R.string.today);
 			} else if (todayUtcTime - utcTime == 1) {

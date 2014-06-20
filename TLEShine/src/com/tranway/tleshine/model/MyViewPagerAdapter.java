@@ -2,6 +2,7 @@ package com.tranway.tleshine.model;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,13 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tranway.telshine.database.DBInfo;
+import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.widget.CustomizedListView;
 import com.tranway.tleshine.widget.RoundProgressBar;
 import com.tranway.tleshine.widget.chartview.AbstractSeries;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
+import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
+import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
 public class MyViewPagerAdapter extends PagerAdapter {
 	private static final String TAG = MyViewPagerAdapter.class.getSimpleName();
@@ -36,8 +41,8 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
 	private int position;
 
-	public MyViewPagerAdapter(Context context, List<ActivityInfo> mActivityInfos, List<AbstractSeries> mChartSeries,
-			List<List<Map<String, Object>>> mEvery15MinPackets) {
+	public MyViewPagerAdapter(Context context, List<ActivityInfo> mActivityInfos,
+			List<AbstractSeries> mChartSeries, List<List<Map<String, Object>>> mEvery15MinPackets) {
 		this.context = context;
 		mInflater = LayoutInflater.from(context);
 		mListAdapter = new ActivityListAdapter(context);
@@ -73,10 +78,15 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		holder.mTimeTxt = (TextView) view.findViewById(R.id.txt_date);
 
 		ActivityInfo info = mActivityInfos.get(position);
-		holder.mProgress.setProgress(info.getSteps(),
-				UserGoalKeeper.readExerciseGoalPoint(MyApplication.getAppContext()));
-		long todayUtcTime = System.currentTimeMillis() / 1000 / 3600 / 24;
+
 		long utcTime = info.getUtcTime();
+		long userId = UserInfoKeeper.readUserInfo(context, UserInfoKeeper.KEY_ID, -1l);
+		long utcTimeSeconds = utcTime * Util.SECONDS_OF_ONE_DAY;
+		List<Map<String, Object>> every15MinPackets = DBManager.queryEvery15MinPackets(userId,
+				utcTimeSeconds, utcTime + Util.SECONDS_OF_ONE_DAY);
+		holder.mProgress.setProgress(info.getSteps(), info.getGoal());
+		
+		long todayUtcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
 		if (todayUtcTime == utcTime) {
 			holder.mTimeTxt.setText(R.string.today);
@@ -84,10 +94,10 @@ public class MyViewPagerAdapter extends PagerAdapter {
 			holder.mTimeTxt.setText(R.string.yestoday);
 		} else {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.getDefault());
-			Date date = new Date(utcTime * 1000 * 3600 * 24);
+			Date date = new Date(utcTimeSeconds * 1000);
 			holder.mTimeTxt.setText(df.format(date));
 		}
-
+		
 		// load middle chart view
 		holder.chartView = (ChartView) view.findViewById(R.id.chart_view);
 		holder.chartView.setGridLinesHorizontal(3);
@@ -97,23 +107,47 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		mAdapter.setLabelValues(labels);
 		holder.chartView.setBottomLabelAdapter(mAdapter);
 		holder.chartView.clearSeries();
-		holder.chartView.addSeries(mChartSeries.get(0)); // .get(position)
+		holder.chartView.addSeries(makeSeries(every15MinPackets)); // .get(position)
 
 		// load bottom list view
-		holder.mListView = (CustomizedListView) view.findViewById(R.id.act_solution_3_mylinearlayout);
-		mListAdapter.setActivityData(mEvery15MinPackets.get(0)); // .get(position)
+		holder.mListView = (CustomizedListView) view
+				.findViewById(R.id.act_solution_3_mylinearlayout);
+		
+		mListAdapter.setActivityData(every15MinPackets); // .get(position)
 		holder.mListView.setAdapter(mListAdapter);
 
 		/**
-		 * 注意：1、需要确定getCount()的返回值，即ViewPager的页面数量
-		 *		2、感觉 Every15MinPackets可以根据当前页面的时间，从数据库里读取
+		 * 注意：1、需要确定getCount()的返回值，即ViewPager的页面数量 2、感觉
+		 * Every15MinPackets可以根据当前页面的时间，从数据库里读取
 		 */
-		
+
 		container.addView(view);
 
 		return view;
 	}
-
+	
+	private AbstractSeries makeSeries(List<Map<String, Object>> packets) {
+		LinearSeries series = new LinearSeries();
+		series.setLineColor(context.getResources().getColor(R.color.yellow));
+		series.setLineWidth(5);
+		series.addPoint(new LinearPoint(0, 0));
+		series.addPoint(new LinearPoint(6, 0));
+		series.addPoint(new LinearPoint(12, 0));
+		series.addPoint(new LinearPoint(18, 0));
+		// series.addPoint(new LinearPoint(24, 0));
+		for (Map<String, Object> every15MinPacket : packets) {
+			long utcTime = (Long) every15MinPacket.get(DBInfo.KEY_UTC_TIME);
+			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(utcTime * 1000);
+			long second = utcTime % Util.SECONDS_OF_ONE_DAY;
+			float x = second / 3600f;
+			// Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second +
+			// ", x:" + x + ", step:" + step);
+			series.addPoint(new LinearPoint(x, step));
+		}
+		return series;
+	}
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub

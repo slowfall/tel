@@ -38,24 +38,16 @@
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/rb_h007"
+                android:id="@+id/rb_activity"
                 style="@style/main_tab_bottom"
                 android:checked="true"
-                android:drawableTop="@drawable/selector_tab_settings"
-                android:gravity="center"
-                android:text="@string/settings"
-                android:textColor="@drawable/selector_tab_text_color" />
-
-            <RadioButton
-                android:id="@+id/rb_pedometer"
-                style="@style/main_tab_bottom"
                 android:drawableTop="@drawable/selector_tab_activity"
                 android:gravity="center"
                 android:text="@string/activity"
                 android:textColor="@drawable/selector_tab_text_color" />
 
             <RadioButton
-                android:id="@+id/rb_contacts"
+                android:id="@+id/rb_sleep"
                 style="@style/main_tab_bottom"
                 android:drawableTop="@drawable/selector_tab_sleep"
                 android:gravity="center"
@@ -63,11 +55,19 @@
                 android:textColor="@drawable/selector_tab_text_color" />
 
             <RadioButton
-                android:id="@+id/rb_preset"
+                android:id="@+id/rb_friends"
                 style="@style/main_tab_bottom"
                 android:drawableTop="@drawable/selector_tab_friends"
                 android:gravity="center"
                 android:text="@string/friends"
+                android:textColor="@drawable/selector_tab_text_color" />
+
+            <RadioButton
+                android:id="@+id/rb_settings"
+                style="@style/main_tab_bottom"
+                android:drawableTop="@drawable/selector_tab_settings"
+                android:gravity="center"
+                android:text="@string/settings"
                 android:textColor="@drawable/selector_tab_text_color" />
         </RadioGroup>
     </LinearLayout>

@@ -13,7 +13,10 @@
     
     <declare-styleable name="RoundProgressBar">
         <attr name="roundColor" format="color" />				<!-- 圆形底色 --> 
-        <attr name="roundProgressColor" format="color" />		<!-- 圆形进度颜色 --> 
+        <attr name="roundProgressColor" format="color" />		<!-- 圆形进度颜色 -->
+        <attr name="roundProgressStartAngle" format="integer"/> <!-- 圆形进度起点 -->
+        <attr name="roundProgressNextColor" format="color"/>		<!-- 圆形二进度颜色 -->
+        <attr name="roundProgressNextStartAngle" format="integer"/><!-- 圆形二进度起点 -->
         <attr name="roundWidth" format="dimension"></attr>		<!-- 宽度 --> 
         <attr name="textCurrentColor" format="color" />			<!-- 当前进度字体颜色 --> 
         <attr name="textTotalColor" format="color" />			<!-- 总进度字体颜色 --> 

@@ -20,6 +20,9 @@
     <string name="get_register_info_failed">Get registration information failed!</string>
     <string name="failed_register_user">I am sorry, failed to register!</string>
     
+	<string name="request_identify">get identify code</string>
+	<string name="wait_n_seconds_get_again">wait %1$d seconds get again</string>
+	
     <string name="register_input_email">Please input your email</string>
     <string name="register_input_phone">Please input your phone number</string>
     <string name="register_input_pwd">Please input your password</string>
