@@ -10,7 +10,7 @@
         android:scrollbars="none" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
@@ -18,17 +18,19 @@
                 android:id="@+id/txt_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/white"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/app_name"
-                android:textColor="@color/black"
+                android:textColor="@color/fitband_main_color"
                 android:textSize="@dimen/text_size_big" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:padding="10dp" >
 
                 <com.tranway.tleshine.widget.RoundProgressBar
                     xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.tleshine"
@@ -36,6 +38,7 @@
                     RoundProgressBar:style="STROKE"
                     android:layout_width="250dp"
                     android:layout_height="250dp"
+                    android:layout_centerInParent="true"
                     RoundProgressBar:roundColor="@color/gray"
                     RoundProgressBar:roundProgressColor="@color/yellow"
                     RoundProgressBar:roundWidth="12dp"
@@ -44,7 +47,85 @@
                     RoundProgressBar:textTotalColor="@color/gray"
                     RoundProgressBar:textTotalSize="18sp"
                     android:background="@android:color/transparent" />
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_activity_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_activity_steps_goal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_steps_goal"
+                        android:textColor="@color/fitband_main_color"
+                        android:textSize="@dimen/text_size_middle" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="2dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/fitband_second_color" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_steps_finished"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_steps_finished"
+                        android:textColor="@color/fitband_main_color"
+                        android:textSize="@dimen/text_size_middle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_activity_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="invisible" >
+
+                    <TextView
+                        android:id="@+id/tv_activity_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/n_km_activity_distance"
+                        android:textColor="@color/fitband_main_color"
+                        android:textSize="@dimen/text_size_middle" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_calorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/n_calorie_activity"
+                        android:textColor="@color/fitband_main_color"
+                        android:textSize="@dimen/text_size_middle" />
+
+                    <View
+                        android:layout_width="100dp"
+                        android:layout_height="2dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/fitband_second_color" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_steps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/n_steps_activity"
+                        android:textColor="@color/fitband_main_color"
+                        android:textSize="@dimen/text_size_middle" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_slow_detail"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_centerInParent="true"
+                    android:background="@null" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"

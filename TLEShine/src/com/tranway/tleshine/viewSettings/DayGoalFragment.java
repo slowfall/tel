@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
+import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsGoalActivity.OnTitleButtonClickListener;
 import com.tranway.tleshine.widget.CustomizedGoalWheelView;
@@ -102,6 +106,13 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 		if (goalPoint == 0) {
 			ToastHelper.showToast(R.string.exercise_goal_cannot_null);
 			return false;
+		}
+		long userId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_ID, -1l);
+		long utcTime = System.currentTimeMillis() / 1000 /Util.SECONDS_OF_ONE_DAY;
+		ActivityInfo info = DBManager.queryActivityInfoByTime(userId, utcTime);
+		if (info.getUtcTime() == utcTime) {
+			info.setGoal(goalPoint);
+			DBManager.addActivityInfo(userId, info);
 		}
 		return UserGoalKeeper.writeExerciseGoal(getActivity(), goalPoint);
 	}

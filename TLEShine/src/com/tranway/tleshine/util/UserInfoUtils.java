@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.tranway.tleshine.model.UserInfo;
+import com.tranway.tleshine.model.UserInfoKeeper;
 
 @SuppressLint("SimpleDateFormat")
 public class UserInfoUtils {
@@ -152,6 +153,9 @@ public class UserInfoUtils {
 		data.put(UserInfo.SEVER_KEY_EMAIL, info.getEmail());
 		data.put(UserInfo.SEVER_KEY_NAME, info.getName());
 		data.put(UserInfo.SEVER_KEY_PASSWORD, info.getPassword());
+		if (info.getPhone() != null && info.getPhone().length() > 0) {
+			data.put(UserInfoKeeper.KEY_PHONE, info.getPhone());
+		}
 		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
 		Log.d("------", "birthday: " + info.getBirthday());
 		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));

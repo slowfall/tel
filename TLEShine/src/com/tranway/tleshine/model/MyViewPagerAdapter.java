@@ -7,13 +7,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.R.anim;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tranway.telshine.database.DBInfo;
@@ -24,8 +31,8 @@ import com.tranway.tleshine.widget.RoundProgressBar;
 import com.tranway.tleshine.widget.chartview.AbstractSeries;
 import com.tranway.tleshine.widget.chartview.ChartView;
 import com.tranway.tleshine.widget.chartview.LabelAdapter;
-import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LabelAdapter.LabelOrientation;
+import com.tranway.tleshine.widget.chartview.LinearSeries;
 import com.tranway.tleshine.widget.chartview.LinearSeries.LinearPoint;
 
 public class MyViewPagerAdapter extends PagerAdapter {
@@ -38,6 +45,8 @@ public class MyViewPagerAdapter extends PagerAdapter {
 	private List<ActivityInfo> mActivityInfos;
 	private List<AbstractSeries> mChartSeries;
 	private List<List<Map<String, Object>>> mEvery15MinPackets;
+	private Animation mFadeinAnimation;
+	private Animation mFadeoutAnimation;
 
 	private int position;
 
@@ -49,18 +58,29 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		this.mActivityInfos = mActivityInfos;
 		this.mChartSeries = mChartSeries;
 		this.mEvery15MinPackets = mEvery15MinPackets;
-
+		mFadeinAnimation = AnimationUtils.loadAnimation(context, anim.fade_in);
+		mFadeinAnimation.setFillAfter(true);
+		mFadeoutAnimation = AnimationUtils.loadAnimation(context, anim.fade_out);
+		mFadeoutAnimation.setFillAfter(true);
 		notifyDataSetChanged();
 	}
 
 	class ViewHolder {
 		// top circle view
-		RoundProgressBar mProgress;
-		TextView mTimeTxt;
+		RoundProgressBar progress;
+		TextView timeTxt;
+		LinearLayout overviewLayout;
+		TextView goalSteps;
+		TextView finishedSteps;
+		LinearLayout detailLayout;
+		TextView distance;
+		TextView calorie;
+		TextView steps;
+		Button showDetailBtn;
 		// middle chart view
 		ChartView chartView;
 		// bottom list view
-		CustomizedListView mListView;
+		CustomizedListView listView;
 	}
 
 	@Override
@@ -72,11 +92,19 @@ public class MyViewPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, final int position) {
 		this.position = position;
 		Log.d(TAG, "---load view page item: " + position);
-		ViewHolder holder = new ViewHolder();
+		final ViewHolder holder = new ViewHolder();
 		View view = mInflater.inflate(R.layout.layout_viewpager, null);
-		holder.mProgress = (RoundProgressBar) view.findViewById(R.id.progress);
-		holder.mTimeTxt = (TextView) view.findViewById(R.id.txt_date);
+		holder.progress = (RoundProgressBar) view.findViewById(R.id.progress);
+		holder.timeTxt = (TextView) view.findViewById(R.id.txt_date);
 
+		holder.overviewLayout = (LinearLayout) view.findViewById(R.id.ll_activity_overview);
+		holder.goalSteps = (TextView) view.findViewById(R.id.tv_activity_steps_goal);
+		holder.finishedSteps = (TextView) view.findViewById(R.id.tv_activity_steps_finished);
+		holder.detailLayout = (LinearLayout) view.findViewById(R.id.ll_activity_detail);
+		holder.distance = (TextView) view.findViewById(R.id.tv_activity_distance);
+		holder.calorie = (TextView) view.findViewById(R.id.tv_activity_calorie);
+		holder.steps = (TextView) view.findViewById(R.id.tv_activity_steps);
+		holder.showDetailBtn = (Button) view.findViewById(R.id.btn_slow_detail);
 		ActivityInfo info = mActivityInfos.get(position);
 
 		long utcTime = info.getUtcTime();
@@ -84,20 +112,47 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		long utcTimeSeconds = utcTime * Util.SECONDS_OF_ONE_DAY;
 		List<Map<String, Object>> every15MinPackets = DBManager.queryEvery15MinPackets(userId,
 				utcTimeSeconds, utcTime + Util.SECONDS_OF_ONE_DAY);
-		holder.mProgress.setProgress(info.getSteps(), info.getGoal());
-		
+		holder.progress.setProgress(info.getSteps(), info.getGoal());
+
 		long todayUtcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
 		if (todayUtcTime == utcTime) {
-			holder.mTimeTxt.setText(R.string.today);
+			holder.timeTxt.setText(R.string.today);
 		} else if (todayUtcTime - utcTime == 1) {
-			holder.mTimeTxt.setText(R.string.yestoday);
+			holder.timeTxt.setText(R.string.yestoday);
 		} else {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.getDefault());
 			Date date = new Date(utcTimeSeconds * 1000);
-			holder.mTimeTxt.setText(df.format(date));
+			holder.timeTxt.setText(df.format(date));
 		}
-		
+		holder.goalSteps.setText(String.format(context.getString(R.string.activity_steps_goal),
+				info.getGoal()));
+		holder.finishedSteps.setText(String.format(
+				context.getString(R.string.activity_steps_finished), info.getSteps()));
+		holder.showDetailBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (holder.detailLayout.isShown()) {
+//					holder.detailLayout.startAnimation(mFadeinAnimation);
+//					holder.overviewLayout.startAnimation(mFadeoutAnimation);
+					holder.detailLayout.setVisibility(View.INVISIBLE);
+					holder.overviewLayout.setVisibility(View.VISIBLE);
+				} else {
+//					holder.detailLayout.startAnimation(mFadeoutAnimation);
+//					holder.overviewLayout.startAnimation(mFadeinAnimation);
+					holder.detailLayout.setVisibility(View.VISIBLE);
+					holder.overviewLayout.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+		holder.distance.setText(String.format(context.getString(R.string.n_km_activity_distance),
+				formatKm(info.getDistance())));
+		holder.calorie.setText(String.format(context.getString(R.string.n_calorie_activity),
+				info.getCalorie()));
+		holder.steps.setText(String.format(context.getString(R.string.n_steps_activity),
+				info.getSteps()));
+
 		// load middle chart view
 		holder.chartView = (ChartView) view.findViewById(R.id.chart_view);
 		holder.chartView.setGridLinesHorizontal(3);
@@ -110,11 +165,11 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		holder.chartView.addSeries(makeSeries(every15MinPackets)); // .get(position)
 
 		// load bottom list view
-		holder.mListView = (CustomizedListView) view
+		holder.listView = (CustomizedListView) view
 				.findViewById(R.id.act_solution_3_mylinearlayout);
-		
+
 		mListAdapter.setActivityData(every15MinPackets); // .get(position)
-		holder.mListView.setAdapter(mListAdapter);
+		holder.listView.setAdapter(mListAdapter);
 
 		/**
 		 * 注意：1、需要确定getCount()的返回值，即ViewPager的页面数量 2、感觉
@@ -125,7 +180,15 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
 		return view;
 	}
-	
+
+	private String formatKm(int miles) {
+		float km = miles / 1000.0f;
+		if (km <= 0.01) {
+			return "0";
+		}
+		return String.format(Locale.getDefault(), "%.2f", km);
+	}
+
 	private AbstractSeries makeSeries(List<Map<String, Object>> packets) {
 		LinearSeries series = new LinearSeries();
 		series.setLineColor(context.getResources().getColor(R.color.yellow));
@@ -148,6 +211,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		}
 		return series;
 	}
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub

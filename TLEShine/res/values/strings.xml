@@ -60,6 +60,12 @@
 	
 	<!-- Activity Activity strings -->
 	<string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
+	<string name="activity_steps_goal">目标:%1$d步</string>
+	<string name="activity_steps_finished">已完成：%1$d步</string>
+	<string name="n_km_activity_distance">%1$s千米</string>
+	<string name="n_calorie_activity">消耗%1$d卡路里</string>
+	<string name="n_steps_activity">%1$d步</string>
+
 	<!-- Sleep Activity strings -->
 	<string name="sleep_deep">深度睡眠</string>
 	<string name="sleep_shallow">浅度睡眠</string>
@@ -67,4 +73,8 @@
 	<string name="sleep_total">总睡眠</string>
 	<string name="sleep_wake_times">醒次数</string>
 	<string name="sleep_wake_times_unit">次</string>
+	<string name="n_hour_sleep_goal">%1$s小时睡眠目标</string>
+	<string name="sleep_good">睡眠质量好</string>
+	<string name="sleep_normal">睡眠质量一般</string>
+	<string name="sleep_bad">睡眠质量差</string>
 </resources>

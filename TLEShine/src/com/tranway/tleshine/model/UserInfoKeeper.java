@@ -15,6 +15,7 @@ public class UserInfoKeeper {
 	public static final String KEY_EMAIL = "email";
 	public static final String KEY_NAME = "userName";
 	public static final String KEY_PWD = "password";
+	public static final String KEY_PHONE = "phone";
 	public static final String KEY_BIRTH = "birthday";
 	public static final String KEY_WEIGHT = "weight";
 	public static final String KEY_AGE = "age";
@@ -218,6 +219,7 @@ public class UserInfoKeeper {
 		info.setName(sp.getString(KEY_NAME, ""));
 		info.setId(sp.getLong(KEY_ID, -1));
 		info.setPassword(sp.getString(KEY_PWD, ""));
+		info.setPhone(sp.getString(KEY_PHONE, ""));
 		info.setBirthday(sp.getLong(KEY_BIRTH, -1));
 		info.setWeight(sp.getInt(KEY_WEIGHT, -1));
 		info.setAge(sp.getInt(KEY_AGE, -1));

@@ -102,7 +102,7 @@ public class RoundProgressBar extends View {
 		textTotalSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textTotalSize, 15);
 		roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);
 		max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
-		textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);
+		textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, false);
 		style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
 
 		mTypedArray.recycle();

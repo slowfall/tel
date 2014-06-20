@@ -147,6 +147,7 @@ public class MultiRoundProgressBar extends View {
 		case STROKE:
 			paint.setStyle(Paint.Style.STROKE);
 			canvas.drawArc(oval, startAngle, 360 * progress / max, false, paint); // 根据进度画圆弧
+			paint.setColor(roundProgressNextColor);
 			canvas.drawArc(oval, startAngleNext, 360 * progressNext / max, false, paint); // 画第二个进度
 			break;
 		case FILL:
@@ -155,6 +156,7 @@ public class MultiRoundProgressBar extends View {
 				canvas.drawArc(oval, startAngle, 360 * progress / max, true, paint); // 根据进度画圆弧
 			}
 			if (progressNext != 0) {
+				paint.setColor(roundProgressNextColor);
 				canvas.drawArc(oval, startAngleNext, 360 * progressNext / max, true, paint); // 画第二个进度
 			}
 			break;

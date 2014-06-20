@@ -32,6 +32,7 @@ public class UserInfo {
 	private String email; // User register Email
 	private String name; // User register Name
 	private String password; // User register Password
+	private String phone;
 	private long birthday = -1; // User register Birthday
 	private int goal = -1; // Exercise Goal Point
 	private long id = -1; //user id
@@ -170,6 +171,14 @@ public class UserInfo {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public long getBirthday() {

@@ -340,8 +340,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private boolean saveUserResgiterInfo() {
 		String password = mPwdTxt.getText().toString();
 		String email = mEmailTxt.getText().toString();
+		String phone = mPhoneTxt.getText().toString();
 		boolean p = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_EMAIL, email);
 		boolean e = UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_PWD, password);
+		if (phone != null && phone.length() > 0) {
+			UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_PHONE, phone);
+		}
 		return p && e;
 	}
 
