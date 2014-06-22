@@ -293,19 +293,21 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private void saveActivityInfo(byte[] byteData) {
 		BLEPacket packet = new BLEPacket();
 		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
-		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-		int goal = UserGoalKeeper.readExerciseGoalPoint(this);
-		activityInfo.setGoal(goal);
-		DBManager.addActivityInfo(userId, activityInfo);
+		if (activityInfo.getGoal() > 0) {
+			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
+			int goal = UserGoalKeeper.readExerciseGoalPoint(this);
+			activityInfo.setGoal(goal);
+			DBManager.addActivityInfo(userId, activityInfo);
 
-		TLEHttpRequest request = TLEHttpRequest.instance();
-		request.setOnHttpRequestListener(null, null);
-		Map<String, String> data = new TreeMap<String, String>();
-		data.put("StepCount", String.valueOf(activityInfo.getSteps()));
-		data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
-				UserInfoKeeper.KEY_ID, 0l)));
-		data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
-		request.post(ADD_SPORT_POINT_END_URL, data);
+			TLEHttpRequest request = TLEHttpRequest.instance();
+			request.setOnHttpRequestListener(null, null);
+			Map<String, String> data = new TreeMap<String, String>();
+			data.put("StepCount", String.valueOf(activityInfo.getSteps()));
+			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
+					UserInfoKeeper.KEY_ID, 0l)));
+			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
+			request.post(ADD_SPORT_POINT_END_URL, data);
+		}
 	}
 
 	private void saveEvery15MinPacket(List<byte[]> every15MinPacket) {
