@@ -1,8 +1,10 @@
 package com.tranway.telshine.database;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import android.content.ContentValues;
@@ -311,6 +313,9 @@ public class DBManager {
 			return -1;
 		}
 
+		Calendar calendar = Calendar.getInstance();
+		TimeZone zone = calendar.getTimeZone();
+		long offset = zone.getOffset(calendar.getTimeInMillis());
 		long ret = 0;
 		db.beginTransaction();
 		try {
@@ -318,7 +323,7 @@ public class DBManager {
 				ContentValues mValues = new ContentValues();
 				mValues.put(DBInfo.USER_ID, userId);
 				if (every15MinData.containsKey(DBInfo.KEY_UTC_TIME)) {
-					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME));
+					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME) - offset);
 				}
 				if (every15MinData.containsKey(DBInfo.KEY_STEPS)) {
 					mValues.put(DBInfo.KEY_STEPS, (Integer) every15MinData.get(DBInfo.KEY_STEPS));
@@ -386,14 +391,16 @@ public class DBManager {
 		if (db == null) {
 			return -1;
 		}
-
+		Calendar calendar = Calendar.getInstance();
+		TimeZone zone = calendar.getTimeZone();
+		long offset = zone.getOffset(calendar.getTimeInMillis());
 		long ret = 0;
 		db.beginTransaction();
 		try {
 			ContentValues mValues = new ContentValues();
 			mValues.put(DBInfo.USER_ID, userId);
 			if (sleepData.containsKey(DBInfo.KEY_UTC_TIME)) {
-				mValues.put(DBInfo.KEY_UTC_TIME, (Long) sleepData.get(DBInfo.KEY_UTC_TIME));
+				mValues.put(DBInfo.KEY_UTC_TIME, (Long) sleepData.get(DBInfo.KEY_UTC_TIME) - offset);
 			}
 			if (sleepData.containsKey(DBInfo.KEY_SLEEP_DEEP_TIME)) {
 				mValues.put(DBInfo.KEY_SLEEP_DEEP_TIME, (Long) sleepData.get(DBInfo.KEY_SLEEP_GOAL));

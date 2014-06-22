@@ -214,8 +214,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 				Calendar calendar = Calendar.getInstance();
 				TimeZone zone = calendar.getTimeZone();
-				long offset = zone.getOffset(calendar.getTimeInMillis());
-				long utcTime = (calendar.getTimeInMillis() + offset) / 1000;
+				long offset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
+				long utcTime = calendar.getTimeInMillis() / 1000 + offset;
 				// boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);

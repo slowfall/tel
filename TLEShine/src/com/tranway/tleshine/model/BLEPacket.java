@@ -1,8 +1,10 @@
 package com.tranway.tleshine.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import com.tranway.telshine.database.DBInfo;
@@ -82,9 +84,12 @@ public class BLEPacket {
 	public ActivityInfo resolveCurrentActivityInfo(byte[] byteActivityInfo) {
 		ActivityInfo activityInfo = new ActivityInfo();
 
+		Calendar calendar = Calendar.getInstance();
+		TimeZone zone = calendar.getTimeZone();
+		long offset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
 		byte[] utcBytes = new byte[4];
 		System.arraycopy(byteActivityInfo, 1, utcBytes, 0, utcBytes.length);
-		activityInfo.setUtcTime(bytesToInt(utcBytes) / Util.SECONDS_OF_ONE_DAY);
+		activityInfo.setUtcTime((bytesToInt(utcBytes) - offset) / Util.SECONDS_OF_ONE_DAY);
 
 		byte[] stepsBytes = new byte[3];
 		System.arraycopy(byteActivityInfo, 5, stepsBytes, 0, stepsBytes.length);
@@ -169,8 +174,9 @@ public class BLEPacket {
 		every15MinData.put(DBInfo.KEY_UTC_TIME, utcTime);
 		every15MinData.put(DBInfo.KEY_STEPS, steps);
 		every15MinData.put(DBInfo.KEY_CALORIE, calories);
-//		Util.logD(TAG, "in resolveTimeStepAndCalorie: utcTime:" + utcTime + ", steps:" + steps
-//				+ ", calories:" + calories);
+		// Util.logD(TAG, "in resolveTimeStepAndCalorie: utcTime:" + utcTime +
+		// ", steps:" + steps
+		// + ", calories:" + calories);
 		return every15MinData;
 	}
 
