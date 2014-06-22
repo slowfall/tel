@@ -276,6 +276,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 			break;
 		case 0x06:
 			mBluetoothLeService.disconnect();
+			long time = System.currentTimeMillis();
+			UserInfoKeeper.writeUserInfo(getApplicationContext(),
+					UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, time);
 			ToastHelper.showToast(R.string.sync_finished);
 			dismissConnectAndSyncDialog();
 			break;
@@ -369,9 +372,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-//			 saveEvery15MinPacket(Util.getTestBytesList());
-//			 saveSleepPacket(Util.getTestBytesList());
-//			 saveActivityInfo(Util.getActivityInfoTestData());
+			// saveEvery15MinPacket(Util.getTestBytesList());
+			// saveSleepPacket(Util.getTestBytesList());
+			// saveActivityInfo(Util.getActivityInfoTestData());
 			break;
 		default:
 			break;

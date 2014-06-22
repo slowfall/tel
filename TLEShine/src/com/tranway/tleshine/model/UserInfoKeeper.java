@@ -23,6 +23,9 @@ public class UserInfoKeeper {
 	public static final String KEY_STRIDE = "stride";
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_STEPSTARGET = "stepsTarget";
+	/**
+	 * unit is milliseconds
+	 */
 	public static final String KEY_SYNC_BLUETOOTH_TIME = "syncBluetoothTime";
 	public static final String KEY_GEN_CODE = "genCode";
 	public static final String KEY_GEN_CODE_GET_TIME ="genCodeGetTime";
@@ -44,7 +47,11 @@ public class UserInfoKeeper {
 		} else {
 			info.setStepsTarget(data.getInt(UserInfo.SEVER_KEY_GOAL));
 		}
-		info.setStride(readUserInfo(context, KEY_STRIDE, 0));
+		if (data.isNull(UserInfo.SEVER_KEY_STEP_COUNT)) {
+			info.setStride(readUserInfo(context, KEY_STRIDE, 0));
+		} else {
+			info.setStride(data.getInt(UserInfo.SEVER_KEY_STEP_COUNT));
+		}
 		writeUserInfo(context, info);
 	}
 

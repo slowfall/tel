@@ -125,8 +125,6 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 				try {
 					JSONObject data = new JSONObject(result);
 					UserInfoKeeper.writeUserInfo(getApplicationContext(), data);
-					UserInfoKeeper.writeUserInfo(getApplicationContext(),
-							UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, 0l);
 				} catch (JSONException e) {
 					e.printStackTrace();
 					ToastHelper.showToast(R.string.get_register_info_failed);

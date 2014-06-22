@@ -15,10 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,6 +68,8 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		// top circle view
 		RoundProgressBar progress;
 		TextView timeTxt;
+		TextView week;
+		TextView syncTime;
 		LinearLayout overviewLayout;
 		TextView goalSteps;
 		TextView finishedSteps;
@@ -95,7 +96,9 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		final ViewHolder holder = new ViewHolder();
 		View view = mInflater.inflate(R.layout.layout_viewpager, null);
 		holder.progress = (RoundProgressBar) view.findViewById(R.id.progress);
-		holder.timeTxt = (TextView) view.findViewById(R.id.txt_date);
+		holder.timeTxt = (TextView) view.findViewById(R.id.tv_activity_date);
+		holder.week = (TextView) view.findViewById(R.id.tv_activity_weekday);
+		holder.syncTime = (TextView) view.findViewById(R.id.tv_sync_time);
 
 		holder.overviewLayout = (LinearLayout) view.findViewById(R.id.ll_activity_overview);
 		holder.goalSteps = (TextView) view.findViewById(R.id.tv_activity_steps_goal);
@@ -116,6 +119,10 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
 		long todayUtcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(utcTime * Util.SECONDS_OF_ONE_DAY * 1000);
+		holder.week.setText(context.getResources().getStringArray(R.array.weekdays)[calendar
+				.get(Calendar.DAY_OF_WEEK) - 1]);
 		if (todayUtcTime == utcTime) {
 			holder.timeTxt.setText(R.string.today);
 		} else if (todayUtcTime - utcTime == 1) {
@@ -125,33 +132,30 @@ public class MyViewPagerAdapter extends PagerAdapter {
 			Date date = new Date(utcTimeSeconds * 1000);
 			holder.timeTxt.setText(df.format(date));
 		}
-		holder.goalSteps.setText(String.format(context.getString(R.string.activity_steps_goal),
-				info.getGoal()));
-		holder.finishedSteps.setText(String.format(
-				context.getString(R.string.activity_steps_finished), info.getSteps()));
+		holder.syncTime.setText(makeSyncTimeString(UserInfoKeeper.readUserInfo(context,
+				UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, 0l)));
+		holder.goalSteps.setText(String.valueOf(info.getGoal()));
+		holder.finishedSteps.setText(String.valueOf(info.getSteps()));
 		holder.showDetailBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (holder.detailLayout.isShown()) {
-//					holder.detailLayout.startAnimation(mFadeinAnimation);
-//					holder.overviewLayout.startAnimation(mFadeoutAnimation);
+					// holder.detailLayout.startAnimation(mFadeinAnimation);
+					// holder.overviewLayout.startAnimation(mFadeoutAnimation);
 					holder.detailLayout.setVisibility(View.INVISIBLE);
 					holder.overviewLayout.setVisibility(View.VISIBLE);
 				} else {
-//					holder.detailLayout.startAnimation(mFadeoutAnimation);
-//					holder.overviewLayout.startAnimation(mFadeinAnimation);
+					// holder.detailLayout.startAnimation(mFadeoutAnimation);
+					// holder.overviewLayout.startAnimation(mFadeinAnimation);
 					holder.detailLayout.setVisibility(View.VISIBLE);
 					holder.overviewLayout.setVisibility(View.INVISIBLE);
 				}
 			}
 		});
-		holder.distance.setText(String.format(context.getString(R.string.n_km_activity_distance),
-				formatKm(info.getDistance())));
-		holder.calorie.setText(String.format(context.getString(R.string.n_calorie_activity),
-				info.getCalorie()));
-		holder.steps.setText(String.format(context.getString(R.string.n_steps_activity),
-				info.getSteps()));
+		holder.distance.setText(String.valueOf(formatKm(info.getDistance())));
+		holder.calorie.setText(String.valueOf(info.getCalorie()));
+		holder.steps.setText(String.valueOf(info.getSteps()));
 
 		// load middle chart view
 		holder.chartView = (ChartView) view.findViewById(R.id.chart_view);
@@ -179,6 +183,34 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		container.addView(view);
 
 		return view;
+	}
+
+	private String makeSyncTimeString(long lastSyncTime) {
+		if (lastSyncTime == 0) {
+			return context.getString(R.string.not_sync);
+		}
+		String syncTimeString = "";
+		long nowTime = System.currentTimeMillis();
+		long diff = nowTime - lastSyncTime;
+		long minute = diff / 60;
+		long hours = minute / 60;
+		long days = hours / 24;
+		long weeks = days / 7;
+		long mooths = days / 30;
+		if (mooths > 0) {
+			syncTimeString = String.format(context.getString(R.string.mooth_ago), mooths);
+		} else if (weeks > 0) {
+			syncTimeString = String.format(context.getString(R.string.week_ago), weeks);
+		} else if (days > 0) {
+			syncTimeString = String.format(context.getString(R.string.day_ago), days);
+		} else if (hours > 0) {
+			syncTimeString = String.format(context.getString(R.string.hour_ago), hours);
+		} else if (minute > 5) {
+			syncTimeString = String.format(context.getString(R.string.miniute_ago), minute);
+		} else {
+			return context.getString(R.string.last_sync_time_just_now);
+		}
+		return context.getString(R.string.last_sync_time_string) + syncTimeString;
 	}
 
 	private String formatKm(int miles) {

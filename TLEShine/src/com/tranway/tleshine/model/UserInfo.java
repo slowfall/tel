@@ -19,6 +19,7 @@ public class UserInfo {
 	public static final String SEVER_KEY_HEIGHT = "Height";
 	public static final String SEVER_KEY_WEIGHT = "Weight";
 	public static final String SEVER_KEY_GOAL = "Goal";
+	public static final String SEVER_KEY_STEP_COUNT = "StepCount";
 	public static final String SEVER_KEY_ID = "ID";
 	public static final String SEVER_KEY_NAME = "Name";
 	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";

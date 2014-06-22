@@ -132,9 +132,9 @@
                         android:textSize="@dimen/text_size_middle" />
 
                     <View
-                        android:layout_margin="5dp"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
+                        android:layout_margin="5dp"
                         android:background="@color/fitband_second_color" />
 
                     <TextView

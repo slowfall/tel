@@ -27,7 +27,7 @@
 	<string name="swim">游泳</string>
 	<string name="or">或者</string>
 	<string name="hour">小时</string>
-	<string name="explain_point_num">每天活动的点数</string>
+	<string name="explain_point_num">每天活动的步数</string>
 	<string name="intensity_light">轻量运动</string>
 	<string name="intensity_moderate">适量运动</string>
 	<string name="intensity_strenuous">剧烈运动</string>
