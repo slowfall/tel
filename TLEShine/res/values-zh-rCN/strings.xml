@@ -59,11 +59,11 @@
 
     <!-- Activity Activity strings -->
     <string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
-    <string name="activity_steps_goal">目标 </string>
-    <string name="activity_steps_finished">完成 </string>
-    <string name="n_km_activity_distance"> 千米</string>
-    <string name="n_calorie_activity"> 卡路里</string>
-    <string name="activity_step"> 步 </string>
+    <string name="activity_steps_goal">目标&#160;</string>
+    <string name="activity_steps_finished">完成&#160;</string>
+    <string name="n_km_activity_distance">&#160;千米</string>
+    <string name="n_calorie_activity">&#160;卡路里</string>
+    <string name="activity_step">&#160;步</string>
     
     <string name="not_sync">尚未同步。</string>
     <string name="last_sync_time_just_now">刚刚同步。</string>

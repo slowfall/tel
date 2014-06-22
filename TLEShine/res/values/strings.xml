@@ -59,11 +59,11 @@
 
     <!-- Activity Activity strings -->
     <string name="no_activity_tips">Now do not have any activity, please go to "settings" try connect fitband.</string>
-    <string name="activity_steps_goal">Goal </string>
-    <string name="activity_step"> Steps </string>
-    <string name="activity_steps_finished">Finished </string>
-    <string name="n_km_activity_distance"> Km</string>
-    <string name="n_calorie_activity"> Calorie</string>
+    <string name="activity_steps_goal">Goal&#160;</string>
+    <string name="activity_step">&#160;Steps</string>
+    <string name="activity_steps_finished">Finished&#160;</string>
+    <string name="n_km_activity_distance">&#160;Km</string>
+    <string name="n_calorie_activity">&#160;Calorie</string>
     
     <string name="not_sync">Have not synchronise.</string>
     <string name="last_sync_time_just_now">The last synchronise time is just now.</string>
