@@ -216,6 +216,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 				TimeZone zone = calendar.getTimeZone();
 				long offset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
 				long utcTime = calendar.getTimeInMillis() / 1000 + offset;
+				Util.logD(TAG, "Time Zone offset:" + offset);
 				// boolean isUpdateUtc = (Math.abs(utcTime - getUtcTime) > 5);
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
@@ -293,7 +294,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private void saveActivityInfo(byte[] byteData) {
 		BLEPacket packet = new BLEPacket();
 		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
-		if (activityInfo.getGoal() > 0) {
+		if (activityInfo.getSteps() > 0) {
 			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 			int goal = UserGoalKeeper.readExerciseGoalPoint(this);
 			activityInfo.setGoal(goal);
@@ -366,9 +367,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-			// saveEvery15MinPacket(Util.getTestBytesList());
+//			 saveActivityInfo(Util.getActivityInfoTestData());
+//			 saveEvery15MinPacket(Util.getTestBytesList());
 			// saveSleepPacket(Util.getTestBytesList());
-			// saveActivityInfo(Util.getActivityInfoTestData());
 			break;
 		default:
 			break;

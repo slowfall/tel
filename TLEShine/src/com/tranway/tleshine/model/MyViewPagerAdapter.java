@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import android.R.anim;
 import android.content.Context;
@@ -46,6 +47,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 	private List<List<Map<String, Object>>> mEvery15MinPackets;
 	private Animation mFadeinAnimation;
 	private Animation mFadeoutAnimation;
+	private long mTimeOffset = 0;
 
 	private int position;
 
@@ -61,6 +63,11 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		mFadeinAnimation.setFillAfter(true);
 		mFadeoutAnimation = AnimationUtils.loadAnimation(context, anim.fade_out);
 		mFadeoutAnimation.setFillAfter(true);
+
+		Calendar calendar = Calendar.getInstance();
+		TimeZone zone = calendar.getTimeZone();
+		mTimeOffset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
+
 		notifyDataSetChanged();
 	}
 
@@ -114,10 +121,11 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		long userId = UserInfoKeeper.readUserInfo(context, UserInfoKeeper.KEY_ID, -1l);
 		long utcTimeSeconds = utcTime * Util.SECONDS_OF_ONE_DAY;
 		List<Map<String, Object>> every15MinPackets = DBManager.queryEvery15MinPackets(userId,
-				utcTimeSeconds, utcTime + Util.SECONDS_OF_ONE_DAY);
+				utcTimeSeconds, utcTimeSeconds + Util.SECONDS_OF_ONE_DAY);
 		holder.progress.setProgress(info.getSteps(), info.getGoal());
 
-		long todayUtcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
+		long todayUtcTime = (System.currentTimeMillis() / 1000 + mTimeOffset)
+				/ Util.SECONDS_OF_ONE_DAY;
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(utcTime * Util.SECONDS_OF_ONE_DAY * 1000);

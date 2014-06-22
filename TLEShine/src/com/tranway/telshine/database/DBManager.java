@@ -315,7 +315,7 @@ public class DBManager {
 
 		Calendar calendar = Calendar.getInstance();
 		TimeZone zone = calendar.getTimeZone();
-		long offset = zone.getOffset(calendar.getTimeInMillis());
+		long offset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
 		long ret = 0;
 		db.beginTransaction();
 		try {
@@ -354,13 +354,13 @@ public class DBManager {
 			return every15MinPackets;
 		}
 
-		fromUTC = 0;
-		toUTC = 100000000000l;
+//		fromUTC = 0;
+//		toUTC = 100000000000l;
 		db.beginTransaction();
 		try {
 			Cursor cursor = db.rawQuery(
 					"select * from " + DBInfo.TB_EVERY_FIFTEEN_MIN + " where " + DBInfo.USER_ID
-							+ "=? and " + DBInfo.KEY_UTC_TIME + " > ? and " + DBInfo.KEY_UTC_TIME
+							+ "=? and " + DBInfo.KEY_UTC_TIME + " >= ? and " + DBInfo.KEY_UTC_TIME
 							+ " < ? " + " order by " + DBInfo.KEY_UTC_TIME + " DESC",
 					new String[] { String.valueOf(userId), String.valueOf(fromUTC),
 							String.valueOf(toUTC) });
@@ -393,7 +393,7 @@ public class DBManager {
 		}
 		Calendar calendar = Calendar.getInstance();
 		TimeZone zone = calendar.getTimeZone();
-		long offset = zone.getOffset(calendar.getTimeInMillis());
+		long offset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
 		long ret = 0;
 		db.beginTransaction();
 		try {
