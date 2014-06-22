@@ -40,8 +40,8 @@ public class UserInfoKeeper {
 		info.setPassword(data.getString(UserInfo.SEVER_KEY_PASSWORD));
 		info.setSex(data.getInt(UserInfo.SEVER_KEY_SEX));
 		info.setBirthday(data.getLong(UserInfo.SEVER_KEY_BIRTHDAY));
-		info.setHeight(data.getInt(UserInfo.SEVER_KEY_HEIGHT));
-		info.setWeight(data.getInt(UserInfo.SEVER_KEY_WEIGHT));
+		info.setHeight((int)(data.getDouble(UserInfo.SEVER_KEY_HEIGHT) * 100));
+		info.setWeight((int)(data.getInt(UserInfo.SEVER_KEY_WEIGHT) * 10));
 		if (data.isNull(UserInfo.SEVER_KEY_GOAL)) {
 			info.setStepsTarget(0);
 		} else {

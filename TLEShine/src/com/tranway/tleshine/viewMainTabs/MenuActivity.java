@@ -295,15 +295,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		int goal = UserGoalKeeper.readExerciseGoalPoint(this);
-		ActivityInfo activityInfo2 = DBManager.queryActivityInfoByTime(userId,
-				activityInfo.getUtcTime());
-		int steps = activityInfo2.getSteps() + activityInfo.getSteps();
-		int calorie = activityInfo2.getCalorie() + activityInfo.getCalorie();
-		int distance = activityInfo2.getDistance() + activityInfo.getDistance();
 		activityInfo.setGoal(goal);
-		activityInfo.setSteps(steps);
-		activityInfo.setCalorie(calorie);
-		activityInfo.setDistance(distance);
 		DBManager.addActivityInfo(userId, activityInfo);
 
 		TLEHttpRequest request = TLEHttpRequest.instance();

@@ -191,7 +191,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		}
 		String syncTimeString = "";
 		long nowTime = System.currentTimeMillis();
-		long diff = nowTime - lastSyncTime;
+		long diff = (nowTime - lastSyncTime) / 1000;
 		long minute = diff / 60;
 		long hours = minute / 60;
 		long days = hours / 24;
