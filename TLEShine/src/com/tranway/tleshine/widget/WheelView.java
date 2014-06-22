@@ -74,16 +74,17 @@ public class WheelView extends View {
 	private static final int ADDITIONAL_ITEM_HEIGHT = 45;
 
 	/** Text size */
-	private static final int TEXT_SIZE = 18;
+	private static final int VALUE_TEXT_SIZE = R.dimen.wheel_value_text_size;
+	private static final int LABEL_TEXT_SIZE = R.dimen.wheel_label_text_size;
 
 	/** Top and bottom items offset (to hide that) */
-	private static final int ITEM_OFFSET = TEXT_SIZE / 5;
+	// private static final int ITEM_OFFSET = TEXT_SIZE / 5;
 
 	/** Additional width for items layout */
 	private static final int ADDITIONAL_ITEMS_SPACE = 10;
 
 	/** Label offset */
-	private static final int LABEL_OFFSET = 10;
+	private static final int LABEL_OFFSET = 6;
 
 	/** Left and right padding value */
 	private static final int PADDING = 10;
@@ -108,6 +109,7 @@ public class WheelView extends View {
 	// Text paints
 	private TextPaint itemsPaint;
 	private TextPaint valuePaint;
+	private TextPaint labelPaint;
 
 	// Center line paints
 	private Paint centerLinePaint;
@@ -141,11 +143,14 @@ public class WheelView extends View {
 	private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
 	private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
 
+	private Context context;
+
 	/**
 	 * Constructor
 	 */
 	public WheelView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.context = context;
 		initData(context);
 	}
 
@@ -154,6 +159,7 @@ public class WheelView extends View {
 	 */
 	public WheelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.context = context;
 		initData(context);
 	}
 
@@ -162,6 +168,7 @@ public class WheelView extends View {
 	 */
 	public WheelView(Context context) {
 		super(context);
+		this.context = context;
 		initData(context);
 	}
 
@@ -418,14 +425,20 @@ public class WheelView extends View {
 		if (itemsPaint == null) {
 			itemsPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
 			// itemsPaint.density = getResources().getDisplayMetrics().density;
-			itemsPaint.setTextSize(TEXT_SIZE);
+			itemsPaint.setTextSize(context.getResources().getDimension(VALUE_TEXT_SIZE));
 		}
 
 		if (valuePaint == null) {
 			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
 			// valuePaint.density = getResources().getDisplayMetrics().density;
-			valuePaint.setTextSize(TEXT_SIZE);
+			valuePaint.setTextSize(context.getResources().getDimension(VALUE_TEXT_SIZE));
 			valuePaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);
+		}
+		if (labelPaint == null) {
+			labelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
+			// valuePaint.density = getResources().getDisplayMetrics().density;
+			labelPaint.setTextSize(context.getResources().getDimension(LABEL_TEXT_SIZE));
+			labelPaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);
 		}
 
 		if (centerLinePaint == null) {
@@ -460,7 +473,8 @@ public class WheelView extends View {
 			return 0;
 		}
 
-		int desired = getItemHeight() * visibleItems - ITEM_OFFSET * 2 - ADDITIONAL_ITEM_HEIGHT;
+		int itemOffset = (int) context.getResources().getDimension(VALUE_TEXT_SIZE);
+		int desired = getItemHeight() * visibleItems - itemOffset * 2 - ADDITIONAL_ITEM_HEIGHT;
 
 		// Check against our minimum height
 		desired = Math.max(desired, getSuggestedMinimumHeight());
@@ -586,7 +600,7 @@ public class WheelView extends View {
 
 		labelWidth = 0;
 		if (label != null && label.length() > 0) {
-			labelWidth = (int) Math.ceil(Layout.getDesiredWidth(label, valuePaint));
+			labelWidth = (int) Math.ceil(Layout.getDesiredWidth(label, labelPaint));
 		}
 
 		boolean recalculate = false;
@@ -660,7 +674,7 @@ public class WheelView extends View {
 
 		if (widthLabel > 0) {
 			if (labelLayout == null || labelLayout.getWidth() > widthLabel) {
-				labelLayout = new StaticLayout(label, valuePaint, widthLabel, Layout.Alignment.ALIGN_NORMAL, 1,
+				labelLayout = new StaticLayout(label, labelPaint, widthLabel, Layout.Alignment.ALIGN_NORMAL, 1,
 						ADDITIONAL_ITEM_HEIGHT, false);
 			} else {
 				labelLayout.increaseWidthTo(widthLabel);
@@ -708,7 +722,8 @@ public class WheelView extends View {
 		if (itemsWidth > 0) {
 			canvas.save();
 			// Skip padding space and hide a part of top and bottom items
-			canvas.translate(PADDING, -ITEM_OFFSET);
+			int itemOffset = (int) context.getResources().getDimension(VALUE_TEXT_SIZE);
+			canvas.translate(PADDING, -itemOffset);
 			drawItems(canvas);
 			drawValue(canvas);
 			canvas.restore();
@@ -741,6 +756,8 @@ public class WheelView extends View {
 	private void drawValue(Canvas canvas) {
 		valuePaint.setColor(VALUE_TEXT_COLOR);
 		valuePaint.drawableState = getDrawableState();
+		labelPaint.setColor(VALUE_TEXT_COLOR);
+		labelPaint.drawableState = getDrawableState();
 
 		Rect bounds = new Rect();
 		itemsLayout.getLineBounds(visibleItems / 2, bounds);
@@ -748,7 +765,8 @@ public class WheelView extends View {
 		// draw label
 		if (labelLayout != null) {
 			canvas.save();
-			canvas.translate(itemsLayout.getWidth() + LABEL_OFFSET, bounds.top);
+			canvas.translate(itemsLayout.getWidth() + LABEL_OFFSET, bounds.bottom - labelLayout.getHeight()
+					- LABEL_OFFSET);
 			labelLayout.draw(canvas);
 			canvas.restore();
 		}

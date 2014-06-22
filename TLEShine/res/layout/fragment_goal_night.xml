@@ -43,7 +43,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_margin="20dp" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,13 +97,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:ellipsize="end"
             android:gravity="center"
             android:padding="5dp"
-            android:singleLine="true"
             android:text="@string/health_sleep_tips"
             android:textColor="@color/fitband_main_color"
-            android:textSize="@dimen/text_size_middle" />
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 
 </RelativeLayout>
