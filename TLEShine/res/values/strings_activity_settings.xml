@@ -6,6 +6,7 @@
     <string name="read_user_info_exception">很抱歉，程序读取用户信息失败，请重新尝试</string>
     <string name="connect_fitband">connect fitband</string>
     <string name="logout">logout</string>
+    <string name="logout_current_account"> logout account</string>
     <string name="confirm_logout">Are you sure you want to logout?</string>
     <string name="unit">Unit</string>
     <string name="distance">Distance</string>

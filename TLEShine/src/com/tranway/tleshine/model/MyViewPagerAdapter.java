@@ -154,7 +154,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 			}
 		});
 		holder.distance.setText(String.valueOf(formatKm(info.getDistance())));
-		holder.calorie.setText(String.valueOf(info.getCalorie()));
+		holder.calorie.setText(String.valueOf(info.getCalorie() / 100.0f));
 		holder.steps.setText(String.valueOf(info.getSteps()));
 
 		// load middle chart view
@@ -206,7 +206,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 		} else if (hours > 0) {
 			syncTimeString = String.format(context.getString(R.string.hour_ago), hours);
 		} else if (minute > 5) {
-			syncTimeString = String.format(context.getString(R.string.miniute_ago), minute);
+			syncTimeString = String.format(context.getString(R.string.minute_ago), minute);
 		} else {
 			return context.getString(R.string.last_sync_time_just_now);
 		}

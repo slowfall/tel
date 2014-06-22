@@ -72,7 +72,7 @@
 	<string name="week_ago">%1$d个星期前</string>
 	<string name="day_ago">%1$d天前</string>
 	<string name="hour_ago">%1$d小时前</string>
-	<string name="miniute_ago">%1$d分钟前</string>
+	<string name="minute_ago">%1$d分钟前</string>
     <!-- Sleep Activity strings -->
     <string name="sleep_deep">深度睡眠</string>
     <string name="sleep_shallow">浅度睡眠</string>

@@ -1,9 +1,6 @@
 package com.tranway.tleshine.model;
 
-/**
- * @author ZhaHui more information please read Protocol 9.1
- */
-public class FriendInfo {
+public class FriendInfo implements Comparable<FriendInfo>{
 
 	private String email;
 	private long id = -1;
@@ -61,6 +58,15 @@ public class FriendInfo {
 
 	public void setRank(int rank) {
 		this.rank = rank;
+	}
+
+	@Override
+	public int compareTo(FriendInfo another) {
+		
+		if (another == null) {
+			
+		}
+		return 0;
 	}
 
 }

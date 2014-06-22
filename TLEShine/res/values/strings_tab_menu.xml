@@ -3,6 +3,7 @@
     <string name="my_fitband">My Fitband</string>
 	<string name="ble_not_supported">Ble not supported</string>
 	<string name="disconnected">Disconnected</string>
+	<string name="connected">Connected</string>
 	<string name="ble_not_supported_tips">很抱歉，您的设备不支持该应用的使用。使用该应用需要设备支持蓝牙4.0，系统版本在android4.3及以上。</string>
 	<string name="sync_finished">Sync finished</string>
 	<string name="syncing">syncing</string>

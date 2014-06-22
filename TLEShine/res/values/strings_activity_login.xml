@@ -23,4 +23,6 @@
 	<string name="forgot_password">forgot password</string>
 	<string name="submit">Submit</string>
 	<string name="error_server_return">error server return</string>
+	<string name="error_incorrect_email_passowrd">incorrect email or password</string>
+	<string name="forgot_password_tips">Please input phone number or email then commmit to find password.</string>
 </resources>
