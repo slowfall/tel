@@ -1,6 +1,7 @@
 <resources>
     
-    <dimen name="wheel_value_text_size">15sp</dimen>
+    <dimen name="wheel_value_text_size">20sp</dimen>
+    <dimen name="wheel_label_text_size">12sp</dimen>
 
 </resources>
 
