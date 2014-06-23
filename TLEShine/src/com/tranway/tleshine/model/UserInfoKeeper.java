@@ -15,7 +15,7 @@ public class UserInfoKeeper {
 	public static final String KEY_EMAIL = "email";
 	public static final String KEY_NAME = "userName";
 	public static final String KEY_PWD = "password";
-	public static final String KEY_PHONE = "phone";
+	public static final String KEY_PHONE = "Phone";
 	public static final String KEY_BIRTH = "birthday";
 	public static final String KEY_WEIGHT = "weight";
 	public static final String KEY_AGE = "age";

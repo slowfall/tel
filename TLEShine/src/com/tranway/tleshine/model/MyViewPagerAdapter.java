@@ -161,7 +161,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 				}
 			}
 		});
-		holder.distance.setText(String.valueOf(formatKm(info.getDistance())));
+		holder.distance.setText(String.valueOf(formatKm(info.getDistance() / 1000)));
 		holder.calorie.setText(String.valueOf(info.getCalorie() / 10.0f));
 		holder.steps.setText(String.valueOf(info.getSteps()));
 
