@@ -126,6 +126,7 @@ public class SleepActivity extends Activity {
 			Button showDetail;
 			ImageButton editGoal;
 			ChartView chartView;
+			LinearLayout chartLayout;
 			LinearLayout detailLayout;
 			TextView sleepTimeTotal;
 			TextView sleepTimeShallow;
@@ -150,6 +151,7 @@ public class SleepActivity extends Activity {
 			holder.showDetail = (Button) view.findViewById(R.id.btn_show_detail);
 			holder.editGoal = (ImageButton) view.findViewById(R.id.ib_sleep_edit_goal);
 			holder.chartView = (ChartView) view.findViewById(R.id.chart_view);
+			holder.chartLayout = (LinearLayout) view.findViewById(R.id.ll_sleep_chart_layout);
 			holder.detailLayout = (LinearLayout) view.findViewById(R.id.ll_sleep_detail_layout);
 			holder.sleepTimeTotal = (TextView) view.findViewById(R.id.tv_sleep_time_total);
 			holder.sleepTimeShallow = (TextView) view.findViewById(R.id.tv_sleep_time_shallow);
@@ -198,10 +200,10 @@ public class SleepActivity extends Activity {
 				public void onClick(View v) {
 					if (holder.detailLayout.isShown()) {
 						holder.detailLayout.setVisibility(View.INVISIBLE);
-						holder.chartView.setVisibility(View.VISIBLE);
+						holder.chartLayout.setVisibility(View.VISIBLE);
 					} else {
 						holder.detailLayout.setVisibility(View.VISIBLE);
-						holder.chartView.setVisibility(View.INVISIBLE);
+						holder.chartLayout.setVisibility(View.INVISIBLE);
 					}
 				}
 			});
