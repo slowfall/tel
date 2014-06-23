@@ -245,16 +245,16 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			}
 			userInfo.setName(name);
 		}
-		if (userInfo.getBirthday() < 0) {
+		if (userInfo.getBirthday() <= 0) {
 			ToastHelper.showToast(R.string.prompt_birthday);
 			return;
-		} else if (userInfo.getHeight() < 0) {
+		} else if (userInfo.getHeight() <= 0) {
 			ToastHelper.showToast(R.string.prompt_high);
 			return;
-		} else if (userInfo.getWeight() < 0) {
+		} else if (userInfo.getWeight() <= 0) {
 			ToastHelper.showToast(R.string.prompt_weight);
 			return;
-		} else if (userInfo.getStride() < 0) {
+		} else if (userInfo.getStride() <= 0) {
 			ToastHelper.showToast(R.string.prompt_stride);
 			return;
 		} else {

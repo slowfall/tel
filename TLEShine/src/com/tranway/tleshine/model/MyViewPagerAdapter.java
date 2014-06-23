@@ -162,7 +162,7 @@ public class MyViewPagerAdapter extends PagerAdapter {
 			}
 		});
 		holder.distance.setText(String.valueOf(formatKm(info.getDistance())));
-		holder.calorie.setText(String.valueOf(info.getCalorie() / 100.0f));
+		holder.calorie.setText(String.valueOf(info.getCalorie() / 10.0f));
 		holder.steps.setText(String.valueOf(info.getSteps()));
 
 		// load middle chart view
