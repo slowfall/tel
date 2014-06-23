@@ -47,8 +47,14 @@ public class SocialInfoFragment extends Fragment {
 
 		mUserInfo = UserInfoKeeper.readUserInfo(getActivity());
 		initView(v);
-		getUserFriendsFromServer(mUserInfo.getId());
 		return v;
+	}
+	
+	@Override
+	public void onResume() {
+		getUserFriendsFromServer(mUserInfo.getId());
+	
+		super.onResume();
 	}
 
 	private void initView(View v) {

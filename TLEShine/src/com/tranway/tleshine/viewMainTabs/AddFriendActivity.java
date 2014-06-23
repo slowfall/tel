@@ -127,7 +127,7 @@ public class AddFriendActivity extends Activity implements OnClickListener {
 	}
 
 	private void addFriendToServer(long userId, long friendId) {
-		userId = 78; // for test
+//		userId = 78; // for test
 		if (userId < 0 || friendId < 0) {
 			Log.e(TAG, "userId or friendId exception, userId = " + userId + "; friendId = " + friendId);
 			return;
