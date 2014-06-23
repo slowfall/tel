@@ -303,7 +303,8 @@ public class DBManager {
 		return activityInfo;
 	}
 
-	synchronized public static long addEvery15MinData(long userId, List<Map<String, Object>> every15MinDatas) {
+	synchronized public static long addEvery15MinData(long userId,
+			List<Map<String, Object>> every15MinDatas) {
 		if (userId < 0 || every15MinDatas == null || every15MinDatas.size() <= 0) {
 			return -1;
 		}
@@ -323,7 +324,8 @@ public class DBManager {
 				ContentValues mValues = new ContentValues();
 				mValues.put(DBInfo.USER_ID, userId);
 				if (every15MinData.containsKey(DBInfo.KEY_UTC_TIME)) {
-					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME) - offset);
+					mValues.put(DBInfo.KEY_UTC_TIME, (Long) every15MinData.get(DBInfo.KEY_UTC_TIME)
+							- offset);
 				}
 				if (every15MinData.containsKey(DBInfo.KEY_STEPS)) {
 					mValues.put(DBInfo.KEY_STEPS, (Integer) every15MinData.get(DBInfo.KEY_STEPS));
@@ -342,8 +344,8 @@ public class DBManager {
 		return ret;
 	}
 
-	synchronized public static List<Map<String, Object>> queryEvery15MinPackets(long userId, long fromUTC,
-			long toUTC) {
+	synchronized public static List<Map<String, Object>> queryEvery15MinPackets(long userId,
+			long fromUTC, long toUTC) {
 		List<Map<String, Object>> every15MinPackets = new ArrayList<Map<String, Object>>();
 		if (userId < 0 || fromUTC < 0 || toUTC < 0 || fromUTC > toUTC) {
 			return every15MinPackets;
@@ -354,8 +356,8 @@ public class DBManager {
 			return every15MinPackets;
 		}
 
-//		fromUTC = 0;
-//		toUTC = 100000000000l;
+		// fromUTC = 0;
+		// toUTC = 100000000000l;
 		db.beginTransaction();
 		try {
 			Cursor cursor = db.rawQuery(
@@ -416,6 +418,10 @@ public class DBManager {
 				mValues.put(DBInfo.KEY_SLEEP_SHALLOW_TIME,
 						(Long) sleepData.get(DBInfo.KEY_SLEEP_SHALLOW_TIME));
 			}
+			if (sleepData.containsKey(DBInfo.KEY_SLEEP_PACKET)) {
+				mValues.put(DBInfo.KEY_SLEEP_PACKET,
+						(byte[]) sleepData.get(DBInfo.KEY_SLEEP_PACKET));
+			}
 			ret = db.replace(DBInfo.TB_SLEEP_INFO, null, mValues);
 			db.setTransactionSuccessful();
 		} finally {
@@ -446,9 +452,9 @@ public class DBManager {
 				Map<String, Object> data = new TreeMap<String, Object>();
 				data.put(DBInfo.KEY_UTC_TIME,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
-				if (cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)) != -1) {
-				data.put(DBInfo.KEY_SLEEP_GOAL,
-						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)));
+				if (cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL) != -1) {
+					data.put(DBInfo.KEY_SLEEP_GOAL,
+							cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)));
 				} else {
 					data.put(DBInfo.KEY_SLEEP_GOAL, 0);
 				}
@@ -456,6 +462,10 @@ public class DBManager {
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_DEEP_TIME)));
 				data.put(DBInfo.KEY_SLEEP_SHALLOW_TIME,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_SHALLOW_TIME)));
+				if (cursor.getColumnIndex(DBInfo.KEY_SLEEP_PACKET) != -1) {
+					data.put(DBInfo.KEY_SLEEP_PACKET,
+							cursor.getBlob(cursor.getColumnIndex(DBInfo.KEY_SLEEP_PACKET)));
+				}
 				sleepInfos.add(data);
 			}
 			cursor.close();

@@ -219,7 +219,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_slow_detail"
+                android:id="@+id/btn_show_detail"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_centerInParent="true"

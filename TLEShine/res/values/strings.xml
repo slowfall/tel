@@ -56,6 +56,7 @@
     <string name="negative">no</string>
     <string name="OK">OK</string>
     <string name="activity_record">Activity Record</string>
+    <string name="sleep_record">Sleep Record</string>
 
     <!-- Activity Activity strings -->
     <string name="no_activity_tips">Now do not have any activity, please go to "settings" try connect Fitness Band.</string>

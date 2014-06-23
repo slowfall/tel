@@ -21,6 +21,7 @@ import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.FriendInfo;
 import com.tranway.tleshine.model.RankAdapter;
 import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
@@ -117,6 +118,6 @@ public class SocialRankFragment extends Fragment {
 	private long getDateTime(int previous) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, previous);
-		return calendar.getTimeInMillis() / 1000;
+		return calendar.getTimeInMillis() / 1000 / Util.SECONDS_OF_ONE_DAY * Util.SECONDS_OF_ONE_DAY;
 	}
 }

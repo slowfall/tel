@@ -34,4 +34,5 @@ public class DBInfo {
 	 * unit is second
 	 */
 	public static final String KEY_SLEEP_DEEP_TIME = "sleep_deep_time";
+	public static final String KEY_SLEEP_PACKET = "sleep_packet";
 }

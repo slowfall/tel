@@ -50,6 +50,7 @@
     <string name="negative">否</string>
     <string name="OK">好</string>
     <string name="activity_record">运动记录</string>
+    <string name="sleep_record">睡眠记录</string>
     <string name="light_sport">轻微运动</string>
     <string name="right_sport">适量运动</string>
     <string name="overdose_sport">剧烈运动</string>

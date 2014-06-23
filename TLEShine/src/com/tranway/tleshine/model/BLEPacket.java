@@ -211,19 +211,23 @@ public class BLEPacket {
 				// check total packets number
 				if (sleepBytes.size() > 0) {
 					sleepMap = resolveSleepBytes(startTime, sleepBytes);
+					byte[] sleepBytesArray = new byte[sleepBytes.size()];
+					for (int j = 0; j < sleepBytes.size(); j++) {
+						sleepBytesArray[j] = sleepBytes.get(j);
+					}
+					sleepMap.put(DBInfo.KEY_SLEEP_PACKET, sleepBytesArray);
 				}
 				break;
 			default:
 				break;
 			}
 		}
-
 		return sleepMap;
 	}
 
 	private static final int SECONDS_OF_5_MINS = 5 * 60;
 
-	private Map<String, Object> resolveSleepBytes(long startUtcTime, List<Byte> sleepBytes) {
+	public Map<String, Object> resolveSleepBytes(long startUtcTime, List<Byte> sleepBytes) {
 		Map<String, Object> sleepMap = new TreeMap<String, Object>();
 		long sleepedTime = 0;
 		long sleepDeepTime = 0;

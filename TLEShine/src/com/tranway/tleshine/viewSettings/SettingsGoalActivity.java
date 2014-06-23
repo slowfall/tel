@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,8 +31,9 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	private DayGoalFragment dayFragment;
 	private NightGoalFragment nightFragment;
 	private OnTitleButtonClickListener mListener;
-	private static int SHOW_DAY_GOAL_FRAGMENT = 1;
-	private static int SHOW_SLEEP_GOAL_FRAGMENT = 2;
+	public static String SHOW_WHICH_FRAGMENT = "showWhichFragment";
+	public static int SHOW_DAY_GOAL_FRAGMENT = 1;
+	public static int SHOW_SLEEP_GOAL_FRAGMENT = 2;
 	private int showWhichFragment = SHOW_DAY_GOAL_FRAGMENT;
 
 	private static final String UPDATE_END_URL = "/update";
@@ -43,6 +45,8 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_settings_goal);
+		Intent intent = getIntent();
+		showWhichFragment = intent.getIntExtra(SHOW_WHICH_FRAGMENT, SHOW_DAY_GOAL_FRAGMENT);
 
 		initView();
 		httpRequest = TLEHttpRequest.instance();
@@ -81,6 +85,11 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 				}
 			}
 		});
+		if (showWhichFragment == SHOW_DAY_GOAL_FRAGMENT) {
+			radioGroup.check(R.id.radio_day);
+		} else {
+			radioGroup.check(R.id.radio_night);
+		}
 	}
 
 	@Override
@@ -117,7 +126,8 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 		if (nightFragment instanceof OnTitleButtonClickListener) {
 			mListener = (OnTitleButtonClickListener) nightFragment;
 		}
-		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, nightFragment).commit();
+		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, nightFragment)
+				.commit();
 	}
 
 	/**

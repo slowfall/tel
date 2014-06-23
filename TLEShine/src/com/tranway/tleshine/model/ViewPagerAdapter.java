@@ -47,7 +47,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 	private List<List<Map<String, Object>>> mEvery15MinPackets;
 	private Animation mFadeinAnimation;
 	private Animation mFadeoutAnimation;
-	private long mTimeOffset = 0;
+	private long todayUtcTime = 0;
 
 	private int position;
 
@@ -66,8 +66,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 
 		Calendar calendar = Calendar.getInstance();
 		TimeZone zone = calendar.getTimeZone();
-		mTimeOffset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
-
+		long timeOffset = zone.getOffset(calendar.getTimeInMillis()) / 1000;
+		todayUtcTime = (System.currentTimeMillis() / 1000 + timeOffset) / Util.SECONDS_OF_ONE_DAY;
 		notifyDataSetChanged();
 	}
 
@@ -114,7 +114,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 		holder.distance = (TextView) view.findViewById(R.id.tv_activity_distance);
 		holder.calorie = (TextView) view.findViewById(R.id.tv_activity_calorie);
 		holder.steps = (TextView) view.findViewById(R.id.tv_activity_steps);
-		holder.showDetailBtn = (Button) view.findViewById(R.id.btn_slow_detail);
+		holder.showDetailBtn = (Button) view.findViewById(R.id.btn_show_detail);
 		ActivityInfo info = mActivityInfos.get(position);
 
 		long utcTime = info.getUtcTime();
@@ -124,8 +124,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 				utcTimeSeconds, utcTimeSeconds + Util.SECONDS_OF_ONE_DAY);
 		holder.progress.setProgress(info.getSteps(), info.getGoal());
 
-		long todayUtcTime = (System.currentTimeMillis() / 1000 + mTimeOffset)
-				/ Util.SECONDS_OF_ONE_DAY;
 		Util.logD("ViewPagerAdapter", info.toString() + ", todayUtcTime:" + todayUtcTime);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(utcTime * Util.SECONDS_OF_ONE_DAY * 1000);

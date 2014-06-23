@@ -32,8 +32,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		// create sleep data table
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + DBInfo.TB_SLEEP_INFO + "(" + DBInfo.KEY_UTC_TIME
 				+ " LONG," + DBInfo.USER_ID + " LONG," + DBInfo.KEY_SLEEP_GOAL + " LONG,"
-				+ DBInfo.KEY_SLEEP_SHALLOW_TIME + " LONG," + DBInfo.KEY_SLEEP_DEEP_TIME
-				+ " LONG,  PRIMARY KEY (" + DBInfo.KEY_UTC_TIME + ", " + DBInfo.USER_ID + "))");
+				+ DBInfo.KEY_SLEEP_SHALLOW_TIME + " LONG," + DBInfo.KEY_SLEEP_DEEP_TIME + " LONG,"
+				+ DBInfo.KEY_SLEEP_PACKET + " BLOB, PRIMARY KEY (" + DBInfo.KEY_UTC_TIME + ", "
+				+ DBInfo.USER_ID + "))");
 	}
 
 	@Override
