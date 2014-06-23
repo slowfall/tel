@@ -23,6 +23,8 @@ public class UserInfo {
 	public static final String SEVER_KEY_ID = "ID";
 	public static final String SEVER_KEY_NAME = "Name";
 	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";
+	public static final String SEVER_KEY_POINT = "Point";
+	public static final String SEVER_KEY_USER = "User";
 
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
 	private int age = -1; // Age; 1byte

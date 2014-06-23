@@ -144,12 +144,12 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			mStrideTxt.setText(userInfo.getStride() + " CM");
 		}
 		Log.d(TAG, "sex: " + userInfo.getSex());
-		if (userInfo.getSex() == UserInfo.SEX_FEMALE) {
-			mFemaleRadio.setChecked(true);
-			mMaleRadio.setChecked(false);
-		} else {
+		if (userInfo.getSex() == UserInfo.SEX_MALE) {
 			mMaleRadio.setChecked(true);
 			mFemaleRadio.setChecked(false);
+		} else {
+			mFemaleRadio.setChecked(true);
+			mMaleRadio.setChecked(false);
 		}
 	}
 

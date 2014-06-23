@@ -7,17 +7,19 @@ public class FriendInfo implements Comparable<FriendInfo>{
 	private String name;
 	private int point = 0;
 	private int rank = -1;
+	private int sex = 0;
 
 	public FriendInfo() {
 
 	}
 
-	public FriendInfo(String email, long id, String name, int point, int rank) {
+	public FriendInfo(String email, long id, String name, int point, int rank, int sex) {
 		this.email = email;
 		this.id = id;
 		this.name = name;
 		this.point = point;
 		this.rank = rank;
+		this.sex = sex;
 	}
 
 	public String getEmail() {
@@ -60,13 +62,21 @@ public class FriendInfo implements Comparable<FriendInfo>{
 		this.rank = rank;
 	}
 
+	public int getSex() {
+		return sex;
+	}
+
+	public void setSex(int sex) {
+		this.sex = sex;
+	}
+
 	@Override
 	public int compareTo(FriendInfo another) {
-		
 		if (another == null) {
-			
+			return -1;
 		}
-		return 0;
+		
+		return another.point - this.point;
 	}
 
 }

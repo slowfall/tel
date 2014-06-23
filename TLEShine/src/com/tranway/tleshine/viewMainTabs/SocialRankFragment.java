@@ -2,14 +2,15 @@ package com.tranway.tleshine.viewMainTabs;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class SocialRankFragment extends Fragment {
 		mUserInfo = UserInfoKeeper.readUserInfo(getActivity());
 
 		initView(v);
-		
+
 		Bundle bundle = getArguments();
 		switch (bundle.getInt(FriendsActivity.SAVED_TAG)) {
 		case R.id.radio_rank_today:
@@ -54,7 +55,7 @@ public class SocialRankFragment extends Fragment {
 		default:
 			break;
 		}
-		
+
 		getRankFromServer(mUserInfo.getId());
 
 		return v;
@@ -85,14 +86,25 @@ public class SocialRankFragment extends Fragment {
 				ToastHelper.showToast(R.string.get_rank_list_failed, Toast.LENGTH_LONG);
 			}
 		}, getActivity());
-		httpRequest.get(GET_RANK_END_URL + "/" + userId + "?begintime=" + getDateTime(mDayOffset - 1)
-				+ "&endtime=" + getDateTime(mDayOffset), null);
+		httpRequest.get(GET_RANK_END_URL + "/" + userId + "?begintime="
+				+ getDateTime(mDayOffset - 1) + "&endtime=" + getDateTime(mDayOffset), null);
 	}
 
 	private void getRankListFromJSON(String result) throws JSONException {
 		mRankList.clear();
 		JSONArray jArray = new JSONArray(result);
-		Log.d("-------", jArray.toString());
+		for (int i = 0; i < jArray.length(); i++) {
+			JSONObject jObj = jArray.getJSONObject(i);
+			FriendInfo info = new FriendInfo();
+			info.setPoint(jObj.getInt(UserInfo.SEVER_KEY_POINT));
+			JSONObject userObject = jObj.getJSONObject(UserInfo.SEVER_KEY_USER);
+			info.setEmail(userObject.getString(UserInfo.SEVER_KEY_EMAIL));
+			info.setId(userObject.getLong(UserInfo.SEVER_KEY_ID));
+			info.setName(userObject.getString(UserInfo.SEVER_KEY_NAME));
+			info.setSex(userObject.getInt(UserInfo.SEVER_KEY_SEX));
+			mRankList.add(info);
+		}
+		Collections.sort(mRankList);
 	}
 
 	/**

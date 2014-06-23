@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Fitband</string>
+    <string name="app_name">Fitness Band</string>
     <string name="action_settings">Settings</string>
     <string name="Rssi">RSSI</string>
     <string name="rssiValue">---</string>
@@ -58,7 +58,7 @@
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
 
     <!-- Activity Activity strings -->
-    <string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitband吧。</string>
+    <string name="no_activity_tips">目前还没有任何活动，试试去"设置"界面连接Fitness Band吧。</string>
     <string name="activity_steps_goal">目标&#160;</string>
     <string name="activity_steps_finished">完成&#160;</string>
     <string name="n_km_activity_distance">&#160;千米</string>

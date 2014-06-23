@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Fitband</string>
+    <string name="app_name">Fitness Band</string>
     <string name="action_settings">Settings</string>
     <string name="Rssi">RSSI</string>
     <string name="rssiValue">---</string>
@@ -58,7 +58,7 @@
     <string name="activity_record">Activity Record</string>
 
     <!-- Activity Activity strings -->
-    <string name="no_activity_tips">Now do not have any activity, please go to "settings" try connect fitband.</string>
+    <string name="no_activity_tips">Now do not have any activity, please go to "settings" try connect Fitness Band.</string>
     <string name="activity_steps_goal">Goal&#160;</string>
     <string name="activity_step">&#160;Steps</string>
     <string name="activity_steps_finished">Finished&#160;</string>
