@@ -46,4 +46,5 @@
 	<string name="sleep_goal_cannot_null">目标睡眠时间不能设置为0</string>
 	
 	<string name="is_loading">正在加载&#8230;</string>
+	<string name="success_saved">设置成功</string>
 </resources>

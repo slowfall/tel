@@ -2,92 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/fitband_background_color"
     android:orientation="vertical"
     tools:context="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity" >
 
     <include
         android:id="@+id/include_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/activity_title_height"
         layout="@layout/title_control" />
 
-    <RelativeLayout
+    <include
+        android:id="@+id/include_achieve_goal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center" >
-
-        <LinearLayout
-            android:id="@+id/ll_point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                android:id="@+id/txt_goal_point"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_max" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/explain_point_num"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_min" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_instensity"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_point"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <com.tranway.tleshine.widget.ExerciseIntensityView
-                android:id="@+id/intensity_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@android:color/transparent"
-                android:cacheColorHint="@android:color/transparent"
-                android:gravity="center"
-                android:horizontalSpacing="5dp"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="5dp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_exercise_intensity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/include_achieve_goal"
-            android:layout_marginBottom="20dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/intensity_light"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_middle" />
-
-        <include
-            android:id="@+id/include_achieve_goal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            layout="@layout/layout_achieve_goal" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        layout="@layout/fragment_goal_day" />
 
 </LinearLayout>

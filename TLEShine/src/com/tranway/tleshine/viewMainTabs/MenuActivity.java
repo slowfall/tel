@@ -122,8 +122,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		initView();
 		// checkBLE();
 		Intent gattServiceIntent = new Intent(this, RBLService.class);
-		getApplicationContext()
-				.bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+		getApplicationContext().bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
@@ -184,8 +183,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		characteristicTx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_TX);
 
-		BluetoothGattCharacteristic characteristicRx = gattService
-				.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
+		BluetoothGattCharacteristic characteristicRx = gattService.getCharacteristic(RBLService.UUID_BLE_SHIELD_RX);
 		mBluetoothLeService.setCharacteristicNotification(characteristicRx, true);
 		mBluetoothLeService.readCharacteristic(characteristicRx);
 	}
@@ -221,8 +219,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 				boolean isUpdateUtc = true;
 				byte[] utc = packet.makeUTCForWrite(isUpdateUtc, sequenceNumber, utcTime);
 				characteristicTx.setValue(utc);
-				Util.logD(TAG, "isUpdateUtc:" + isUpdateUtc + ", getUtcTime:" + getUtcTime
-						+ ", utcTime:" + utcTime);
+				Util.logD(TAG, "isUpdateUtc:" + isUpdateUtc + ", getUtcTime:" + getUtcTime + ", utcTime:" + utcTime);
 				mBluetoothLeService.writeCharacteristic(characteristicTx);
 			}
 			break;
@@ -278,8 +275,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		case 0x06:
 			mBluetoothLeService.disconnect();
 			long time = System.currentTimeMillis();
-			UserInfoKeeper.writeUserInfo(getApplicationContext(),
-					UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, time);
+			UserInfoKeeper.writeUserInfo(getApplicationContext(), UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, time);
 			ToastHelper.showToast(R.string.sync_finished);
 			dismissConnectAndSyncDialog();
 			break;
@@ -296,7 +292,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 		ActivityInfo activityInfo = packet.resolveCurrentActivityInfo(byteData);
 		if (activityInfo.getSteps() > 0) {
 			long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
-			int goal = UserGoalKeeper.readExerciseGoalPoint(this);
+			int goal = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_STEPSTARGET, 0);
+			// int goal = UserGoalKeeper.readExerciseGoalPoint(this);
 			activityInfo.setGoal(goal);
 			DBManager.addActivityInfo(userId, activityInfo);
 
@@ -304,8 +301,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			request.setOnHttpRequestListener(null, null);
 			Map<String, String> data = new TreeMap<String, String>();
 			data.put("StepCount", String.valueOf(activityInfo.getSteps()));
-			data.put("UserID", String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(),
-					UserInfoKeeper.KEY_ID, 0l)));
+			data.put("UserID",
+					String.valueOf(UserInfoKeeper.readUserInfo(getApplicationContext(), UserInfoKeeper.KEY_ID, 0l)));
 			data.put("CreateDate", String.valueOf(System.currentTimeMillis() / 1000));
 			request.post(ADD_SPORT_POINT_END_URL, data);
 		}
@@ -313,8 +310,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 	private void saveEvery15MinPacket(List<byte[]> every15MinPacket) {
 		BLEPacket blePacket = new BLEPacket();
-		List<Map<String, Object>> every15MinDatas = blePacket
-				.resolveEvery15MinPacket(every15MinPacket);
+		List<Map<String, Object>> every15MinDatas = blePacket.resolveEvery15MinPacket(every15MinPacket);
 		long userId = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_ID, -1l);
 		DBManager.addEvery15MinData(userId, every15MinDatas);
 	}
@@ -367,8 +363,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-//			 saveActivityInfo(Util.getActivityInfoTestData());
-//			 saveEvery15MinPacket(Util.getTestBytesList());
+			// saveActivityInfo(Util.getActivityInfoTestData());
+			// saveEvery15MinPacket(Util.getTestBytesList());
 			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
@@ -409,8 +405,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 				if (mDevice == null) {
 					runOnUiThread(new Runnable() {
 						public void run() {
-							Toast toast = Toast.makeText(MenuActivity.this,
-									R.string.couldnot_search_ble_device, Toast.LENGTH_SHORT);
+							Toast toast = Toast.makeText(MenuActivity.this, R.string.couldnot_search_ble_device,
+									Toast.LENGTH_SHORT);
 							toast.show();
 						}
 					});
@@ -432,9 +428,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
-			Log.i(TAG,
-					"device address:" + device.getAddress() + ", scanRecord="
-							+ Util.bytesToHex(scanRecord));
+			Log.i(TAG, "device address:" + device.getAddress() + ", scanRecord=" + Util.bytesToHex(scanRecord));
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

@@ -1,8 +1,7 @@
 package com.tranway.tleshine.model;
 
 /**
- * @author ZhaHui
- * more information please read Protocol 9.1
+ * @author ZhaHui more information please read Protocol 9.1
  */
 public class UserInfo {
 	public static final int USER_INFO_BYTES_LENGTH_NOT_NEED_UPDATE = 4;
@@ -37,8 +36,8 @@ public class UserInfo {
 	private String password; // User register Password
 	private String phone;
 	private long birthday = -1; // User register Birthday
-	private int goal = -1; // Exercise Goal Point
-	private long id = -1; //user id
+	// private int goal = -1; // Exercise Goal Point
+	private long id = -1; // user id
 
 	public UserInfo() {
 
@@ -167,7 +166,7 @@ public class UserInfo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
@@ -192,14 +191,14 @@ public class UserInfo {
 		this.birthday = birthday;
 	}
 
-	public int getGoal() {
-		return goal;
-	}
+	// public int getGoal() {
+	// return goal;
+	// }
+	//
+	// public void setGoal(int goal) {
+	// this.goal = goal;
+	// }
 
-	public void setGoal(int goal) {
-		this.goal = goal;
-	}
-	
 	public long getId() {
 		return id;
 	}

@@ -72,11 +72,6 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoalActivity"
-            android:label="@string/title_activity_main_tabs"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.tranway.tleshine.viewLoginAndRegister.RegisterUserGoal_Activity"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait" >
         </activity>
@@ -118,6 +113,11 @@
             android:name="com.tranway.tleshine.viewSettings.SettingsGoalActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewMainTabs.MainActivity"
@@ -134,12 +134,6 @@
         </activity>
         <activity
             android:name="com.tranway.tleshine.viewMainTabs.ActivityActivity"
-            android:label="@string/title_activity_main_tabs"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name="com.tranway.tleshine.viewMainTabs.TestActivity"
             android:label="@string/title_activity_main_tabs"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >

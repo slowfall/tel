@@ -145,6 +145,15 @@ public class UserInfoUtils {
 		}
 	}
 
+	/**
+	 * convert UserInfo to Parameters Map, for sync user register information to
+	 * server server
+	 * 
+	 * @param info
+	 *            user information
+	 * 
+	 * @return Parameters Map
+	 */
 	public static Map<String, String> convertUserInfoToParamsMap(UserInfo info) {
 		Map<String, String> data = new HashMap<String, String>();
 		if (info == null) {
@@ -157,12 +166,42 @@ public class UserInfoUtils {
 			data.put(UserInfoKeeper.KEY_PHONE, info.getPhone());
 		}
 		data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
-		Log.d("------", "birthday: " + info.getBirthday());
 		data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
 		data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight() / 100.0f));
 		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight() / 10.0f));
 		data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
 		data.put(UserInfo.SEVER_KEY_STEP_COUNT, String.valueOf(info.getStride()));
+		return data;
+	}
+
+	/**
+	 * convert UserInfo to Parameters Map, for sync user setting information or
+	 * goal to server
+	 * 
+	 * @param info
+	 *            user information
+	 * @param flag
+	 *            if true if user base information, else is user setting goal
+	 * 
+	 * @return Parameters Map
+	 */
+	public static Map<String, String> convertUserInfoToParamsMap(UserInfo info, boolean flag) {
+		Map<String, String> data = new HashMap<String, String>();
+		if (info == null) {
+			return data;
+		}
+		data.put(UserInfo.SEVER_KEY_ID, String.valueOf(info.getId()));
+		if (flag) {
+			data.put(UserInfo.SEVER_KEY_NAME, info.getName());
+			data.put(UserInfo.SEVER_KEY_BIRTHDAY, String.valueOf(info.getBirthday()));
+			data.put(UserInfo.SEVER_KEY_SEX, String.valueOf(info.getSex()));
+			data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight() / 100.0f));
+			data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight() / 10.0f));
+			data.put(UserInfo.SEVER_KEY_STEP_COUNT, String.valueOf(info.getStride()));
+		} else {
+			data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
+			Log.d("------", String.valueOf(info.getStepsTarget()));
+		}
 		return data;
 	}
 

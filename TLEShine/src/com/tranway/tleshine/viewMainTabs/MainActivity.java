@@ -82,7 +82,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	private void setup() {
 		Util.logD(LOG_TAG, "come in setup method");
 
-		mActivityIntent = new Intent(this, TestActivity.class);
+		mActivityIntent = new Intent(this, ActivityActivity.class);
 		mSleepIntent = new Intent(this, SleepActivity.class);
 		mFriendsIntent = new Intent(this, FriendsActivity.class);
 		mSettingsIntent = new Intent(this, MenuActivity.class);

@@ -28,20 +28,20 @@ public class UserInfoKeeper {
 	 */
 	public static final String KEY_SYNC_BLUETOOTH_TIME = "syncBluetoothTime";
 	public static final String KEY_GEN_CODE = "genCode";
-	public static final String KEY_GEN_CODE_GET_TIME ="genCodeGetTime";
+	public static final String KEY_GEN_CODE_GET_TIME = "genCodeGetTime";
 
 	public static void writeUserInfo(Context context, JSONObject data) throws JSONException {
 		UserInfo info = new UserInfo();
 		info.setId(data.getLong(UserInfo.SEVER_KEY_ID));
 		info.setEmail(data.getString(UserInfo.SEVER_KEY_EMAIL));
-		if (data.isNull(UserInfo.SEVER_KEY_NAME)) {
+		if (!data.isNull(UserInfo.SEVER_KEY_NAME)) {
 			info.setName(data.getString(UserInfo.SEVER_KEY_NAME));
 		}
 		info.setPassword(data.getString(UserInfo.SEVER_KEY_PASSWORD));
 		info.setSex(data.getInt(UserInfo.SEVER_KEY_SEX));
 		info.setBirthday(data.getLong(UserInfo.SEVER_KEY_BIRTHDAY));
-		info.setHeight((int)(data.getDouble(UserInfo.SEVER_KEY_HEIGHT) * 100));
-		info.setWeight((int)(data.getInt(UserInfo.SEVER_KEY_WEIGHT) * 10));
+		info.setHeight((int) (data.getDouble(UserInfo.SEVER_KEY_HEIGHT) * 100));
+		info.setWeight((int) (data.getInt(UserInfo.SEVER_KEY_WEIGHT) * 10));
 		if (data.isNull(UserInfo.SEVER_KEY_GOAL)) {
 			info.setStepsTarget(0);
 		} else {
@@ -233,8 +233,8 @@ public class UserInfoKeeper {
 		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
 		info.setStride(sp.getInt(KEY_STRIDE, -1));
 		info.setSex(sp.getInt(KEY_SEX, -1));
-		info.setStepsTarget(UserGoalKeeper.readExerciseGoalPoint(context));
-		info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
+		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, -1));
+		// info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
 
 		return info;
 	}

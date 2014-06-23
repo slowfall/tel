@@ -2,6 +2,7 @@ package com.tranway.tleshine.viewSettings;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.tranway.tleshine.model.ActivityInfo;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
 import com.tranway.tleshine.model.ToastHelper;
-import com.tranway.tleshine.model.UserGoalKeeper;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.model.Util;
 import com.tranway.tleshine.util.UserInfoUtils;
@@ -76,8 +76,10 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 	}
 
 	private void setUserGoalFromSP() {
-		int userGoal = UserGoalKeeper.readExerciseGoalPoint(getActivity());
-		if (userGoal != 0) {
+		// int userGoal = UserGoalKeeper.readExerciseGoalPoint(getActivity());
+		int userGoal = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_STEPSTARGET, -1);
+		Log.d("DayGoalFragment", "UserGoalKeeper: " + userGoal);
+		if (userGoal > 0) {
 			goalPoint = userGoal;
 		}
 		mGoalWheel.setCurrentStep(goalPoint);
@@ -93,7 +95,7 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 		if (point < 0) {
 			return;
 		}
-		mPointTxt.setText(point + " 点");
+		mPointTxt.setText(point + " 步");
 		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
 		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
@@ -108,12 +110,13 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 			return false;
 		}
 		long userId = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_ID, -1l);
-		long utcTime = System.currentTimeMillis() / 1000 /Util.SECONDS_OF_ONE_DAY;
+		long utcTime = System.currentTimeMillis() / 1000 / Util.SECONDS_OF_ONE_DAY;
 		ActivityInfo info = DBManager.queryActivityInfoByTime(userId, utcTime);
 		if (info.getUtcTime() == utcTime) {
 			info.setGoal(goalPoint);
 			DBManager.addActivityInfo(userId, info);
 		}
-		return UserGoalKeeper.writeExerciseGoal(getActivity(), goalPoint);
+		return UserInfoKeeper.writeUserInfo(getActivity(), UserInfoKeeper.KEY_STEPSTARGET, goalPoint);
 	}
+
 }

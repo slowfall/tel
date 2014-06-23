@@ -1,47 +1,30 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
-import com.tranway.tleshine.model.TLEHttpRequest;
-import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
-import com.tranway.tleshine.model.UserGoalKeeper;
-import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoUtils;
-import com.tranway.tleshine.widget.ExerciseIntensityView;
+import com.tranway.tleshine.widget.CustomizedGoalWheelView;
+import com.tranway.tleshine.widget.OnWheelScrollListener;
+import com.tranway.tleshine.widget.WheelView;
 
-public class RegisterUserGoalActivity extends Activity implements OnClickListener, OnHttpRequestListener {
+public class RegisterUserGoalActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserGoalActivity.class.getSimpleName();
 
-	private static final String CHECK_REGISTER_USER_URL = "/add";
-	private static final String GET_USER_INFO_URL = "/Get";
-
-	private TLEHttpRequest httpRequest;
-	private TextView mExerciseTxt, mWalkTimeTxt, mRunTimeTxt, mSwimTimeTxt, mPointTxt;
-	private String userEmail = null;
-	private int selectIndex = 0;
+	private CustomizedGoalWheelView mGoalWheel;
+	private TextView mWalkTimeTxt, mRunTimeTxt, mSwimTimeTxt, mPointTxt;
+	private int goalPoint = 600;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,157 +34,97 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		setContentView(R.layout.activity_register_user_goal);
 
 		initView();
-		httpRequest = TLEHttpRequest.instance();
+		setUserGoalFromSP();
 	}
 
 	private void initView() {
 		initTitleView();
 
-		mExerciseTxt = (TextView) findViewById(R.id.txt_exercise_intensity);
-		mWalkTimeTxt = (TextView) findViewById(R.id.txt_time_walk);
-		mRunTimeTxt = (TextView) findViewById(R.id.txt_time_run);
-		mSwimTimeTxt = (TextView) findViewById(R.id.txt_time_swim);
-		mPointTxt = (TextView) findViewById(R.id.txt_goal_point);
-
-		final ExerciseIntensityView mView = (ExerciseIntensityView) findViewById(R.id.intensity_view);
-		mView.setOnItemClickListener(new OnItemClickListener() {
+		mGoalWheel = (CustomizedGoalWheelView) findViewById(R.id.goal_wheel);
+		mGoalWheel.setOnScrollLisenter(new OnWheelScrollListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				selectIndex = arg2;
-				mView.setSelectPosition(arg2);
-				updateInstensityText(arg2);
-			}
-		});
-		mView.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				selectIndex = arg2;
-				mView.setSelectPosition(arg2);
-				updateInstensityText(arg2);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
+			public void onScrollingStarted(WheelView wheel) {
 				// TODO Auto-generated method stub
 
 			}
+
+			@Override
+			public void onScrollingFinished(WheelView wheel) {
+				// TODO Auto-generated method stub
+				notifyWheelScroll();
+			}
 		});
 
-		mView.setSelectPosition(selectIndex);
-		updateInstensityText(selectIndex);
+		mWalkTimeTxt = (TextView) findViewById(R.id.txt_time_walk);
+		mRunTimeTxt = (TextView) findViewById(R.id.txt_time_run);
+		mSwimTimeTxt = (TextView) findViewById(R.id.txt_time_swim);
+		mPointTxt = (TextView) findViewById(R.id.txt_point);
 	}
 
 	private void initTitleView() {
 		Button mPreBtn = (Button) findViewById(R.id.btn_title_left);
-		mPreBtn.setText(R.string.pre_step);
+		mPreBtn.setText(R.string.cancel);
 		mPreBtn.setVisibility(View.VISIBLE);
 		mPreBtn.setOnClickListener(this);
-		Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
-		mNextBtn.setText(R.string.next_step);
-		mNextBtn.setVisibility(View.VISIBLE);
-		mNextBtn.setOnClickListener(this);
+		Button mSaveBtn = (Button) findViewById(R.id.btn_title_right);
+		mSaveBtn.setText(R.string.save);
+		mSaveBtn.setVisibility(View.VISIBLE);
+		mSaveBtn.setOnClickListener(this);
 		TextView mTitleTxt = (TextView) findViewById(R.id.txt_title);
-		mTitleTxt.setText(R.string.setting_goal);
+		mTitleTxt.setText(R.string.my_goal);
 	}
 
-	private void updateInstensityText(int index) {
-		if (index < 0) {
+	private void setUserGoalFromSP() {
+		int userGoal = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_STEPSTARGET, 0);
+		if (userGoal > 0) {
+			goalPoint = userGoal;
+		}
+		mGoalWheel.setCurrentStep(goalPoint);
+		updateAchieveGoalTips(goalPoint);
+	}
+
+	private void notifyWheelScroll() {
+		goalPoint = mGoalWheel.getGoalStep();
+		updateAchieveGoalTips(goalPoint);
+	}
+
+	private void updateAchieveGoalTips(int step) {
+		if (step < 0) {
 			return;
 		}
-		int point = 0;
-		int resId = -1;
-		if (index == 0) {
-			resId = R.string.intensity_light;
-			point = ExerciseUtils.GOAL_POINT_LIGHT;
-		} else if (index == 1) {
-			resId = R.string.intensity_moderate;
-			point = ExerciseUtils.GOAL_POINT_MODERATE;
-		} else {
-			resId = R.string.intensity_strenuous;
-			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
-		}
-		if (resId != -1) {
-			mExerciseTxt.setText(getResources().getString(resId));
-		}
-		mPointTxt.setText(String.valueOf(point));
-
-		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
+		mPointTxt.setText(step + " 步");
+		int time = ExerciseUtils.getAchieveGoalTime(step, Sport.WALK);
 		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
-		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);
+		time = ExerciseUtils.getAchieveGoalTime(step, Sport.RUN);
 		mRunTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
-		time = ExerciseUtils.getAchieveGoalTime(point, Sport.SWIM);
+		time = ExerciseUtils.getAchieveGoalTime(step, Sport.SWIM);
 		mSwimTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 	}
 
+	private void onNextButtonClick() {
+		if (goalPoint == 0) {
+			ToastHelper.showToast(R.string.exercise_goal_cannot_null);
+			return;
+		}
+		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_STEPSTARGET, goalPoint);
+
+		Intent intent = new Intent(this, RegisterUserSleepActivity.class);
+		startActivity(intent);
+	}
+
 	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		switch (arg0.getId()) {
 		case R.id.btn_title_left:
 			finish();
 			break;
 		case R.id.btn_title_right:
 			onNextButtonClick();
 			break;
-		}
-	}
-
-	private void onNextButtonClick() {
-		int point = 0;
-		if (selectIndex == 0) {
-			point = ExerciseUtils.GOAL_POINT_LIGHT;
-		} else if (selectIndex == 1) {
-			point = ExerciseUtils.GOAL_POINT_MODERATE;
-		} else {
-			point = ExerciseUtils.GOAL_POINT_STRENUOUS;
-		}
-		UserGoalKeeper.writeExerciseGoal(this, point);
-
-		syncUserInfoToServer(UserInfoKeeper.readUserInfo(this));
-	}
-
-	/**
-	 * Synchronous user information to the server
-	 * 
-	 * @param userInfo
-	 *            User detail information
-	 */
-	private void syncUserInfoToServer(UserInfo userInfo) {
-		if (userInfo == null) {
-			return;
-		}
-		userEmail = userInfo.getEmail();
-		Map<String, String> params = UserInfoUtils.convertUserInfoToParamsMap(userInfo);
-
-		httpRequest.setOnHttpRequestListener(this, this);
-		httpRequest.post(CHECK_REGISTER_USER_URL + "/", params);
-	}
-
-	@Override
-	public void onFailure(String url, int errorNo, String errorMsg) {
-		// TODO Auto-generated method stub
-		ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
-	}
-
-	@Override
-	public void onSuccess(String url, String result) {
-		try {
-			JSONObject data = new JSONObject(result);
-			int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
-			if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-				ToastHelper.showToast(R.string.success_register_user, Toast.LENGTH_LONG);
-				Intent intent = new Intent(RegisterUserGoalActivity.this, BLEConnectActivity.class);
-				startActivity(intent);
-				finish();
-			} else {
-				// ToastHelper.showToast(R.string.failed_register_user,
-				// Toast.LENGTH_LONG);
-				String errorMsg = data.getString(TLEHttpRequest.MSG);
-				ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
-				Log.e(TAG, "register failed");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+		default:
+			break;
 		}
 	}
 }

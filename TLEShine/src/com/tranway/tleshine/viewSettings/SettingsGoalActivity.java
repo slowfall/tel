@@ -1,7 +1,13 @@
 package com.tranway.tleshine.viewSettings;
 
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -9,8 +15,15 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
+import com.tranway.tleshine.model.ToastHelper;
+import com.tranway.tleshine.model.UserInfo;
+import com.tranway.tleshine.model.UserInfoKeeper;
+import com.tranway.tleshine.util.UserInfoUtils;
 
 public class SettingsGoalActivity extends Activity implements OnClickListener {
 
@@ -20,6 +33,10 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 	private static int SHOW_DAY_GOAL_FRAGMENT = 1;
 	private static int SHOW_SLEEP_GOAL_FRAGMENT = 2;
 	private int showWhichFragment = SHOW_DAY_GOAL_FRAGMENT;
+
+	private static final String UPDATE_END_URL = "/update";
+	private TLEHttpRequest httpRequest = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +45,7 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_settings_goal);
 
 		initView();
+		httpRequest = TLEHttpRequest.instance();
 	}
 
 	private void initView() {
@@ -74,7 +92,7 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_title_right:
 			if (mListener == null || mListener.onTitleButtonClick(R.id.btn_title_right)) {
-				finish();
+				syncUserInfoToServer();
 			}
 			break;
 		}
@@ -100,6 +118,47 @@ public class SettingsGoalActivity extends Activity implements OnClickListener {
 			mListener = (OnTitleButtonClickListener) nightFragment;
 		}
 		getFragmentManager().beginTransaction().replace(R.id.layout_fragment, nightFragment).commit();
+	}
+
+	/**
+	 * Synchronous user goal to the server
+	 * 
+	 * @param userInfo
+	 *            User detail information
+	 */
+	private void syncUserInfoToServer() {
+		UserInfo userInfo = UserInfoKeeper.readUserInfo(this);
+		if (userInfo == null) {
+			return;
+		}
+		Map<String, String> params = UserInfoUtils.convertUserInfoToParamsMap(userInfo, false);
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				// TODO Auto-generated method stub
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+
+			@Override
+			public void onSuccess(String url, String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+					if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+						ToastHelper.showToast(R.string.success_saved);
+						finish();
+					} else {
+						String errorMsg = data.getString(TLEHttpRequest.MSG);
+						ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+						Log.e("DayGoalFragment", "sync userinfo failed");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}, this);
+		httpRequest.post(UPDATE_END_URL + "/", params);
 	}
 
 	public interface OnTitleButtonClickListener {

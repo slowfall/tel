@@ -1,8 +1,12 @@
 package com.tranway.tleshine.viewLoginAndRegister;
 
 import java.text.ParseException;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +23,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.TLEHttpRequest;
+import com.tranway.tleshine.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
@@ -33,12 +40,15 @@ import com.tranway.tleshine.viewSettings.SettingsUserWeightActivity;
 public class RegisterUserInfoActivity extends Activity implements OnClickListener {
 	private static final String TAG = RegisterUserInfoActivity.class.getSimpleName();
 
+	private static final String UPDATE_END_URL = "/update";
+
 	private TextView mNameTxt, mHighTxt, mWeightTxt, mBirthdayTxt, mStrideTxt, mUserNameTxt;
 	private RadioGroup mSexGroup;
 	private RadioButton mMaleRadio, mFemaleRadio;
 
 	private UserInfo userInfo;
 	private boolean isRegister = false;
+	private TLEHttpRequest httpRequest = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,7 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 
 		initView();
 		updateUserInfoUI(userInfo);
+		httpRequest = TLEHttpRequest.instance();
 	}
 
 	private void initView() {
@@ -208,7 +219,6 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 				mBirthdayTxt.setText(text);
 				int age = UserInfoUtils.convertDateToAge(time);
 				userInfo.setAge(age);
-				Log.d(TAG, "-------dirthday time: " + time + "; age: " + age);
 			} catch (ParseException e) {
 				e.printStackTrace();
 				ToastHelper.showToast(R.string.parse_date_exception);
@@ -258,14 +268,54 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 			ToastHelper.showToast(R.string.prompt_stride);
 			return;
 		} else {
-			UserInfoKeeper.writeUserInfo(this, userInfo);
 			if (isRegister) {
-				Intent intent = new Intent(this, RegisterUserGoal_Activity.class);
+				UserInfoKeeper.writeUserInfo(this, userInfo);
+				Intent intent = new Intent(this, RegisterUserGoalActivity.class);
 				startActivity(intent);
 			} else {
-				finish();
+				syncUserInfoToServer(userInfo);
 			}
 		}
+	}
+
+	/**
+	 * Synchronous user information to the server
+	 * 
+	 * @param userInfo
+	 *            User detail information
+	 */
+	private void syncUserInfoToServer(final UserInfo userInfo) {
+		if (userInfo == null) {
+			return;
+		}
+		Map<String, String> params = UserInfoUtils.convertUserInfoToParamsMap(userInfo, true);
+		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
+
+			@Override
+			public void onFailure(String url, int errorNo, String errorMsg) {
+				// TODO Auto-generated method stub
+				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
+			}
+
+			@Override
+			public void onSuccess(String url, String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
+					if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
+						UserInfoKeeper.writeUserInfo(RegisterUserInfoActivity.this, userInfo);
+						finish();
+					} else {
+						String errorMsg = data.getString(TLEHttpRequest.MSG);
+						ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
+						Log.e(TAG, "sync userinfo failed");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}, this);
+		httpRequest.post(UPDATE_END_URL + "/", params);
 	}
 
 	private boolean checkNameAvailable(String name) {
