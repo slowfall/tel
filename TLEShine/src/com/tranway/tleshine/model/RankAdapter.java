@@ -49,6 +49,7 @@ public class RankAdapter extends BaseAdapter {
 		TextView mNameTxt;
 		ImageView mSexIcon;
 		TextView mPointTxt;
+		ImageView mRankIcon;
 	}
 
 	@Override
@@ -61,6 +62,7 @@ public class RankAdapter extends BaseAdapter {
 			holder.mSexIcon = (ImageView) convertView.findViewById(R.id.iv_sex_icon);
 			holder.mNameTxt = (TextView) convertView.findViewById(R.id.txt_name);
 			holder.mPointTxt = (TextView) convertView.findViewById(R.id.txt_point);
+			holder.mRankIcon = (ImageView) convertView.findViewById(R.id.iv_rank_icon);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -76,8 +78,7 @@ public class RankAdapter extends BaseAdapter {
 		}
 		holder.mPointTxt.setText(info.getPoint() + mContext.getString(R.string.activity_step));
 		if (position < mRankIconIDs.length) {
-			holder.mPointTxt.setCompoundDrawables(
-					mContext.getResources().getDrawable(mRankIconIDs[position]), null, null, null);
+			holder.mRankIcon.setImageResource(mRankIconIDs[position]);
 		}
 
 		return convertView;
