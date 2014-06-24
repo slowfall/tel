@@ -38,22 +38,25 @@
     <string name="connect_device">Connect device</string>
     <string name="couldnot_search_ble_device">Could not search ble device.</string>
     <string name="today">Today</string>
-    <string name="yestoday">Yestoday</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
+    <string name="day">Day</string>
     <string name="day_string_of_user_login">Use in %1$s</string>
-    <string name="cycle1_text">Continuous compliance：0</string>
-    <string name="cycle2_text">The most high：0</string>
-    <string name="cycle3_text">Compliance time：0</string>
-    <string name="friends">friends</string>
+    <string name="cycle1_text">Continuous Accomplised Times</string>
+    <string name="cycle2_text">High Score</string>
+    <string name="cycle3_text">Goal Accomplised Times</string>
+    <string name="friends">Friends</string>
     <string name="light_sport">light activity</string>
     <string name="right_sport">right activity</string>
     <string name="overdose_sport">overdose activity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
-    <string name="activity">activity</string>
+    <string name="activity">Activity</string>
     <string name="now_use">Start</string>
-    <string name="positive">yes</string>
-    <string name="negative">no</string>
+    <string name="positive">Yes</string>
+    <string name="negative">No</string>
     <string name="OK">OK</string>
     <string name="activity_record">Activity Record</string>
     <string name="sleep_record">Sleep Record</string>
@@ -61,20 +64,21 @@
     <!-- Activity Activity strings -->
     <string name="no_activity_tips">Now do not have any activity, please go to "settings" try connect Fitness Band.</string>
     <string name="activity_steps_goal">Goal&#160;</string>
-    <string name="activity_step">&#160;Steps</string>
+    <string name="activity_step">&#160;Paces</string>
     <string name="activity_steps_finished">Finished&#160;</string>
     <string name="n_km_activity_distance">&#160;Km</string>
     <string name="n_calorie_activity">&#160;Calorie</string>
     
-    <string name="not_sync">Have not synchronise.</string>
-    <string name="last_sync_time_just_now">The last synchronise time is just now.</string>
-	<string name="last_sync_time_string">The last synchronise time is </string>
-	<string name="mooth_ago">%1$s mouths ago.</string>
-	<string name="day_ago">%1$s days ago.</string>
-	<string name="week_ago">%1$s weeks ago.</string>
-	<string name="hour_ago">%1$s hours ago.</string>
-	<string name="minute_ago">%1$s minutes ago.</string>
-	
+    <string name="not_sync">Have not sync.</string>
+    <string name="last_sync_time_just_now">Sync now.</string>
+	<string name="last_sync_time_string">Sync </string>
+	<string name="mooth_ago">%1$s mouths ago</string>
+	<string name="day_ago">%1$s days ago</string>
+	<string name="week_ago">%1$s weeks ago</string>
+	<string name="hour_ago">%1$s hours ago</string>
+	<string name="minute_ago">%1$s minutes ago</string>
+	<string name="minutes">minutes</string>
+	<string name="hours">hours</string>
     <!-- Sleep Activity strings -->
     <string name="sleep_deep">Deep Sleep</string>
     <string name="sleep_shallow">Shallow Sleep</string>
@@ -83,8 +87,14 @@
     <string name="sleep_wake_times">Wake times</string>
     <string name="sleep_wake_times_unit"> </string>
     <string name="n_hour_sleep_goal">%1$s hour sleep goal</string>
-    <string name="sleep_good">sleep good</string>
-    <string name="sleep_normal">sleep normal</string>
-    <string name="sleep_bad">sleep bad</string>
+    <string name="sleep_good">Sleep good</string>
+    <string name="sleep_normal">Sleep normal</string>
+    <string name="sleep_bad">Sleep bad</string>
 
+    <!-- Settings Activitys strings -->
+    
+	<string name="hour">H</string>
+	<string name="minute">M</string>
+	<string name="start">Start</string>
+	<string name="end">End</string>
 </resources>

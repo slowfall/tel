@@ -210,7 +210,7 @@ public class RoundProgressBar extends View {
 
 	public synchronized void setProgress(long current, long total) {
 		textCurrent = String.valueOf(current);
-		textTotal = "共 " + total + " 点";
+//		textTotal = "共 " + total + " 点";
 		float progress = 0;
 		if (current > 0 && total > 0) {
 			progress = (float) current / (float) total * 100;

@@ -43,7 +43,7 @@ public class CustomizedWeightWheelView extends LinearLayout {
 		mGWheel.setCurrentItem(default_g);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setLabel("公斤");
+		mUnitWheel.setLabel("KG");
 		mUnitWheel.setCyclic(false);
 	}
 

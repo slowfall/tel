@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/txt_name"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/icon_user"
@@ -42,13 +42,12 @@
 
     <TextView
         android:id="@+id/txt_point"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:gravity="center|right"
         android:lines="1"
-        android:maxWidth="100dp"
         android:textColor="@color/fitband_main_color"
         android:textSize="@dimen/text_size_big" />
 

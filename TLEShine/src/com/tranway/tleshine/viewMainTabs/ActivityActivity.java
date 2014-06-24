@@ -108,6 +108,23 @@ public class ActivityActivity extends Activity {
 			mViewPager.setVisibility(View.INVISIBLE);
 			mTextNoActivityTips.setVisibility(View.VISIBLE);
 		}
+		long continueCount = 0;
+		long maxPoint = 0;
+		long goalCount = 0;
+		for (ActivityInfo info : mActivityInfos) {
+			if (info.getGoal() <= info.getSteps()) {
+				goalCount += 1;
+				continueCount += 1;
+			} else {
+				continueCount = 0;
+			}
+			if (info.getSteps() > maxPoint) {
+				maxPoint = info.getSteps();
+			}
+		}
+		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_CONTINUE_COUNT, continueCount);
+		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_MAX_POINT, maxPoint);
+		UserInfoKeeper.writeUserInfo(this, UserInfoKeeper.KEY_GOAL_COUNT, goalCount);
 	}
 
 	private void initView() {

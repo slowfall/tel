@@ -26,7 +26,6 @@
 	<string name="run">跑步</string>
 	<string name="swim">游泳</string>
 	<string name="or">或者</string>
-	<string name="hour">小时</string>
 	<string name="explain_point_num">每天活动的步数</string>
 	<string name="intensity_light">轻量运动</string>
 	<string name="intensity_moderate">适量运动</string>
@@ -47,4 +46,5 @@
 	
 	<string name="is_loading">正在加载&#8230;</string>
 	<string name="success_saved">设置成功</string>
+	<string name="go_to_settings_dialog_tips">设置成功，现在就去“设置”界面连接Fitness Band同步信息吧。</string>
 </resources>

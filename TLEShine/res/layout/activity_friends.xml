@@ -23,7 +23,7 @@
             android:id="@+id/radio_rank_yesterday"
             style="@style/social_tab_top"
             android:gravity="center"
-            android:text="@string/yestoday" />
+            android:text="@string/yesterday" />
 
         <RadioButton
             android:id="@+id/radio_my_info"

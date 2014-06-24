@@ -1,13 +1,13 @@
 <resources>
 
-    <string name="settings">settings</string>
-    <string name="my_settings">account settings</string>
-    <string name="account">account</string>
+    <string name="settings">Settings</string>
+    <string name="my_settings">Account settings</string>
+    <string name="account">Account</string>
     <string name="read_user_info_exception">很抱歉，程序读取用户信息失败，请重新尝试</string>
-    <string name="connect_fitband">connect Fitness band</string>
-    <string name="logout">logout</string>
-    <string name="logout_current_account"> logout account</string>
-    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="connect_fitband">Connect Fitness Band</string>
+    <string name="logout">Sign out</string>
+    <string name="logout_current_account">Sign out account</string>
+    <string name="confirm_logout">Are you sure you want to Sign out?</string>
     <string name="unit">Unit</string>
     <string name="distance">Distance</string>
     <string name="mile">Mile</string>
@@ -15,21 +15,20 @@
     <string name="bound">Bound</string>
     <string name="kg">Kg</string>
     
-    <string name="help_and_privacy">help and privacy</string>
-    <string name="support">support</string>
-	<string name="provision">provision</string>
+    <string name="help_and_privacy">Help and privacy</string>
+    <string name="support">Support</string>
+	<string name="provision">Provision</string>
 	
-	<string name="setting_goal">set goal</string>
-	<string name="how_achieve_goal">how achieve goal:</string>
+	<string name="setting_goal">Set goal</string>
+	<string name="how_achieve_goal">How achieve goal:</string>
 	<string name="walk">Walk</string>
 	<string name="run">Run</string>
 	<string name="swim">Swim</string>
 	<string name="or">or</string>
-	<string name="hour">hour</string>
-	<string name="explain_point_num">每天活动的点数</string>
-	<string name="intensity_light">轻量运动</string>
-	<string name="intensity_moderate">适量运动</string>
-	<string name="intensity_strenuous">剧烈运动</string>
+	<string name="explain_point_num">Explain point</string>
+	<string name="intensity_light">Intensity light</string>
+	<string name="intensity_moderate">Intensity moderate</string>
+	<string name="intensity_strenuous">Intensity strenuous</string>
 	
 	<string name="cancel">Cancel</string>
 	<string name="save">Save</string>
@@ -39,11 +38,12 @@
 	<string name="current_exercise_situation">My exercise goal: </string>
 	<string name="current_sleep_situation">My sleep goal:</string>
 	
-	<string name="exercise">sport</string>
-	<string name="sleep">sleep</string>
-	<string name="exercise_goal_cannot_null">目标运动点数不能设置为0</string>
-	<string name="sleep_goal_cannot_null">目标睡眠时间不能设置为0</string>
+	<string name="exercise">Sport</string>
+	<string name="sleep">Sleep</string>
+	<string name="exercise_goal_cannot_null">Exercise goal can not be 0</string>
+	<string name="sleep_goal_cannot_null">Sleep goal can not be 0</string>
 	
-	<string name="is_loading">loading&#8230;</string>
-	<string name="success_saved">successfully saved</string>
+	<string name="is_loading">Loading&#8230;</string>
+	<string name="success_saved">Successfully saved</string>
+	<string name="go_to_settings_dialog_tips">Set successfully, now go to "Settings" connect Fitness Band sync info.</string>
 </resources>

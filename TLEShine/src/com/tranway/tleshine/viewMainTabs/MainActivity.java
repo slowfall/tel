@@ -163,16 +163,16 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 		title.setText(getResources().getString(R.string.ble_not_supported_tips));
 		mCheckBLEDialog.setContentView(dialogView);
 		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
-		positiveBtn.setVisibility(View.GONE);
-		ImageView line = (ImageView) dialogView.findViewById(R.id.line_btn);
-		line.setVisibility(View.GONE);
-		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);
-		negativeBtn.setText(R.string.OK);
-		negativeBtn.setOnClickListener(new OnClickListener() {
+		positiveBtn.setText(R.string.OK);
+		positiveBtn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mCheckBLEDialog.dismiss();
 			}
 		});
+		ImageView line = (ImageView) dialogView.findViewById(R.id.line_btn);
+		line.setVisibility(View.GONE);
+		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);
+		negativeBtn.setVisibility(View.GONE);
 		mCheckBLEDialog.show();
 	}
 

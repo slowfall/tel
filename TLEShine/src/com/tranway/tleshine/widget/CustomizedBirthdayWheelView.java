@@ -41,7 +41,7 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 		mMonthWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mMonthWheel.setAdapter(new NumericWheelAdapter(MONTH_BASE, 12, null));
 		mMonthWheel.setCyclic(false);
-		mMonthWheel.setLabel("月");
+		mMonthWheel.setLabel(getContext().getString(R.string.month));
 		mMonthWheel.setCurrentItem(default_month);
 		mMonthWheel.addChangingListener(new OnWheelChangedListener() {
 
@@ -55,13 +55,13 @@ public class CustomizedBirthdayWheelView extends LinearLayout {
 		int maxDay = getMaxDayInMonth(mMonthWheel.getCurrentItem());
 		mDayWheel.setAdapter(new NumericWheelAdapter(DAY_BASE, maxDay, null));
 		mDayWheel.setCyclic(false);
-		mDayWheel.setLabel("日");
+		mDayWheel.setLabel(getContext().getString(R.string.day));
 		mDayWheel.setCurrentItem(default_day);
 
 		mYearWheel = (WheelView) findViewById(R.id.wheel_left);
 		mYearWheel.setAdapter(new NumericWheelAdapter(YEAR_BASE, YEAR_MAX, null));
 		mYearWheel.setCyclic(false);
-		mYearWheel.setLabel("年");
+		mYearWheel.setLabel(getContext().getString(R.string.year));
 		mYearWheel.setCurrentItem(default_year);
 	}
 

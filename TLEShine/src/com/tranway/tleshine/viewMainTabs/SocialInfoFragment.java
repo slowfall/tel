@@ -40,6 +40,9 @@ public class SocialInfoFragment extends Fragment {
 	private FriendsAdapter mAdapter;
 	private ListView mListView;
 	private UserInfo mUserInfo;
+	private TextView mContinueCountText;
+	private TextView mMaxPointText;
+	private TextView mGoalCountText;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,17 +52,30 @@ public class SocialInfoFragment extends Fragment {
 		initView(v);
 		return v;
 	}
-	
+
 	@Override
 	public void onResume() {
 		getUserFriendsFromServer(mUserInfo.getId());
-	
+		long continueCount = UserInfoKeeper.readUserInfo(getActivity(),
+				UserInfoKeeper.KEY_CONTINUE_COUNT, 0l);
+		long maxPoint = UserInfoKeeper
+				.readUserInfo(getActivity(), UserInfoKeeper.KEY_MAX_POINT, 0l);
+		long goalCount = UserInfoKeeper.readUserInfo(getActivity(), UserInfoKeeper.KEY_GOAL_COUNT,
+				0l);
+		mContinueCountText.setText(String.valueOf(continueCount));
+		mMaxPointText.setText(String.valueOf(maxPoint));
+		mGoalCountText.setText(String.valueOf(goalCount));
+
 		super.onResume();
 	}
 
 	private void initView(View v) {
 		TextView userEmail = (TextView) v.findViewById(R.id.tv_user_info_email);
 		userEmail.setText(mUserInfo.getEmail());
+
+		mContinueCountText = (TextView) v.findViewById(R.id.tv_user_info_cycle1);
+		mMaxPointText = (TextView) v.findViewById(R.id.tv_user_info_cycle2);
+		mGoalCountText = (TextView) v.findViewById(R.id.tv_user_info_cycle3);
 
 		TextView userDate = (TextView) v.findViewById(R.id.tv_user_info_day_user);
 		SimpleDateFormat format = new SimpleDateFormat("MM-dd", Locale.getDefault());

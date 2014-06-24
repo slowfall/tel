@@ -38,11 +38,16 @@
     <string name="connect_device">连接设备</string>
     <string name="couldnot_search_ble_device">未能搜索到蓝牙手镯</string>
     <string name="today">今天</string>
-    <string name="yestoday">昨天</string>
+    <string name="yesterday">昨天</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hours">小时</string>
+    <string name="minutes">分钟</string>
     <string name="day_string_of_user_login">于%1$s使用</string>
-    <string name="cycle1_text">连续达标：0</string>
-    <string name="cycle2_text">最高分：0</string>
-    <string name="cycle3_text">达标次数：0</string>
+    <string name="cycle1_text">连续达标</string>
+    <string name="cycle2_text">最高分</string>
+    <string name="cycle3_text">达标次数</string>
     <string name="friends">朋友</string>
     <string name="activity">活动</string>
     <string name="now_use">马上体验</string>
@@ -86,4 +91,8 @@
     <string name="sleep_normal">睡眠质量一般</string>
     <string name="sleep_bad">睡眠质量差</string>
 
-</resources>
+    <!-- Settings Activitys strings -->
+	<string name="hour">时</string>
+	<string name="minute">分</string>
+	<string name="start">开始</string>
+	<string name="end">结束</string></resources>

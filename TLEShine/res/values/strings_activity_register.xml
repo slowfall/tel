@@ -28,11 +28,11 @@
     <string name="register_input_pwd">Please input your password</string>
     <string name="register_input_identify">Please input your identify code</string>
 
-    <string name="exit">exit</string>
-    <string name="my_info">my information</string>
-    <string name="next_step">next</string>
-    <string name="pre_step">prevous</string>
-    <string name="edit_my_info">Edit my information</string>
+    <string name="exit">Exit</string>
+    <string name="my_info">My Info</string>
+    <string name="next_step">Next</string>
+    <string name="pre_step">Prevous</string>
+    <string name="edit_my_info">Edit my info</string>
     
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -46,11 +46,11 @@
     <string name="step">Step</string>
     <string name="prompt_weight">Please set your weight</string>
     <string name="prompt_stride">Please set your stride</string>
-    <string name="night_late_tips">Late at night...</string>
+    <string name="night_late_tips">It\'s mid night...</string>
     <string name="good_night_tips">Good night~~~</string>
     <string name="health_sleep_tips">Healthy sleep habits, beginning in the reasonable sleep mode</string>
     
-    <string name="complete">complete</string>
+    <string name="complete">Complete</string>
     
     <string name="parse_date_exception">I am sorry, the programe appear exception</string>
 </resources>

@@ -33,7 +33,7 @@ public class CustomizedStepWheelView extends LinearLayout {
 		mStrideWheel.setAdapter(new NumericWheelAdapter(20, 200, null));
 		mStrideWheel.setCyclic(false);
 		mStrideWheel.setCurrentItem(defaultStep);
-		mStrideWheel.setLabel("  厘米");
+		mStrideWheel.setLabel("  CM");
 
 		mMinuteWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mMinuteWheel.setVisibility(View.GONE);

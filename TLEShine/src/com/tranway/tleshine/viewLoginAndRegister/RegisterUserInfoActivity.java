@@ -9,16 +9,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -304,7 +307,9 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 					int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 					if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
 						UserInfoKeeper.writeUserInfo(RegisterUserInfoActivity.this, userInfo);
-						finish();
+						if (!isRegister) {
+							ShowGotoSettingsDialog();
+						}
 					} else {
 						String errorMsg = data.getString(TLEHttpRequest.MSG);
 						ToastHelper.showToast(errorMsg, Toast.LENGTH_LONG);
@@ -327,6 +332,34 @@ public class RegisterUserInfoActivity extends Activity implements OnClickListene
 		Pattern p = Pattern.compile(regEx);
 		Matcher matcher = p.matcher(name);
 		return matcher.matches();
+	}
+	
+	private void ShowGotoSettingsDialog() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
+		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
+		TextView title = (TextView) dialogView.findViewById(R.id.layout_content);
+		title.setText(getResources().getString(R.string.go_to_settings_dialog_tips));
+		dialog.setContentView(dialogView);
+		Button positiveBtn = (Button) dialogView.findViewById(R.id.positive);
+		positiveBtn.setText(R.string.positive);
+		positiveBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				setResult(RESULT_OK);
+				dialog.dismiss();
+				finish();
+			}
+		});
+		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);
+		negativeBtn.setText(R.string.negative);
+		negativeBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
+				dialog.dismiss();
+				finish();
+			}
+		});
+		dialog.show();
 	}
 
 }

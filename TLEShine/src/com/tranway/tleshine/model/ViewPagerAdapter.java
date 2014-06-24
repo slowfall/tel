@@ -132,7 +132,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 		if (todayUtcTime == utcTime) {
 			holder.timeTxt.setText(R.string.today);
 		} else if (todayUtcTime - utcTime == 1) {
-			holder.timeTxt.setText(R.string.yestoday);
+			holder.timeTxt.setText(R.string.yesterday);
 		} else {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.getDefault());
 			Date date = new Date(utcTimeSeconds * 1000);
@@ -159,14 +159,14 @@ public class ViewPagerAdapter extends PagerAdapter {
 				}
 			}
 		});
-		holder.distance.setText(String.valueOf(formatKm(info.getDistance() / 1000)));
+		holder.distance.setText(String.valueOf(formatKm(info.getDistance() / 100)));
 		holder.calorie.setText(String.valueOf(info.getCalorie() / 10.0f));
 		holder.steps.setText(String.valueOf(info.getSteps()));
 
 		// load middle chart view
 		holder.chartView = (ChartView) view.findViewById(R.id.chart_view);
-		holder.chartView.setGridLinesHorizontal(3);
-		holder.chartView.setGridLinesVertical(0);
+		holder.chartView.setGridLinesHorizontal(5);
+		holder.chartView.setGridLinesVertical(5);
 		String[] labels = { "0h", "6h", "12h", "18h", "24h" };
 		LabelAdapter mAdapter = new LabelAdapter(context, LabelOrientation.HORIZONTAL);
 		mAdapter.setLabelValues(labels);

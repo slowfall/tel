@@ -58,32 +58,74 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/tv_user_info_cycle1"
+        <LinearLayout
             android:layout_width="112dp"
             android:layout_height="112dp"
             android:background="@drawable/cycle1"
             android:gravity="center"
-            android:text="@string/cycle1_text"
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:paddingTop="10dp" >
 
-        <TextView
-            android:id="@+id/tv_user_info_cycle2"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cycle1_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_user_info_cycle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="112dp"
             android:layout_height="112dp"
             android:background="@drawable/cycle2"
             android:gravity="center"
-            android:text="@string/cycle2_text"
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:paddingTop="10dp" >
 
-        <TextView
-            android:id="@+id/tv_user_info_cycle3"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cycle2_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_user_info_cycle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="112dp"
             android:layout_height="112dp"
             android:background="@drawable/cycle3"
             android:gravity="center"
-            android:text="@string/cycle3_text"
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:paddingTop="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cycle3_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_user_info_cycle3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
 
     <View

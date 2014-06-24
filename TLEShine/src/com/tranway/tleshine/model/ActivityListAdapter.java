@@ -23,6 +23,7 @@ public class ActivityListAdapter extends BaseAdapter {
 	private static final String TAG = "ActivityAdapter";
 
 	private LayoutInflater mInflater;
+	private Context mContext;
 //	private String[] testStr = { "one", "two", "three", "four" };
 
 	/** current ViewPager activity every 15Min packets */
@@ -30,6 +31,7 @@ public class ActivityListAdapter extends BaseAdapter {
 
 	public ActivityListAdapter(Context context) {
 		this.mInflater = LayoutInflater.from(context);
+		mContext = context;
 	}
 
 	public void setActivityData(List<Map<String, Object>> mEvery15MinPackets) {
@@ -106,7 +108,7 @@ public class ActivityListAdapter extends BaseAdapter {
 		String fromTime = format.format(new Date(utcTime * 1000));
 		String toTime = format.format(new Date((utcTime + 15 * 60) * 1000));
 		holder.exerciseTime.setText(fromTime + "~" + toTime);
-		holder.exercisePoint.setText(mPacket.get(DBInfo.KEY_STEPS) + "步");
+		holder.exercisePoint.setText(mPacket.get(DBInfo.KEY_STEPS) + mContext.getString(R.string.activity_step));
 
 		// for test
 		// holder.exerciseTime.setText(testStr[position]);

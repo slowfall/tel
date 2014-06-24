@@ -177,7 +177,7 @@ public class SleepActivity extends Activity {
 			if (todayUtcTime == utcTime) {
 				holder.timeTxt.setText(R.string.today);
 			} else if (todayUtcTime - utcTime == 1) {
-				holder.timeTxt.setText(R.string.yestoday);
+				holder.timeTxt.setText(R.string.yesterday);
 			} else {
 				SimpleDateFormat df = new SimpleDateFormat("MM-dd", Locale.getDefault());
 				Date date = new Date(utcTime * 1000 * 3600 * 24);

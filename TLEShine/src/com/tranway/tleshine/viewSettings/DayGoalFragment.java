@@ -95,7 +95,7 @@ public class DayGoalFragment extends Fragment implements OnTitleButtonClickListe
 		if (point < 0) {
 			return;
 		}
-		mPointTxt.setText(point + " 步");
+		mPointTxt.setText(point + getString(R.string.activity_step));
 		int time = ExerciseUtils.getAchieveGoalTime(point, Sport.WALK);
 		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(point, Sport.RUN);

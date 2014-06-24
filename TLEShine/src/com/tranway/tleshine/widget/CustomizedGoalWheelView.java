@@ -39,7 +39,7 @@ public class CustomizedGoalWheelView extends LinearLayout {
 		mRightWheel.setCurrentItem(default_cm);
 
 		mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
-		mUnitWheel.setLabel("步");
+		mUnitWheel.setLabel(getContext().getString(R.string.activity_step));
 		mUnitWheel.setCyclic(false);
 	}
 

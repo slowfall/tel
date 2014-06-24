@@ -18,12 +18,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tranway.tleshine.BLEConnectActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.TLEHttpRequest;
@@ -61,6 +61,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
+	private CheckBox mKeepSignInCheck;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
@@ -75,11 +76,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		initTitleView();
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		mEmail = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_EMAIL, "");
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
+		mPassword = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_PWD, "");
 		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView.setText(mPassword);
 		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -91,6 +94,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 		});
 
+		mKeepSignInCheck = (CheckBox) findViewById(R.id.cb_login_auto);
+
+		boolean isKeepSignin = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_KEEP_SIGN_IN,
+				false);
+		mKeepSignInCheck.setChecked(isKeepSignin);
+
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		mLoginFormView = findViewById(R.id.login_form);
@@ -99,9 +108,17 @@ public class LoginActivity extends Activity implements OnClickListener {
 		findViewById(R.id.btn_login).setOnClickListener(this);
 	}
 
+	@Override
+	protected void onResume() {
+		if (mKeepSignInCheck.isChecked()) {
+			attemptLogin();
+		}
+		super.onResume();
+	}
+
 	private void initTitleView() {
 		ImageButton leftBtn = (ImageButton) findViewById(R.id.btn_title_icon_left);
-//		mPreBtn.setText(R.string.back);
+		// mPreBtn.setText(R.string.back);
 		leftBtn.setVisibility(View.VISIBLE);
 		leftBtn.setOnClickListener(this);
 		// Button mNextBtn = (Button) findViewById(R.id.btn_title_right);
@@ -212,6 +229,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 									UserInfoKeeper.KEY_EMAIL, email);
 							UserInfoKeeper.writeUserInfo(getApplicationContext(),
 									UserInfoKeeper.KEY_PWD, password);
+							UserInfoKeeper.writeUserInfo(getApplicationContext(),
+									UserInfoKeeper.KEY_KEEP_SIGN_IN, mKeepSignInCheck.isChecked());
 							Intent intent = new Intent(MyApplication.getAppContext(),
 									MainActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -3,7 +3,6 @@ package com.tranway.tleshine.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
@@ -33,33 +32,33 @@ public class CustomizedSleepWheelView extends LinearLayout {
 		mFromHourWheel.setAdapter(new NumericWheelAdapter(0, 23, null));
 		mFromHourWheel.setCyclic(false);
 		mFromHourWheel.setCurrentItem(default_hour);
-		mFromHourWheel.setLabel("时");
+		mFromHourWheel.setLabel(getContext().getString(R.string.hour));
 
 		mFromMinuteWheel = (WheelView) findViewById(R.id.wheel_middle);
 		mFromMinuteWheel.setAdapter(new NumericWheelAdapter(0, 59, null));
 		mFromMinuteWheel.setCyclic(false);
 		mFromMinuteWheel.setCurrentItem(default_min);
-		mFromMinuteWheel.setLabel("分");
+		mFromMinuteWheel.setLabel(getContext().getString(R.string.minute));
 
 		mToHourWheel = (WheelView) findViewById(R.id.wheel_right);
 		mToHourWheel.setAdapter(new NumericWheelAdapter(0, 23, null));
 		mToHourWheel.setCyclic(false);
 		mToHourWheel.setCurrentItem(default_hour);
-		mToHourWheel.setLabel("时");
+		mToHourWheel.setLabel(getContext().getString(R.string.hour));
 
 		mToMinuteWheel = (WheelView) findViewById(R.id.wheel_last);
 		mToMinuteWheel.setAdapter(new NumericWheelAdapter(0, 59, null));
 		mToMinuteWheel.setCyclic(false);
 		mToMinuteWheel.setCurrentItem(default_min);
-		mToMinuteWheel.setLabel("分");
+		mToMinuteWheel.setLabel(getContext().getString(R.string.minute));
 
 		mStartWheel = (WheelView) findViewById(R.id.wheel_start);
 		mStartWheel.setCyclic(false);
-		mStartWheel.setLabel("开始");
+		mStartWheel.setLabel(getContext().getString(R.string.start));
 
 		mOverWheel = (WheelView) findViewById(R.id.wheel_over);
 		mOverWheel.setCyclic(false);
-		mOverWheel.setLabel("结束");
+		mOverWheel.setLabel(getContext().getString(R.string.end));
 	}
 
 	/**

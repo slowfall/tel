@@ -23,6 +23,11 @@ public class UserInfoKeeper {
 	public static final String KEY_STRIDE = "stride";
 	public static final String KEY_SEX = "sex";
 	public static final String KEY_STEPSTARGET = "stepsTarget";
+	public static final String KEY_CONTINUE_COUNT = "continueCount";
+	public static final String KEY_MAX_POINT = "maxPoint";
+	public static final String KEY_GOAL_COUNT = "goalCount";
+	public static final String KEY_KEEP_SIGN_IN = "keepSignIn";
+
 	/**
 	 * unit is milliseconds
 	 */
@@ -69,7 +74,8 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(KEY_ID, info.getId());
 		edit.putString(KEY_EMAIL, info.getEmail());
@@ -101,7 +107,8 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putString(key, value);
 
@@ -124,7 +131,8 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putInt(key, value);
 
@@ -147,9 +155,23 @@ public class UserInfoKeeper {
 			return false;
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.putLong(key, value);
+
+		return edit.commit();
+	}
+
+	public static boolean writeUserInfo(Context context, String key, boolean value) {
+		if (null == context || null == key) {
+			return false;
+		}
+
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
+		Editor edit = preferences.edit();
+		edit.putBoolean(key, value);
 
 		return edit.commit();
 	}
@@ -169,7 +191,8 @@ public class UserInfoKeeper {
 		if (context == null || key == null) {
 			return defaultValue;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
 		defaultValue = preferences.getInt(key, defaultValue);
 		return defaultValue;
 	}
@@ -186,8 +209,19 @@ public class UserInfoKeeper {
 		if (context == null || key == null) {
 			return defaultValue;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
 		defaultValue = preferences.getString(key, defaultValue);
+		return defaultValue;
+	}
+
+	public static boolean readUserInfo(Context context, String key, boolean defaultValue) {
+		if (context == null || key == null) {
+			return defaultValue;
+		}
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
+		defaultValue = preferences.getBoolean(key, defaultValue);
 		return defaultValue;
 	}
 
@@ -203,7 +237,8 @@ public class UserInfoKeeper {
 		if (context == null || key == null) {
 			return defaultValue;
 		}
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_PRIVATE);
 		defaultValue = preferences.getLong(key, defaultValue);
 		return defaultValue;
 	}
@@ -247,7 +282,8 @@ public class UserInfoKeeper {
 	 * @return return true if succeed, else return false
 	 */
 	public static boolean clearUserInfo(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+		SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME,
+				Context.MODE_APPEND);
 		Editor edit = preferences.edit();
 		edit.clear();
 		return edit.commit();

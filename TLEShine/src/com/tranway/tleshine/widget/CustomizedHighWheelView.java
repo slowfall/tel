@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tranway.tleshine.R;
@@ -43,7 +42,7 @@ public class CustomizedHighWheelView extends LinearLayout {
 
 		WheelView mUnitWheel = (WheelView) findViewById(R.id.wheel_right);
 		mUnitWheel.setCyclic(false);
-		mUnitWheel.setLabel("米");
+		mUnitWheel.setLabel("M");
 	}
 
 	/**

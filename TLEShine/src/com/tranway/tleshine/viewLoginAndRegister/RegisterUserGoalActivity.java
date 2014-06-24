@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ExerciseUtils;
 import com.tranway.tleshine.model.ExerciseUtils.Sport;
+import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoUtils;
@@ -93,7 +94,7 @@ public class RegisterUserGoalActivity extends Activity implements OnClickListene
 		if (step < 0) {
 			return;
 		}
-		mPointTxt.setText(step + " 步");
+		mPointTxt.setText(step + getString(R.string.activity_step));
 		int time = ExerciseUtils.getAchieveGoalTime(step, Sport.WALK);
 		mWalkTimeTxt.setText(UserInfoUtils.convertMinToHour(time));
 		time = ExerciseUtils.getAchieveGoalTime(step, Sport.RUN);

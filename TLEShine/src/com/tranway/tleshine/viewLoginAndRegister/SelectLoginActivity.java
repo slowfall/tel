@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.UserInfoKeeper;
 
 public class SelectLoginActivity extends Activity {
 
@@ -18,6 +19,17 @@ public class SelectLoginActivity extends Activity {
 		setup();
 	}
 
+	@Override
+	protected void onResume() {
+		boolean isKeepSignin = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_KEEP_SIGN_IN,
+				false);
+		if (isKeepSignin) {
+			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+			startActivity(intent);
+		}
+		super.onResume();
+	}
+
 	private void setup() {
 		findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 
@@ -27,9 +39,9 @@ public class SelectLoginActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
+
 		findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);

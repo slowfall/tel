@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.ToastHelper;
 import com.tranway.tleshine.model.UserGoalKeeper;
-import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.util.UserInfoUtils;
 import com.tranway.tleshine.viewSettings.SettingsGoalActivity.OnTitleButtonClickListener;
 import com.tranway.tleshine.widget.CustomizedSleepWheelView;
@@ -101,6 +100,6 @@ public class NightGoalFragment extends Fragment implements OnTitleButtonClickLis
 		}
 		int hour = time / 60;
 		int min = time % 60;
-		mTimeTxt.setText(hour + "小时" + min + "分钟");
+		mTimeTxt.setText(hour + getString(R.string.hours) + min + getString(R.string.minutes));
 	}
 }

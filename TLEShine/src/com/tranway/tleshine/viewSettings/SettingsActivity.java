@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.MyApplication;
+import com.tranway.tleshine.model.UserInfoKeeper;
 import com.tranway.tleshine.viewLoginAndRegister.RegisterUserInfoActivity;
 import com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity;
 
@@ -28,6 +29,16 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_settings);
 
 		initView();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RESULT_FIRST_USER) {
+			if (resultCode == RESULT_OK) {
+				finish();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void initView() {
@@ -55,7 +66,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			bundle.putBoolean("isRegister", false);
 			intent.setClass(this, RegisterUserInfoActivity.class);
 			intent.putExtras(bundle);
-			startActivity(intent);
+			startActivityForResult(intent, RESULT_FIRST_USER);
 			break;
 		case R.id.btn_logout:
 			confirmLogoutDialog();
@@ -80,9 +91,11 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			public void onClick(View v) {
 				dialog.dismiss();
 				Intent intent = new Intent(MyApplication.getAppContext(), SelectLoginActivity.class);
+				UserInfoKeeper.writeUserInfo(getApplicationContext(),
+						UserInfoKeeper.KEY_KEEP_SIGN_IN, false);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
-//				SettingsActivity.this.finish();
+				// SettingsActivity.this.finish();
 			}
 		});
 		Button negativeBtn = (Button) dialogView.findViewById(R.id.negative);

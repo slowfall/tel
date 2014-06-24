@@ -20,9 +20,10 @@
     <string name="error_field_required">This field is required</string>
 	<string name="login">Sign in</string>
 	<string name="register">Sign up</string>
-	<string name="forgot_password">forgot password</string>
+	<string name="forgot_password">Forgot password</string>
 	<string name="submit">Submit</string>
-	<string name="error_server_return">error server return</string>
-	<string name="error_incorrect_email_passowrd">incorrect email or password</string>
+	<string name="error_server_return">Error server return</string>
+	<string name="error_incorrect_email_passowrd">Incorrect email or password</string>
 	<string name="forgot_password_tips">Please input phone number or email then commmit to find password.</string>
+	<string name="keep_sign_in">Keep Sign in</string>
 </resources>

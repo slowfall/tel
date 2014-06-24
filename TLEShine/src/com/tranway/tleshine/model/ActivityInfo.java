@@ -32,10 +32,16 @@ public class ActivityInfo {
 		this.steps = steps;
 	}
 
+	/**
+	 * @return unit is CM
+	 */
 	public int getDistance() {
 		return distance;
 	}
 
+	/**
+	 * @param distance unit is CM
+	 */
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}

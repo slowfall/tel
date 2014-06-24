@@ -11,6 +11,8 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.tranway.tleshine.R;
+import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.UserInfo;
 import com.tranway.tleshine.model.UserInfoKeeper;
 
@@ -43,20 +45,13 @@ public class UserInfoUtils {
 	 * 
 	 * @param formatDate
 	 *            format date string, such as [ 1990-08-19 ]
-	 * @return such as [ 1990年 09月 10日 ]
+	 * @return such as [ 1990-09-10 ]
 	 * 
 	 * @throws ParseException
 	 */
 	public static String convertDateToBirthday(long time) throws ParseException {
-		DecimalFormat df = new DecimalFormat("00");
-		Date date = new Date(time * 1000L);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH) + 1;
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-		return year + "年  " + df.format(month) + "月  " + df.format(day) + "日";
+		SimpleDateFormat format = new SimpleDateFormat(SIMPLE_FORMAT);
+		return format.format(new Date(time * 1000l));
 	}
 
 	/**
@@ -137,11 +132,11 @@ public class UserInfoUtils {
 	 */
 	public static String convertMinToHour(int min) {
 		if (min < 60) {
-			return min + " 分钟";
+			return min + " " + MyApplication.getAppContext().getString(R.string.minutes);
 		} else {
 			float h = (float) min / 60;
 			DecimalFormat df = new DecimalFormat("#.0");
-			return df.format(h) + " 小时";
+			return df.format(h) + " " + MyApplication.getAppContext().getString(R.string.hours);
 		}
 	}
 
