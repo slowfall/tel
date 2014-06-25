@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.tranway.tleshine.R;
+
 public class LabelAdapter extends BaseAdapter {
 	public enum LabelOrientation {
 		HORIZONTAL, VERTICAL
@@ -16,9 +18,13 @@ public class LabelAdapter extends BaseAdapter {
 	private LabelOrientation mOrientation;
 	private String[] values;
 
+	private int textSize = 0;
+
 	public LabelAdapter(Context context, LabelOrientation orientation) {
 		mContext = context;
 		mOrientation = orientation;
+		textSize = (int) mContext.getResources().getDimension(R.dimen.chart_label_text_size);
+		textSize = textSize <= 14 ? textSize : 14;
 	}
 
 	public void setLabelValues(String[] values) {
@@ -72,7 +78,7 @@ public class LabelAdapter extends BaseAdapter {
 		labelTextView.setGravity(gravity);
 		if (values.length >= position) {
 			labelTextView.setText(getItem(position));
-			labelTextView.setTextSize(14);
+			labelTextView.setTextSize(textSize);
 		}
 		return convertView;
 	}

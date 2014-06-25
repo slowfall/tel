@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,12 +44,10 @@ public class ChartView extends RelativeLayout {
 	private double mMaxY = Double.MIN_VALUE;
 
 	// Grid
-
 	private Rect mGridBounds = new Rect();
 	private int mGridLineColor;
 	private int mGridLineWidth;
 	private int mGridLinesHorizontal;
-	private int mGridLinesVertical;
 
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTORS
@@ -73,11 +72,16 @@ public class ChartView extends RelativeLayout {
 		mGridLineColor = attributes.getInt(R.styleable.ChartView_gridLineColor, Color.GRAY);
 		mGridLineWidth = attributes.getDimensionPixelSize(R.styleable.ChartView_gridLineWidth, 1);
 		mGridLinesHorizontal = attributes.getInt(R.styleable.ChartView_gridLinesHorizontal, 5);
-		mGridLinesVertical = attributes.getInt(R.styleable.ChartView_gridLinesVertical, 5);
+		attributes.getInt(R.styleable.ChartView_gridLinesVertical, 5);
 		mLeftLabelWidth = attributes.getDimensionPixelSize(R.styleable.ChartView_leftLabelWidth, 0);
 		mTopLabelHeight = attributes.getDimensionPixelSize(R.styleable.ChartView_topLabelHeight, 0);
 		mRightLabelWidth = attributes.getDimensionPixelSize(R.styleable.ChartView_rightLabelWidth, 0);
-		mBottomLabelHeight = attributes.getDimensionPixelSize(R.styleable.ChartView_bottomLabelHeight, 30);
+
+		float scale = context.getResources().getDisplayMetrics().scaledDensity;
+		int size = (int) context.getResources().getDimension(R.dimen.chart_label_text_size);
+		size = (size <= 14) ? size : 14;
+		mBottomLabelHeight = (int) (size * scale + 5);
+		Log.d(VIEW_LOG_TAG, "botton label height: " + mBottomLabelHeight);
 
 		// bottom label layout
 		LayoutParams bottomLabelParams = new LayoutParams(LayoutParams.MATCH_PARENT, mBottomLabelHeight);
@@ -132,7 +136,6 @@ public class ChartView extends RelativeLayout {
 	}
 
 	public void setGridLinesVertical(int count) {
-		mGridLinesVertical = count;
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +152,6 @@ public class ChartView extends RelativeLayout {
 		final int gridBottom = getHeight() - mBottomLabelHeight - mGridLineWidth;
 
 		mGridBounds.set(gridLeft, gridTop, gridRight, gridBottom);
-
 
 		LayoutParams bottomParams = (LayoutParams) mBottomLabelLayout.getLayoutParams();
 		bottomParams.width = mGridBounds.width();
@@ -234,35 +236,38 @@ public class ChartView extends RelativeLayout {
 		}
 	}
 
-//	private void drawRightLabels(Canvas canvas) {
-//		// Add views from adapter
-//		final int labelCount = mRightLabelAdapter.getCount();
-//		for (int i = 0; i < labelCount; i++) {
-//			View view = mRightLabelLayout.getChildAt(i);
-//
-//			if (view == null) {
-//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0);
-//				if (i == 0 || i == labelCount - 1) {
-//					params.weight = 0.5f;
-//				} else {
-//					params.weight = 1;
-//				}
-//
-//				view = mRightLabelAdapter.getView((labelCount - 1) - i, view, mRightLabelLayout);
-//				view.setLayoutParams(params);
-//
-//				mRightLabelLayout.addView(view);
-//			} else {
-//				mRightLabelAdapter.getView((labelCount - 1) - i, view, mRightLabelLayout);
-//			}
-//		}
-//
-//		// Remove extra views
-//		final int childCount = mRightLabelLayout.getChildCount();
-//		for (int i = labelCount; i < childCount; i++) {
-//			mRightLabelLayout.removeViewAt(i);
-//		}
-//	}
+	// private void drawRightLabels(Canvas canvas) {
+	// // Add views from adapter
+	// final int labelCount = mRightLabelAdapter.getCount();
+	// for (int i = 0; i < labelCount; i++) {
+	// View view = mRightLabelLayout.getChildAt(i);
+	//
+	// if (view == null) {
+	// LinearLayout.LayoutParams params = new
+	// LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0);
+	// if (i == 0 || i == labelCount - 1) {
+	// params.weight = 0.5f;
+	// } else {
+	// params.weight = 1;
+	// }
+	//
+	// view = mRightLabelAdapter.getView((labelCount - 1) - i, view,
+	// mRightLabelLayout);
+	// view.setLayoutParams(params);
+	//
+	// mRightLabelLayout.addView(view);
+	// } else {
+	// mRightLabelAdapter.getView((labelCount - 1) - i, view,
+	// mRightLabelLayout);
+	// }
+	// }
+	//
+	// // Remove extra views
+	// final int childCount = mRightLabelLayout.getChildCount();
+	// for (int i = labelCount; i < childCount; i++) {
+	// mRightLabelLayout.removeViewAt(i);
+	// }
+	// }
 
 	private void drawBottomLabels(final Canvas canvas) {
 		// Add views from adapter
