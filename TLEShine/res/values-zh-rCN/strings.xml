@@ -72,7 +72,7 @@
     <string name="activity_step">&#160;步</string>
     
     <string name="not_sync">尚未同步</string>
-    <string name="last_sync_time_just_now">刚刚同步。</string>
+    <string name="last_sync_time_just_now">刚刚同步</string>
 	<string name="last_sync_time_string">上次同步在</string>
 	<string name="mooth_ago">%1$d个月前</string>
 	<string name="week_ago">%1$d个星期前</string>

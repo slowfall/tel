@@ -241,7 +241,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(utcTime * 1000);
-			long second = utcTime % Util.SECONDS_OF_ONE_DAY;
+			long second = calendar.get(Calendar.HOUR_OF_DAY) * 3600 + calendar.get(Calendar.MINUTE)
+					* 60 + calendar.get(Calendar.SECOND);
 			float x = second / 3600f;
 			// Util.logD(TAG, "utcTime:" + utcTime + ", second:" + second +
 			// ", x:" + x + ", step:" + step);

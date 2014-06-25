@@ -44,6 +44,10 @@ public class CustomizedProgressDialog extends ProgressDialog {
 //		this.setCancelable(false);
 	}
 
+	public int getMsgId() {
+		return msgId;
+	}
+	
 	public void setMsgId(int msgId) {
 		this.msgId = msgId;
 	}

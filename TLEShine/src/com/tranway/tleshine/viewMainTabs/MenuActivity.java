@@ -96,8 +96,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				ToastHelper.showToast(R.string.disconnected);
-				dismissConnectAndSyncDialog();
+//				ToastHelper.showToast(R.string.disconnected);
+//				dismissConnectAndSyncDialog(R.string.syncing);
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 				ToastHelper.showToast(R.string.connected);
@@ -294,8 +294,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			long time = System.currentTimeMillis();
 			UserInfoKeeper.writeUserInfo(getApplicationContext(),
 					UserInfoKeeper.KEY_SYNC_BLUETOOTH_TIME, time);
-			ToastHelper.showToast(R.string.sync_finished);
-			dismissConnectAndSyncDialog();
+			ToastHelper.showToast(R.string.sync_finished, Toast.LENGTH_LONG);
+			dismissConnectAndSyncDialog(R.string.syncing);
 			break;
 		default:
 			ack = packet.makeReplyACK(sequenceNumber);
@@ -383,8 +383,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-			 saveActivityInfo(Util.getActivityInfoTestData());
-			 saveEvery15MinPacket(Util.getTestBytesList());
+			saveActivityInfo(Util.getActivityInfoTestData());
+			saveEvery15MinPacket(Util.getTestBytesList());
 			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
@@ -401,14 +401,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 			if (mConnectAndSyncDialog.isShowing()) {
 				mConnectAndSyncDialog.dismiss();
 			}
-			mConnectAndSyncDialog.setMsgId(msgId);
 		}
 
+		mConnectAndSyncDialog.setMsgId(msgId);
 		mConnectAndSyncDialog.show();
 	}
 
-	private void dismissConnectAndSyncDialog() {
-		if (mConnectAndSyncDialog != null && mConnectAndSyncDialog.isShowing()) {
+	private void dismissConnectAndSyncDialog(int msgId) {
+		if (mConnectAndSyncDialog != null && mConnectAndSyncDialog.isShowing()
+				&& msgId == mConnectAndSyncDialog.getMsgId()) {
 			mConnectAndSyncDialog.dismiss();
 		}
 	}
@@ -431,6 +432,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 						}
 					});
 				}
+				dismissConnectAndSyncDialog(R.string.connecting);
 			}
 		}, SCAN_PERIOD);
 
@@ -482,7 +484,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 							mDeviceAddress = address;
 							mBluetoothLeService.connect(mDeviceAddress);
 							mBluetoothAdapter.stopLeScan(mLeScanCallback);
-							dismissConnectAndSyncDialog();
+							dismissConnectAndSyncDialog(R.string.connecting);
 						}
 					}
 				} catch (JSONException e) {
@@ -496,7 +498,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 				ToastHelper.showToast(R.string.error_server_return, Toast.LENGTH_SHORT);
 
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
-				dismissConnectAndSyncDialog();
+				dismissConnectAndSyncDialog(R.string.connecting);
 			}
 		}, null);
 		Map<String, String> data = new TreeMap<String, String>();
