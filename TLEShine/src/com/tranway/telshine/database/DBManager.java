@@ -256,7 +256,7 @@ public class DBManager {
 				info.setUtcTime(cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_UTC_TIME)));
 				info.setGoal(cursor.getInt(cursor.getColumnIndex(DBInfo.EXERCISE_GOAL)));
 				info.setSteps(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_STEPS)));
-				info.setDistance(cursor.getColumnIndex(DBInfo.KEY_DISTANCE));
+				info.setDistance(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_DISTANCE)));
 				info.setCalorie(cursor.getInt(cursor.getColumnIndex(DBInfo.KEY_CALORIE)));
 				activityInfos.add(info);
 			}

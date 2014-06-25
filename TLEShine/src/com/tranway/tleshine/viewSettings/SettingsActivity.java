@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.tranway.tleshine.DocumentActivity;
 import com.tranway.tleshine.R;
 import com.tranway.tleshine.model.MyApplication;
 import com.tranway.tleshine.model.UserInfoKeeper;
@@ -46,7 +47,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 		findViewById(R.id.btn_userinfo).setOnClickListener(this);
 		findViewById(R.id.btn_logout).setOnClickListener(this);
-
+		findViewById(R.id.btn_about).setOnClickListener(this);
+		findViewById(R.id.btn_faq).setOnClickListener(this);
 	}
 
 	private void initTitleView() {
@@ -70,6 +72,16 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_logout:
 			confirmLogoutDialog();
+			break;
+		case R.id.btn_about:
+			Intent aboutIntent = new Intent(this, DocumentActivity.class);
+			aboutIntent.putExtra(DocumentActivity.DOCUMENT_TYPE, DocumentActivity.ABOUT_FITNESS_BAND);
+			startActivity(aboutIntent);
+			break;
+		case R.id.btn_faq:
+			Intent faqIntent = new Intent(this, DocumentActivity.class);
+			faqIntent.putExtra(DocumentActivity.DOCUMENT_TYPE, DocumentActivity.FAQ);
+			startActivity(faqIntent);
 			break;
 		case R.id.btn_title_icon_left:
 			finish();

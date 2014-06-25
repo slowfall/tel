@@ -28,8 +28,8 @@
             android:name="com.tranway.tleshine.viewLoginAndRegister.SelectLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -173,6 +173,11 @@
         <activity
             android:name="com.tranway.tleshine.viewLoginAndRegister.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name="com.tranway.tleshine.DocumentActivity"
+            android:label="@string/title_activity_document"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
     </application>

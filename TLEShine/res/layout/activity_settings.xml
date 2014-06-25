@@ -42,6 +42,32 @@
             android:text="@string/logout_current_account"
             android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_middle" />
+
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_btn_white_orange"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/about_fitness_band"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_middle" />
+
+        <Button
+            android:id="@+id/btn_faq"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_btn_white_orange"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/faq"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_middle" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,7 +1,11 @@
 package com.tranway.tleshine.model;
 
+import java.text.ParseException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.tranway.tleshine.util.UserInfoUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -83,6 +87,14 @@ public class UserInfoKeeper {
 		edit.putString(KEY_PWD, info.getPassword());
 		edit.putLong(KEY_BIRTH, info.getBirthday());
 		edit.putInt(KEY_WEIGHT, info.getWeight());
+		if (info.getAge() <= 0) {
+			try {
+				info.setAge(UserInfoUtils.convertDateToAge(info.getBirthday()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		edit.putInt(KEY_AGE, info.getAge());
 		edit.putInt(KEY_HEIGHT, info.getHeight());
 		edit.putInt(KEY_STRIDE, info.getStride());
@@ -265,6 +277,14 @@ public class UserInfoKeeper {
 		info.setBirthday(sp.getLong(KEY_BIRTH, -1));
 		info.setWeight(sp.getInt(KEY_WEIGHT, -1));
 		info.setAge(sp.getInt(KEY_AGE, -1));
+		if (info.getAge() <= 0) {
+			try {
+				info.setAge(UserInfoUtils.convertDateToAge(info.getBirthday()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		info.setHeight(sp.getInt(KEY_HEIGHT, -1));
 		info.setStride(sp.getInt(KEY_STRIDE, -1));
 		info.setSex(sp.getInt(KEY_SEX, -1));

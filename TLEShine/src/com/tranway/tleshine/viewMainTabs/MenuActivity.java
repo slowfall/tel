@@ -59,18 +59,18 @@ import com.tranway.tleshine.widget.CustomizedProgressDialog;
 public class MenuActivity extends Activity implements OnClickListener {
 	private static final String TAG = MenuActivity.class.getSimpleName();
 	private static final int REQUEST_ENABLE_BT = 1;
-	private static final long SCAN_PERIOD = 10000;
+	private static final long SCAN_PERIOD = 15000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 	private static final String ADD_SPORT_POINT_END_URL = "/AddSportPoint";
 	// private boolean connState = false;
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
 	private BluetoothAdapter mBluetoothAdapter;
-	private BluetoothDevice mDevice = null;
 	private String mDeviceAddress;
 	private List<byte[]> mEvery15MinPackect = new ArrayList<byte[]>();
 	private List<byte[]> mSleepPakect = new ArrayList<byte[]>();
 	private CustomizedProgressDialog mConnectAndSyncDialog;
+	private Map<String, String> mDeviceAddressAndName = new TreeMap<String, String>();
 
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -96,7 +96,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-				// ToastHelper.showToast(R.string.disconnected);
+				ToastHelper.showToast(R.string.disconnected);
 				dismissConnectAndSyncDialog();
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -132,10 +132,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 		super.onResume();
 
 		Util.logD(TAG, "on Resume");
-		if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		}
 	}
 
 	@Override
@@ -151,6 +147,18 @@ public class MenuActivity extends Activity implements OnClickListener {
 		if (mServiceConnection != null) {
 			getApplicationContext().unbindService(mServiceConnection);
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_ENABLE_BT) {
+			if (resultCode == RESULT_OK) {
+				if (checkBLE()) {
+					scanAndConnectDevice();
+				}
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private boolean checkBLE() {
@@ -169,6 +177,12 @@ public class MenuActivity extends Activity implements OnClickListener {
 			// Toast.LENGTH_LONG).show();
 			ShowBleNotSupportDialog();
 			mServiceConnection = null;
+			return false;
+		}
+
+		if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 			return false;
 		}
 
@@ -369,8 +383,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-			// saveActivityInfo(Util.getActivityInfoTestData());
-			// saveEvery15MinPacket(Util.getTestBytesList());
+			 saveActivityInfo(Util.getActivityInfoTestData());
+			 saveEvery15MinPacket(Util.getTestBytesList());
 			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
@@ -408,7 +422,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void run() {
-				if (mDevice == null) {
+				if (mDeviceAddress == null) {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							Toast toast = Toast.makeText(MenuActivity.this,
@@ -417,7 +431,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 						}
 					});
 				}
-				dismissConnectAndSyncDialog();
 			}
 		}, SCAN_PERIOD);
 
@@ -429,7 +442,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 		// }
 	}
 
-	private boolean isDoCheckDevice = false;
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
@@ -437,21 +449,19 @@ public class MenuActivity extends Activity implements OnClickListener {
 			Log.i(TAG,
 					"device address:" + device.getAddress() + ", device name:" + device.getName()
 							+ ", scanRecord=" + Util.bytesToHex(scanRecord));
-			if ("HealthBit".equals(device.getName())) {
+			if (!mDeviceAddressAndName.containsKey(device.getAddress())) {
+				mDeviceAddressAndName.put(device.getAddress(), device.getName());
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						if (!isDoCheckDevice) {
-							isDoCheckDevice = true;
-							checkDevice(device);
-						}
+						checkDevice(device.getAddress());
 					}
 				});
 			}
 		}
 	};
 
-	private void checkDevice(final BluetoothDevice device) {
+	private void checkDevice(final String address) {
 		TLEHttpRequest httpRequest = TLEHttpRequest.instance();
 		httpRequest.setOnHttpRequestListener(new OnHttpRequestListener() {
 
@@ -462,24 +472,23 @@ public class MenuActivity extends Activity implements OnClickListener {
 					if (data.has(TLEHttpRequest.STATUS_CODE)) {
 						int statusCode = data.getInt(TLEHttpRequest.STATUS_CODE);
 						if (statusCode == TLEHttpRequest.STATE_SUCCESS) {
-							String msg = getString(R.string.error_device_address);
-							if (data.has(TLEHttpRequest.MSG)) {
-								msg = data.getString(TLEHttpRequest.MSG);
-							}
-							ToastHelper.showToast(msg, Toast.LENGTH_LONG);
+							// String msg =
+							// getString(R.string.error_device_address);
+							// if (data.has(TLEHttpRequest.MSG)) {
+							// msg = data.getString(TLEHttpRequest.MSG);
+							// }
+							// ToastHelper.showToast(msg, Toast.LENGTH_LONG);
 						} else {
-							mDevice = device;
-							mDeviceAddress = mDevice.getAddress();
+							mDeviceAddress = address;
 							mBluetoothLeService.connect(mDeviceAddress);
+							mBluetoothAdapter.stopLeScan(mLeScanCallback);
+							dismissConnectAndSyncDialog();
 						}
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				mBluetoothAdapter.stopLeScan(mLeScanCallback);
-				dismissConnectAndSyncDialog();
-				isDoCheckDevice = false;
 			}
 
 			@Override
@@ -488,15 +497,16 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 				dismissConnectAndSyncDialog();
-				isDoCheckDevice = false;
 			}
 		}, null);
 		Map<String, String> data = new TreeMap<String, String>();
-		data.put("DeviceID", device.getAddress());
+		data.put("DeviceID", address);
 		httpRequest.post(CHECK_DEVICE_END_URL, data);
 	}
 
 	private void scanLeDevice() {
+		mDeviceAddressAndName.clear();
+		mDeviceAddress = null;
 		new Thread() {
 
 			@Override

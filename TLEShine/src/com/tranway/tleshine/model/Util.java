@@ -124,7 +124,7 @@ public class Util {
 
 	public static byte[] getActivityInfoTestData() {
 		byte[] info = new byte[] { (byte) 0x23,(byte) 0x53, (byte) 0xA7, (byte) 0x76,
-				(byte) 0xE6, (byte) 0x00, (byte) 0x24, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0xE6, (byte) 0x00, (byte) 0x24, (byte) 0x10, (byte) 0x10, (byte) 0x00,
 				(byte) 0x00, (byte) 0x00, (byte) 0x2E, (byte) 0xD5 };
 		return info;
 	}

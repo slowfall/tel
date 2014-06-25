@@ -2,7 +2,7 @@
 
     <string name="my_fitband">My Fitness Band</string>
     <string name="ble_not_supported">Ble not supported</string>
-    <string name="disconnected">Disconnected</string>
+    <string name="disconnected">Disconnected and Sync end.</string>
     <string name="connected">Connected</string>
     <string name="ble_not_supported_tips">Sorry, your device not supported this app.This app run need bluetooth 4.0, android 4.3 and above.</string>
     <string name="sync_finished">Sync finished</string>

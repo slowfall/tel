@@ -55,10 +55,10 @@ public class UserInfoUtils {
 	}
 
 	/**
-	 * convert date[ 1990-08-19 ] to age
+	 * convert Unix time (seconds) to age
 	 * 
-	 * @param formatDate
-	 *            format date string, such as [ 1990-08-19 ]
+	 * @param time
+	 *            unix time, unit is second
 	 * @return return age or -1
 	 * @throws ParseException
 	 */

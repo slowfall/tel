@@ -68,33 +68,34 @@
     <string name="activity_steps_finished">Finished&#160;</string>
     <string name="n_km_activity_distance">&#160;Km</string>
     <string name="n_calorie_activity">&#160;Calorie</string>
-    
     <string name="not_sync">Have not sync.</string>
     <string name="last_sync_time_just_now">Sync now.</string>
-	<string name="last_sync_time_string">Sync </string>
-	<string name="mooth_ago">%1$s mouths ago</string>
-	<string name="day_ago">%1$s days ago</string>
-	<string name="week_ago">%1$s weeks ago</string>
-	<string name="hour_ago">%1$s hours ago</string>
-	<string name="minute_ago">%1$s minutes ago</string>
-	<string name="minutes">minutes</string>
-	<string name="hours">hours</string>
+    <string name="last_sync_time_string">Sync </string>
+    <string name="mooth_ago">%1$s mouths ago</string>
+    <string name="day_ago">%1$s days ago</string>
+    <string name="week_ago">%1$s weeks ago</string>
+    <string name="hour_ago">%1$s hours ago</string>
+    <string name="minute_ago">%1$s minutes ago</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
     <!-- Sleep Activity strings -->
     <string name="sleep_deep">Deep Sleep</string>
     <string name="sleep_shallow">Shallow Sleep</string>
     <string name="sleep_no">No Sleep</string>
     <string name="sleep_total">Total time</string>
     <string name="sleep_wake_times">Wake times</string>
-    <string name="sleep_wake_times_unit"> </string>
+    <string name="sleep_wake_times_unit"></string>
     <string name="n_hour_sleep_goal">%1$s hour sleep goal</string>
     <string name="sleep_good">Sleep good</string>
     <string name="sleep_normal">Sleep normal</string>
     <string name="sleep_bad">Sleep bad</string>
 
     <!-- Settings Activitys strings -->
-    
-	<string name="hour">H</string>
-	<string name="minute">M</string>
-	<string name="start">Start</string>
-	<string name="end">End</string>
+
+    <string name="hour">H</string>
+    <string name="minute">M</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="title_activity_document">DocumentActivity</string>
+
 </resources>

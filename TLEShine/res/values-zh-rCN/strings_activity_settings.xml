@@ -7,6 +7,8 @@
     <string name="connect_fitband">连接 Fitness band</string>
     <string name="logout">注销</string>
     <string name="logout_current_account">退出当前帐号</string>
+    <string name="about_fitness_band">关于手环</string>
+    <string name="faq">常见问题</string>
     <string name="confirm_logout">你确定退出当前帐号吗?</string>
     <string name="unit">单位</string>
     <string name="distance">距离</string>
