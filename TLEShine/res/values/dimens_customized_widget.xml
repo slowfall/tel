@@ -2,6 +2,8 @@
     
     <dimen name="wheel_value_text_size">20sp</dimen>
     <dimen name="wheel_label_text_size">12sp</dimen>
+    
+    <dimen name="chart_label_text_size">8sp</dimen>
 
 </resources>
 
