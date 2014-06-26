@@ -6,37 +6,37 @@
     android:gravity="center"
     android:orientation="horizontal" >
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_left"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_middle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_over"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_right"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
-    <com.tranway.tleshine.widget.WheelView
+    <com.tranway.Oband_Fitnessband.widget.WheelView
         android:id="@+id/wheel_last"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

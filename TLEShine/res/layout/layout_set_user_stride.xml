@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    tools:context="com.tranway.tleshine.viewSettings.SettingsUserStrideActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewSettings.SettingsUserStrideActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -28,7 +28,7 @@
                 android:text="@string/complete" />
         </RelativeLayout>
 
-        <com.tranway.tleshine.widget.CustomizedStepWheelView
+        <com.tranway.Oband_Fitnessband.widget.CustomizedStepWheelView
             android:id="@+id/step_wheel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

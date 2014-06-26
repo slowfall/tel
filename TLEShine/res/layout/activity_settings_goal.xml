@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fitband_background_color"
-    tools:context="com.tranway.tleshine.viewSettings.SettingsGoalActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewSettings.SettingsGoalActivity" >
 
     <include
         android:id="@+id/include_title"

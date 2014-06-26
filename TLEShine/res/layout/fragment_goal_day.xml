@@ -38,7 +38,7 @@
         android:layout_below="@+id/layout_point"
         android:background="@color/border_square_color_gray" />
 
-    <com.tranway.tleshine.widget.CustomizedGoalWheelView
+    <com.tranway.Oband_Fitnessband.widget.CustomizedGoalWheelView
         android:id="@+id/goal_wheel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

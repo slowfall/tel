@@ -3,6 +3,6 @@
     android:id="@+id/fl_fragment_replace"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tranway.tleshine.viewMainTabs.MainTabsActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewMainTabs.MainTabsActivity" >
 
 </FrameLayout>

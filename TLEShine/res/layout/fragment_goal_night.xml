@@ -39,7 +39,7 @@
         android:background="@color/border_square_color_gray"
         android:contentDescription="@string/app_name" />
 
-    <com.tranway.tleshine.widget.CustomizedSleepWheelView
+    <com.tranway.Oband_Fitnessband.widget.CustomizedSleepWheelView
         android:id="@+id/time_wheel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

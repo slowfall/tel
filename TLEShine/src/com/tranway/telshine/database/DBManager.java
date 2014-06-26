@@ -12,9 +12,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tranway.tleshine.model.ActivityInfo;
-import com.tranway.tleshine.model.DailyExercise;
-import com.tranway.tleshine.model.MyApplication;
+import com.tranway.Oband_Fitnessband.model.ActivityInfo;
+import com.tranway.Oband_Fitnessband.model.DailyExercise;
+import com.tranway.Oband_Fitnessband.model.MyApplication;
 
 public class DBManager {
 	private DBHelper helper;

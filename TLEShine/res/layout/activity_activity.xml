@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.tranway.tleshine.widget.CustomizedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tranway.Oband_Fitnessband.widget.CustomizedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollview"
 	style="@style/FitbandBackground"
     android:scrollbars="none" >
@@ -44,7 +44,7 @@
                 android:textColor="@android:color/white"
                 android:text="@string/activity_record" />
 
-            <com.tranway.tleshine.widget.chartview.ChartView
+            <com.tranway.Oband_Fitnessband.widget.chartview.ChartView
                 xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
                 android:id="@+id/chart_view"
                 android:layout_width="match_parent"
@@ -70,4 +70,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</com.tranway.tleshine.widget.CustomizedScrollView>
+</com.tranway.Oband_Fitnessband.widget.CustomizedScrollView>

@@ -99,8 +99,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp" >
 
-                <com.tranway.tleshine.widget.MultiRoundProgressBar
-                    xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.tleshine"
+                <com.tranway.Oband_Fitnessband.widget.MultiRoundProgressBar
+                    xmlns:RoundProgressBar="http://schemas.android.com/apk/res/com.tranway.Oband_Fitnessband"
                     android:id="@+id/progress"
                     RoundProgressBar:style="STROKE"
                     android:layout_width="250dp"
@@ -197,7 +197,7 @@
                     android:textColor="@color/fitband_main_color"
                     android:textSize="@dimen/text_size_middle" />
 
-                <com.tranway.tleshine.widget.chartview.ChartView
+                <com.tranway.Oband_Fitnessband.widget.chartview.ChartView
                     xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
                     android:id="@+id/chart_view"
                     android:layout_width="match_parent"

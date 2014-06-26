@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    tools:context="com.tranway.tleshine.viewSettings.SettingsUserWeightActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewSettings.SettingsUserWeightActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -29,7 +29,7 @@
                 android:text="@string/complete" />
         </RelativeLayout>
 
-        <com.tranway.tleshine.widget.CustomizedBirthdayWheelView
+        <com.tranway.Oband_Fitnessband.widget.CustomizedBirthdayWheelView
             android:id="@+id/birthday_wheel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

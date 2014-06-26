@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    tools:context="com.tranway.tleshine.viewSettings.SettingsUserHighActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewSettings.SettingsUserHighActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -28,7 +28,7 @@
                 android:text="@string/complete" />
         </RelativeLayout>
 
-        <com.tranway.tleshine.widget.CustomizedHighWheelView
+        <com.tranway.Oband_Fitnessband.widget.CustomizedHighWheelView
             android:id="@+id/hight_wheel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

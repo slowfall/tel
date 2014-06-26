@@ -5,7 +5,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="10dp"
-    tools:context="com.tranway.tleshine.viewMainTabs.MenuActivity" >
+    tools:context="com.tranway.Oband_Fitnessband.viewMainTabs.MenuActivity" >
 
     <Button
         android:id="@+id/btn_goal"

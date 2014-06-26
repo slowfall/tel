@@ -18,7 +18,7 @@ package com.tranway.tleshine.bluetooth;
 
 import java.util.UUID;
 
-import com.tranway.tleshine.model.Util;
+import com.tranway.Oband_Fitnessband.model.Util;
 
 import android.annotation.SuppressLint;
 import android.app.Service;

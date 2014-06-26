@@ -53,6 +53,7 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="title_activity_document">DocumentActivity</string>
     <string name="activity">Activity</string>
     <string name="now_use">Start</string>
     <string name="positive">Yes</string>
@@ -96,6 +97,4 @@
     <string name="minute">M</string>
     <string name="start">Start</string>
     <string name="end">End</string>
-    <string name="title_activity_document">DocumentActivity</string>
-
 </resources>

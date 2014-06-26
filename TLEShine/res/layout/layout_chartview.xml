@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <com.tranway.tleshine.widget.chartview.ChartView
+    <com.tranway.Oband_Fitnessband.widget.chartview.ChartView
         xmlns:chartview="http://schemas.android.com/apk/com.tranway.tleshine"
         android:id="@+id/chart_view"
         android:layout_width="match_parent"
