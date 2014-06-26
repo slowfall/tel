@@ -383,8 +383,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-			saveActivityInfo(Util.getActivityInfoTestData());
-			saveEvery15MinPacket(Util.getTestBytesList());
+//			saveActivityInfo(Util.getActivityInfoTestData());
+//			saveEvery15MinPacket(Util.getTestBytesList());
 			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:

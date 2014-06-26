@@ -117,7 +117,8 @@ public class SocialRankFragment extends Fragment {
 	 */
 	private long getDateTime(int previous) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, previous);
-		return calendar.getTimeInMillis() / 1000 / Util.SECONDS_OF_ONE_DAY * Util.SECONDS_OF_ONE_DAY;
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DAY_OF_MONTH) + previous, 0, 0, 0);
+		return calendar.getTimeInMillis() / 1000;
 	}
 }
