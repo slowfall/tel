@@ -43,8 +43,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 	private ActivityListAdapter mListAdapter;
 
 	private List<ActivityInfo> mActivityInfos;
-	private List<AbstractSeries> mChartSeries;
-	private List<List<Map<String, Object>>> mEvery15MinPackets;
 	private Animation mFadeinAnimation;
 	private Animation mFadeoutAnimation;
 	private long todayUtcTime = 0;
@@ -57,8 +55,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 		mInflater = LayoutInflater.from(context);
 		mListAdapter = new ActivityListAdapter(context);
 		this.mActivityInfos = mActivityInfos;
-		this.mChartSeries = mChartSeries;
-		this.mEvery15MinPackets = mEvery15MinPackets;
 		mFadeinAnimation = AnimationUtils.loadAnimation(context, anim.fade_in);
 		mFadeinAnimation.setFillAfter(true);
 		mFadeoutAnimation = AnimationUtils.loadAnimation(context, anim.fade_out);
@@ -235,7 +231,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 		series.addPoint(new LinearPoint(6, 0));
 		series.addPoint(new LinearPoint(12, 0));
 		series.addPoint(new LinearPoint(18, 0));
-		// series.addPoint(new LinearPoint(24, 0));
+		series.addPoint(new LinearPoint(24, 0));
 		for (Map<String, Object> every15MinPacket : packets) {
 			long utcTime = (Long) every15MinPacket.get(DBInfo.KEY_UTC_TIME);
 			int step = (Integer) every15MinPacket.get(DBInfo.KEY_STEPS);

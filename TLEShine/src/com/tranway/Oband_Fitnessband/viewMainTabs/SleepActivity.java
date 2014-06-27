@@ -255,7 +255,7 @@ public class SleepActivity extends Activity {
 			series.addPoint(new LinearPoint(6, 0));
 			series.addPoint(new LinearPoint(12, 0));
 			series.addPoint(new LinearPoint(18, 0));
-			// series.addPoint(new LinearPoint(24, 0));
+			series.addPoint(new LinearPoint(24, 0));
 			BLEPacket tool = new BLEPacket();
 			long startTime = (Long) packets.get(DBInfo.KEY_UTC_TIME);
 			byte[] sleepBytes = new byte[0];
@@ -264,7 +264,10 @@ public class SleepActivity extends Activity {
 			}
 			for (int i = 0; i < sleepBytes.length; i++) {
 				long utcTime = startTime + i * 5 * 60;
-				long second = utcTime % Util.SECONDS_OF_ONE_DAY;
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(utcTime * 1000);
+				long second = calendar.get(Calendar.HOUR_OF_DAY) * 3600
+						+ calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND);
 				float x = second / 3600.0f;
 				series.addPoint(new LinearPoint(x, tool.bytesToInt(new byte[] { sleepBytes[i] })));
 			}
