@@ -47,6 +47,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 		findViewById(R.id.btn_userinfo).setOnClickListener(this);
 		findViewById(R.id.btn_logout).setOnClickListener(this);
+		findViewById(R.id.btn_change_pwd).setOnClickListener(this);
 		findViewById(R.id.btn_about).setOnClickListener(this);
 		findViewById(R.id.btn_faq).setOnClickListener(this);
 	}
@@ -72,6 +73,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_logout:
 			confirmLogoutDialog();
+			break;
+		case R.id.btn_change_pwd:
+			Intent changePwdIntent = new Intent(this, ChangePwdActivity.class);
+			startActivity(changePwdIntent);
 			break;
 		case R.id.btn_about:
 			Intent aboutIntent = new Intent(this, DocumentActivity.class);

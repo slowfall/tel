@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="55dp"
     android:background="@android:color/white"
     android:orientation="horizontal"
     android:padding="5dp" >
 
     <ImageView
         android:id="@+id/icon_user"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
         android:src="@drawable/user" />
 
-    <TextView
-        android:id="@+id/txt_name"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/icon_user"
-        android:ellipsize="end"
-        android:gravity="center|left"
-        android:singleLine="true"
-        android:lines="1"
-        android:maxWidth="100dp"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_big" />
-
-    <ImageView
-        android:id="@+id/iv_sex_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/txt_name"
-        android:background="@drawable/icon_man"
-        android:contentDescription="@string/app_name" />
+        android:layout_toLeftOf="@+id/txt_point"
+        android:layout_toRightOf="@id/icon_user"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_sex_icon"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_middle" />
+
+        <ImageView
+            android:id="@+id/iv_sex_icon"
+            android:layout_width="25dp"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/iv_rank_icon"
+            android:contentDescription="@string/app_name"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_man" />
+
+        <ImageView
+            android:id="@+id/iv_rank_icon"
+            android:layout_width="30dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/txt_point"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -50,14 +69,5 @@
         android:lines="1"
         android:textColor="@color/fitband_main_color"
         android:textSize="@dimen/text_size_big" />
-
-    <ImageView
-        android:id="@+id/iv_rank_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/txt_point"
-        android:contentDescription="@string/app_name" />
 
 </RelativeLayout>

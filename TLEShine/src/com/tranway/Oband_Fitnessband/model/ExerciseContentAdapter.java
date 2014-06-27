@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tranway.Oband_Fitnessband.R;
-import com.tranway.telshine.database.DBInfo;
+import com.tranway.tleshine.database.DBInfo;
 
 public class ExerciseContentAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;

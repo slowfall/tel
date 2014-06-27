@@ -7,6 +7,7 @@
     <string name="connect_fitband">连接 Fitness band</string>
     <string name="logout">注销</string>
     <string name="logout_current_account">退出当前帐号</string>
+    <string name="change_pwd">修改密码</string>
     <string name="about_fitness_band">关于手环</string>
     <string name="faq">常见问题</string>
     <string name="confirm_logout">你确定退出当前帐号吗?</string>
@@ -49,4 +50,13 @@
 	<string name="is_loading">正在加载&#8230;</string>
 	<string name="success_saved">设置成功</string>
 	<string name="go_to_settings_dialog_tips">设置成功，现在就去“设置”界面连接Fitness Band同步信息吧。</string>
+    
+    <string name="cur_password_empty">请输入当前密码</string>
+    <string name="new_password_empty">请输入新密码</string>
+    <string name="new_password_not_diff">请输入和当前密码不同的新密码</string>
+    <string name="confirm_password_empty">请确认新密码</string>
+    <string name="cur_password_error">当前密码错误</string>
+    <string name="confirm_pwd_not_math">两次输入新密码不匹配</string>
+    <string name="change_pwd_success">密码修改成功</string>
+    <string name="changed_pwd_failed">密码修改失败</string>
 </resources>

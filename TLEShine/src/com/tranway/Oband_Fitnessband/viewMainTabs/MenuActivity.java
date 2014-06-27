@@ -51,9 +51,9 @@ import com.tranway.Oband_Fitnessband.model.Util;
 import com.tranway.Oband_Fitnessband.viewSettings.SettingsActivity;
 import com.tranway.Oband_Fitnessband.viewSettings.SettingsGoalActivity;
 import com.tranway.Oband_Fitnessband.widget.CustomizedProgressDialog;
-import com.tranway.telshine.database.DBInfo;
-import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.bluetooth.RBLService;
+import com.tranway.tleshine.database.DBInfo;
+import com.tranway.tleshine.database.DBManager;
 
 @SuppressLint("NewApi")
 public class MenuActivity extends Activity implements OnClickListener {

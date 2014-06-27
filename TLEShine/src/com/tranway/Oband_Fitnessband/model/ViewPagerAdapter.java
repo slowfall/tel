@@ -32,8 +32,8 @@ import com.tranway.Oband_Fitnessband.widget.chartview.LabelAdapter;
 import com.tranway.Oband_Fitnessband.widget.chartview.LabelAdapter.LabelOrientation;
 import com.tranway.Oband_Fitnessband.widget.chartview.LinearSeries;
 import com.tranway.Oband_Fitnessband.widget.chartview.LinearSeries.LinearPoint;
-import com.tranway.telshine.database.DBInfo;
-import com.tranway.telshine.database.DBManager;
+import com.tranway.tleshine.database.DBInfo;
+import com.tranway.tleshine.database.DBManager;
 
 public class ViewPagerAdapter extends PagerAdapter {
 	private static final String TAG = ViewPagerAdapter.class.getSimpleName();

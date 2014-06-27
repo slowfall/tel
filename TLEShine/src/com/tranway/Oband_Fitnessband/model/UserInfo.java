@@ -13,6 +13,7 @@ public class UserInfo {
 	public static final int SEX_MALE = 0x00;
 	public static final String SEVER_KEY_PASSWORD = "Password";
 	public static final String SEVER_KEY_EMAIL = "Email";
+	public static final String SEVER_KEY_PHONE = "Phone";
 	public static final String SEVER_KEY_BIRTHDAY = "BirthDay";
 	public static final String SEVER_KEY_SEX = "Gender";
 	public static final String SEVER_KEY_HEIGHT = "Height";

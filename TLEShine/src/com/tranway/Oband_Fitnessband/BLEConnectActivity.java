@@ -43,8 +43,8 @@ import com.tranway.Oband_Fitnessband.model.UserInfo;
 import com.tranway.Oband_Fitnessband.model.UserInfoKeeper;
 import com.tranway.Oband_Fitnessband.model.Util;
 import com.tranway.Oband_Fitnessband.viewMainTabs.MainActivity;
-import com.tranway.telshine.database.DBManager;
 import com.tranway.tleshine.bluetooth.RBLService;
+import com.tranway.tleshine.database.DBManager;
 
 @SuppressLint("NewApi")
 public class BLEConnectActivity extends Activity implements OnClickListener {

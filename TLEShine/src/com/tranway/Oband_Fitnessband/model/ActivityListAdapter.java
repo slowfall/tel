@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tranway.Oband_Fitnessband.R;
-import com.tranway.telshine.database.DBInfo;
+import com.tranway.tleshine.database.DBInfo;
 
 public class ActivityListAdapter extends BaseAdapter {
 	private static final String TAG = "ActivityAdapter";

@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fitband_background_color"
+    android:orientation="vertical"
+    tools:context="com.tranway.Oband_Fitnessband.viewLoginAndRegister.LoginActivity" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_control" />
+
+    <!-- Login form -->
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/cur_password"
+                style="@style/edittext_userinfo"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_square"
+                android:gravity="center"
+                android:hint="@string/prompt_cur_pwd"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
+
+            <EditText
+                android:id="@+id/new_password"
+                style="@style/edittext_userinfo"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_square"
+                android:gravity="center"
+                android:hint="@string/prompt_new_pwd"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
+
+            <EditText
+                android:id="@+id/confirm_new_password"
+                style="@style/edittext_userinfo"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_square"
+                android:gravity="center"
+                android:hint="@string/prompt_confirm_new_pwd"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
+
+            <Button
+                android:id="@+id/btn_change"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/selector_btn_fitband_style"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:text="@string/change_pwd" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

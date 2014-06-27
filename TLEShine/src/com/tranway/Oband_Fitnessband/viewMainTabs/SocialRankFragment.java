@@ -25,7 +25,6 @@ import com.tranway.Oband_Fitnessband.model.TLEHttpRequest.OnHttpRequestListener;
 import com.tranway.Oband_Fitnessband.model.ToastHelper;
 import com.tranway.Oband_Fitnessband.model.UserInfo;
 import com.tranway.Oband_Fitnessband.model.UserInfoKeeper;
-import com.tranway.Oband_Fitnessband.model.Util;
 
 public class SocialRankFragment extends Fragment {
 

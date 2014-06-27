@@ -20,7 +20,7 @@ import com.tranway.Oband_Fitnessband.viewSettings.SettingsGoalActivity.OnTitleBu
 import com.tranway.Oband_Fitnessband.widget.CustomizedGoalWheelView;
 import com.tranway.Oband_Fitnessband.widget.OnWheelScrollListener;
 import com.tranway.Oband_Fitnessband.widget.WheelView;
-import com.tranway.telshine.database.DBManager;
+import com.tranway.tleshine.database.DBManager;
 
 public class DayGoalFragment extends Fragment implements OnTitleButtonClickListener {
 

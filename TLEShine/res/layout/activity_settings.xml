@@ -29,6 +29,19 @@
             android:text="@string/my_info"
             android:textColor="@color/fitband_main_color"
             android:textSize="@dimen/text_size_middle" />
+        
+        <Button
+            android:id="@+id/btn_change_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_btn_white_orange"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/change_pwd"
+            android:textColor="@color/fitband_main_color"
+            android:textSize="@dimen/text_size_middle" />
 
         <Button
             android:id="@+id/btn_logout"

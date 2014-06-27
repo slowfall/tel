@@ -1,4 +1,4 @@
-package com.tranway.telshine.database;
+package com.tranway.tleshine.database;
 
 public class DBInfo {
 	public static final int DB_VERSION = 1;

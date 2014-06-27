@@ -16,7 +16,7 @@ import com.tranway.Oband_Fitnessband.model.ActivityInfo;
 import com.tranway.Oband_Fitnessband.model.UserInfoKeeper;
 import com.tranway.Oband_Fitnessband.model.ViewPagerAdapter;
 import com.tranway.Oband_Fitnessband.widget.chartview.AbstractSeries;
-import com.tranway.telshine.database.DBManager;
+import com.tranway.tleshine.database.DBManager;
 
 @SuppressLint("NewApi")
 // !!!!!!!!!!!!!!!!!!

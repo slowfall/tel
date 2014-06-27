@@ -7,6 +7,9 @@
     <string name="prompt_phone">手机号码</string>
     <string name="prompt_identify">验证码</string>
     <string name="prompt_password">密码</string>
+    <string name="prompt_cur_pwd">当前密码</string>
+    <string name="prompt_new_pwd">新密码</string>
+    <string name="prompt_confirm_new_pwd">确认新密码</string>
     <string name="prompt_confirm_password">确认密码</string>
     <string name="prompt_name">请设置您的用户名</string>
     <string name="name_length_invalid">用户名太短，请输入4~20个字符</string>
@@ -26,7 +29,8 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="forgot_password">找回密码</string>
-    <string name="forgot_password_tips">输入手机号码或电子邮箱并提交，找回密码</string>
+    <string name="forgot_password_tips">输入手机号码获取验证码</string>
+	<string name="change_password_tips">请设置新密码</string>
 	<string name="submit">提交</string>
 	<string name="keep_sign_in">自动登录</string>
 </resources>

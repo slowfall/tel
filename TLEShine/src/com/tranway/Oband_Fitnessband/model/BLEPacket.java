@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import com.tranway.telshine.database.DBInfo;
+import com.tranway.tleshine.database.DBInfo;
 
 public class BLEPacket {
 	private static final String TAG = BLEPacket.class.getSimpleName();

@@ -8,6 +8,9 @@
     <string name="prompt_identify">Identify Code</string>
     <string name="prompt_name">Enter Your UserName</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_cur_pwd">Current Password</string>
+    <string name="prompt_new_pwd">New Password</string>
+    <string name="prompt_confirm_new_pwd">Confirm New Password</string>
     <string name="login_tips">Please Enter Your Account Details</string>
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_sign_in_register"><b>Sign in</b> or register</string>
@@ -24,6 +27,7 @@
 	<string name="submit">Submit</string>
 	<string name="error_server_return">Error server return</string>
 	<string name="error_incorrect_email_passowrd">Incorrect email or password</string>
-	<string name="forgot_password_tips">Please input phone number or email then commmit to find password.</string>
+	<string name="forgot_password_tips">Please input phone number to get identify code.</string>
+	<string name="change_password_tips">Please set your new password.</string>
 	<string name="keep_sign_in">Keep Sign in</string>
 </resources>

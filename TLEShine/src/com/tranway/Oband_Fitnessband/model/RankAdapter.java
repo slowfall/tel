@@ -72,9 +72,9 @@ public class RankAdapter extends BaseAdapter {
 		// holder.mIconView.setImageDrawable();
 		holder.mNameTxt.setText(info.getName());
 		if (info.getSex() == UserInfo.SEX_MALE) {
-			holder.mSexIcon.setBackgroundResource(R.drawable.icon_man);
+			holder.mSexIcon.setImageResource(R.drawable.icon_man);
 		} else {
-			holder.mSexIcon.setBackgroundResource(R.drawable.icon_woman);
+			holder.mSexIcon.setImageResource(R.drawable.icon_woman);
 		}
 		holder.mPointTxt.setText(info.getPoint() + mContext.getString(R.string.activity_step));
 		if (position < mRankIconIDs.length) {
