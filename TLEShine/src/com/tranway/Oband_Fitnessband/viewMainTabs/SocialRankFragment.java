@@ -102,6 +102,9 @@ public class SocialRankFragment extends Fragment {
 			info.setId(userObject.getLong(UserInfo.SEVER_KEY_ID));
 			info.setName(userObject.getString(UserInfo.SEVER_KEY_NAME));
 			info.setSex(userObject.getInt(UserInfo.SEVER_KEY_SEX));
+			if (!userObject.isNull(UserInfo.SEVER_KEY_AVATAR)) {
+				info.setAvatar(userObject.getString(userObject.getString(UserInfo.SEVER_KEY_AVATAR)));
+			}
 			mRankList.add(info);
 		}
 		Collections.sort(mRankList);

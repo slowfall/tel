@@ -48,6 +48,7 @@ import com.tranway.Oband_Fitnessband.model.UserGoalKeeper;
 import com.tranway.Oband_Fitnessband.model.UserInfo;
 import com.tranway.Oband_Fitnessband.model.UserInfoKeeper;
 import com.tranway.Oband_Fitnessband.model.Util;
+import com.tranway.Oband_Fitnessband.util.UserInfoUtils;
 import com.tranway.Oband_Fitnessband.viewSettings.SettingsActivity;
 import com.tranway.Oband_Fitnessband.viewSettings.SettingsGoalActivity;
 import com.tranway.Oband_Fitnessband.widget.CustomizedProgressDialog;
@@ -62,6 +63,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private static final long SCAN_PERIOD = 15000;
 	private static final String CHECK_DEVICE_END_URL = "/CheckDevice";
 	private static final String ADD_SPORT_POINT_END_URL = "/AddSportPoint";
+	private static final String UPDATE_USER_INFO_END_URL = "/update";
+
 	// private boolean connState = false;
 	private BluetoothGattCharacteristic characteristicTx = null;
 	private RBLService mBluetoothLeService;
@@ -71,6 +74,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	private List<byte[]> mSleepPakect = new ArrayList<byte[]>();
 	private CustomizedProgressDialog mConnectAndSyncDialog;
 	private Map<String, String> mDeviceAddressAndName = new TreeMap<String, String>();
+	private String mDeviceID = null;
 
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -96,8 +100,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			final String action = intent.getAction();
 
 			if (RBLService.ACTION_GATT_DISCONNECTED.equals(action)) {
-//				ToastHelper.showToast(R.string.disconnected);
-//				dismissConnectAndSyncDialog(R.string.syncing);
+				// ToastHelper.showToast(R.string.disconnected);
+				dismissConnectAndSyncDialog(R.string.syncing);
 				// setButtonDisable();
 			} else if (RBLService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 				ToastHelper.showToast(R.string.connected);
@@ -119,6 +123,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_menu);
 
 		Util.logD(TAG, "mBluetoothLeService:" + mBluetoothLeService);
+		mDeviceID = UserInfoKeeper.readUserInfo(this, UserInfoKeeper.KEY_DEVICE_ID, null);
 		initView();
 		// checkBLE();
 		Intent gattServiceIntent = new Intent(this, RBLService.class);
@@ -383,9 +388,9 @@ public class MenuActivity extends Activity implements OnClickListener {
 				scanAndConnectDevice();
 			}
 			// Test code
-//			saveActivityInfo(Util.getActivityInfoTestData());
-//			saveEvery15MinPacket(Util.getTestBytesList());
-//			 saveSleepPacket(Util.getTestBytesList());
+			// saveActivityInfo(Util.getActivityInfoTestData());
+			// saveEvery15MinPacket(Util.getTestBytesList());
+			// saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
 			break;
@@ -448,17 +453,24 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
-			Log.i(TAG,
-					"device address:" + device.getAddress() + ", device name:" + device.getName()
-							+ ", scanRecord=" + Util.bytesToHex(scanRecord));
-			if (!mDeviceAddressAndName.containsKey(device.getAddress())) {
-				mDeviceAddressAndName.put(device.getAddress(), device.getName());
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						checkDevice(device.getAddress());
-					}
-				});
+			String address = device.getAddress();
+			Log.i(TAG, "device address:" + address + ", device name:" + device.getName()
+					+ ", scanRecord=" + Util.bytesToHex(scanRecord));
+			if (!mDeviceAddressAndName.containsKey(address)) {
+				mDeviceAddressAndName.put(address, device.getName());
+				if (mDeviceID != null && mDeviceID.equals(address)) {
+					mDeviceAddress = address;
+					mBluetoothLeService.connect(mDeviceAddress);
+					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					dismissConnectAndSyncDialog(R.string.connecting);
+				} else {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							checkDevice(device.getAddress());
+						}
+					});
+				}
 			}
 		}
 	};
@@ -485,6 +497,13 @@ public class MenuActivity extends Activity implements OnClickListener {
 							mBluetoothLeService.connect(mDeviceAddress);
 							mBluetoothAdapter.stopLeScan(mLeScanCallback);
 							dismissConnectAndSyncDialog(R.string.connecting);
+							UserInfoKeeper.writeUserInfo(MenuActivity.this,
+									UserInfoKeeper.KEY_DEVICE_ID, mDeviceAddress);
+							UserInfo info = UserInfoKeeper.readUserInfo(MenuActivity.this);
+							Map<String, String> postData = UserInfoUtils
+									.convertUserInfoToParamsMap(info);
+							TLEHttpRequest httpRequest = TLEHttpRequest.instance();
+							httpRequest.post(UPDATE_USER_INFO_END_URL, postData);
 						}
 					}
 				} catch (JSONException e) {

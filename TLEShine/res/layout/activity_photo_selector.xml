@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fitband_background_color"
+    android:orientation="vertical"
+    tools:context="${packageName}.${activityClass}" >
+
+    <include
+        android:id="@+id/include_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_title_height"
+        layout="@layout/title_control" />
+
+    <!-- image switch -->
+
+    <RelativeLayout
+        android:id="@+id/switch_face_rl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dip"
+        android:background="@drawable/item_edit_bg"
+        android:clickable="true"
+        android:padding="5dip" >
+
+        <ImageView
+            android:id="@+id/face"
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dip"
+            android:src="@drawable/user" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="5dip"
+            android:layout_toRightOf="@id/face"
+            android:text="设置头像"
+            android:textColor="@android:color/black" />
+    </RelativeLayout>
+
+</LinearLayout>

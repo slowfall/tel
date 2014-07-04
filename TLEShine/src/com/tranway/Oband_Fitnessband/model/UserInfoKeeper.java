@@ -31,6 +31,8 @@ public class UserInfoKeeper {
 	public static final String KEY_MAX_POINT = "maxPoint";
 	public static final String KEY_GOAL_COUNT = "goalCount";
 	public static final String KEY_KEEP_SIGN_IN = "keepSignIn";
+	public static final String KEY_AVATAR = "Avatar";
+	public static final String KEY_DEVICE_ID = "DeviceID";
 
 	/**
 	 * unit is milliseconds
@@ -60,6 +62,12 @@ public class UserInfoKeeper {
 			info.setStride(readUserInfo(context, KEY_STRIDE, 0));
 		} else {
 			info.setStride(data.getInt(UserInfo.SEVER_KEY_STEP_COUNT));
+		}
+		if (!data.isNull(UserInfo.SEVER_KEY_AVATAR)) {
+			info.setAvatar(data.getString(UserInfo.SEVER_KEY_AVATAR));
+		}
+		if (!data.isNull(UserInfo.SEVER_KEY_DEVICE_ID)) {
+			info.setDeviceID(data.getString(UserInfo.SEVER_KEY_DEVICE_ID));
 		}
 		writeUserInfo(context, info);
 	}
@@ -100,6 +108,9 @@ public class UserInfoKeeper {
 		edit.putInt(KEY_STRIDE, info.getStride());
 		edit.putInt(KEY_SEX, info.getSex());
 		edit.putInt(KEY_STEPSTARGET, info.getStepsTarget());
+		edit.putString(KEY_AVATAR, info.getAvatar());
+		edit.putString(KEY_DEVICE_ID, info.getDeviceID());
+
 		return edit.commit();
 	}
 
@@ -290,7 +301,12 @@ public class UserInfoKeeper {
 		info.setSex(sp.getInt(KEY_SEX, -1));
 		info.setStepsTarget(sp.getInt(KEY_STEPSTARGET, -1));
 		// info.setGoal(UserGoalKeeper.readExerciseGoalPoint(context));
-
+		if (sp.getString(KEY_AVATAR, null) != null) {
+			info.setAvatar(sp.getString(KEY_AVATAR, null));
+		}
+		if (sp.getString(KEY_DEVICE_ID, null) != null) {
+			info.setDeviceID(sp.getString(KEY_DEVICE_ID, null));
+		}
 		return info;
 	}
 

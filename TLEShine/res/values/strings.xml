@@ -97,4 +97,11 @@
     <string name="minute">M</string>
     <string name="start">Start</string>
     <string name="end">End</string>
+    <string name="title_activity_photo_selector">PhotoSelectorActivity</string>
+	
+    <!-- RegisterUserInfoActivity strings -->
+    <string name="profile_picture">Profile picture</string>
+    <string name="select_picture">Select picture</string>
+    <string name="take_picture">Take a picture</string>
+    <string name="can_not_find_sd_card">Can\'t find sd card, save photo failed.</string>
 </resources>

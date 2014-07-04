@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tranway.Oband_Fitnessband.R;
+import com.tranway.Oband_Fitnessband.Tools;
 
 public class RankAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
@@ -28,19 +29,16 @@ public class RankAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return mFriendList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
@@ -69,6 +67,11 @@ public class RankAdapter extends BaseAdapter {
 		}
 
 		FriendInfo info = mFriendList.get(position);
+		if (info.getAvatar() != null) {
+			holder.mIconView.setImageBitmap(Tools.base64ToBitmap(info.getAvatar()));
+		} else {
+			holder.mIconView.setImageResource(R.drawable.user);
+		}
 		// holder.mIconView.setImageDrawable();
 		holder.mNameTxt.setText(info.getName());
 		if (info.getSex() == UserInfo.SEX_MALE) {

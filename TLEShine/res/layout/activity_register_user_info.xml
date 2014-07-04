@@ -43,6 +43,36 @@
                     android:textColor="@color/fitband_main_color"
                     android:textSize="@dimen/text_size_middle" />
 
+                <RelativeLayout
+                    android:id="@+id/switch_face_rl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dip"
+                    android:background="@drawable/item_edit_bg"
+                    android:clickable="true"
+                    android:padding="5dip" >
+
+                    <ImageView
+                        android:id="@+id/face"
+                        android:layout_width="42dip"
+                        android:layout_height="42dip"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dip"
+                        android:contentDescription="@string/register"
+                        android:src="@drawable/user" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginTop="5dip"
+                        android:layout_toRightOf="@id/face"
+                        android:text="@string/profile_picture"
+                        android:textColor="@android:color/black" />
+                </RelativeLayout>
+
                 <RadioGroup
                     android:id="@+id/group_sex"
                     android:layout_width="match_parent"

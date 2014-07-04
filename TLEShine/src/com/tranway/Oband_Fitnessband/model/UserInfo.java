@@ -25,6 +25,8 @@ public class UserInfo {
 	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";
 	public static final String SEVER_KEY_POINT = "Point";
 	public static final String SEVER_KEY_USER = "User";
+	public static final String SEVER_KEY_AVATAR = "Avatar";
+	public static final String SEVER_KEY_DEVICE_ID = "DeviceID";
 
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
 	private int age = -1; // Age; 1byte
@@ -39,7 +41,9 @@ public class UserInfo {
 	private long birthday = -1; // User register Birthday
 	// private int goal = -1; // Exercise Goal Point
 	private long id = -1; // user id
-
+	private String avatar = null;
+	private String deviceID = null;
+	
 	public UserInfo() {
 
 	}
@@ -206,6 +210,22 @@ public class UserInfo {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getDeviceID() {
+		return deviceID;
+	}
+
+	public void setDeviceID(String deviceID) {
+		this.deviceID = deviceID;
 	}
 
 }

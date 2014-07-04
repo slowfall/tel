@@ -166,6 +166,12 @@ public class UserInfoUtils {
 		data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight() / 10.0f));
 		data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
 		data.put(UserInfo.SEVER_KEY_STEP_COUNT, String.valueOf(info.getStride()));
+		if (info.getAvatar() != null) {
+			data.put(UserInfo.SEVER_KEY_AVATAR, info.getAvatar());
+		}
+		if (info.getDeviceID() != null) {
+			data.put(UserInfo.SEVER_KEY_DEVICE_ID, info.getDeviceID());
+		}
 		return data;
 	}
 
@@ -193,6 +199,9 @@ public class UserInfoUtils {
 			data.put(UserInfo.SEVER_KEY_HEIGHT, String.valueOf(info.getHeight() / 100.0f));
 			data.put(UserInfo.SEVER_KEY_WEIGHT, String.valueOf(info.getWeight() / 10.0f));
 			data.put(UserInfo.SEVER_KEY_STEP_COUNT, String.valueOf(info.getStride()));
+			if (info.getAvatar() != null) {
+				data.put(UserInfo.SEVER_KEY_AVATAR, info.getAvatar());
+			}
 		} else {
 			data.put(UserInfo.SEVER_KEY_GOAL, String.valueOf(info.getStepsTarget()));
 			Log.d("------", String.valueOf(info.getStepsTarget()));

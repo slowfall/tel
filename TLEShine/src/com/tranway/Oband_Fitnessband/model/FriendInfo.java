@@ -8,6 +8,7 @@ public class FriendInfo implements Comparable<FriendInfo>{
 	private int point = 0;
 	private int rank = -1;
 	private int sex = 0;
+	private String avatar = null;
 
 	public FriendInfo() {
 
@@ -68,6 +69,14 @@ public class FriendInfo implements Comparable<FriendInfo>{
 
 	public void setSex(int sex) {
 		this.sex = sex;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	@Override

@@ -71,15 +71,14 @@
     <string name="n_km_activity_distance">&#160;千米</string>
     <string name="n_calorie_activity">&#160;卡路里</string>
     <string name="activity_step">&#160;步</string>
-    
     <string name="not_sync">尚未同步</string>
     <string name="last_sync_time_just_now">刚刚同步</string>
-	<string name="last_sync_time_string">上次同步在</string>
-	<string name="mooth_ago">%1$d个月前</string>
-	<string name="week_ago">%1$d个星期前</string>
-	<string name="day_ago">%1$d天前</string>
-	<string name="hour_ago">%1$d小时前</string>
-	<string name="minute_ago">%1$d分钟前</string>
+    <string name="last_sync_time_string">上次同步在</string>
+    <string name="mooth_ago">%1$d个月前</string>
+    <string name="week_ago">%1$d个星期前</string>
+    <string name="day_ago">%1$d天前</string>
+    <string name="hour_ago">%1$d小时前</string>
+    <string name="minute_ago">%1$d分钟前</string>
     <!-- Sleep Activity strings -->
     <string name="sleep_deep">深度睡眠</string>
     <string name="sleep_shallow">浅度睡眠</string>
@@ -93,7 +92,15 @@
     <string name="sleep_bad">睡眠质量差</string>
 
     <!-- Settings Activitys strings -->
-	<string name="hour">时</string>
-	<string name="minute">分</string>
-	<string name="start">开始</string>
-	<string name="end">结束</string></resources>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="start">开始</string>
+    <string name="end">结束</string>
+
+    <!-- RegisterUserInfoActivity strings -->
+    <string name="profile_picture">设置头像</string>
+    <string name="select_picture">选择本地照片</string>
+    <string name="take_picture">拍照</string>
+    <string name="can_not_find_sd_card">未找到存储卡，无法存储照片！</string>
+
+</resources>

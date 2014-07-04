@@ -18,11 +18,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tranway.Oband_Fitnessband.R;
+import com.tranway.Oband_Fitnessband.Tools;
 import com.tranway.Oband_Fitnessband.model.FriendInfo;
 import com.tranway.Oband_Fitnessband.model.FriendsAdapter;
 import com.tranway.Oband_Fitnessband.model.TLEHttpRequest;
@@ -36,6 +38,7 @@ public class SocialInfoFragment extends Fragment {
 
 	private static final String GET_FRIENDS_END_URL = "/GetFriends";
 
+	private ImageView mUserPicture;
 	private List<FriendInfo> mFriendList = new ArrayList<FriendInfo>();
 	private FriendsAdapter mAdapter;
 	private ListView mListView;
@@ -70,6 +73,10 @@ public class SocialInfoFragment extends Fragment {
 	}
 
 	private void initView(View v) {
+		ImageView userPicture = (ImageView) v.findViewById(R.id.iv_user_picture);
+		if (mUserInfo.getAvatar() != null) {
+			userPicture.setImageBitmap(Tools.base64ToBitmap(mUserInfo.getAvatar()));
+		}
 		TextView userEmail = (TextView) v.findViewById(R.id.tv_user_info_email);
 		userEmail.setText(mUserInfo.getEmail());
 
