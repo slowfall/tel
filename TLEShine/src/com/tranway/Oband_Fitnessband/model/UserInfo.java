@@ -25,6 +25,11 @@ public class UserInfo {
 	public static final String SEVER_KEY_CREATE_DATE = "CreateDate";
 	public static final String SEVER_KEY_POINT = "Point";
 	public static final String SEVER_KEY_USER = "User";
+	
+	// for handle request add friends
+	public static final String SEVER_KEY_USER_ID = "UserID";
+	public static final String SEVER_KEY_FRIEND_ID = "FriendID";
+	public static final String SEVER_KEY_HANDLE_STATE = "State";
 
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
 	private int age = -1; // Age; 1byte

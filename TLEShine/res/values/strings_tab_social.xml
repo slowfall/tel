@@ -10,6 +10,16 @@
     <string name="promte_search_friend">Input a name or email</string>
     <string name="search_result_empty">Can not find any one</string>
     <string name="add_friend_failed">Failed to add friend</string>
-    <string name="add_friend_success">Success for add friend</string>
+    <string name="add_friend_success">Success to request add friend</string>
+    
+    <string name="new_friend">New Friends</string>
+    <string name="received_add_friends">Received requests to add friends</string>
+    <string name="request_add_friends">Request to add friends</string>
+    <string name="empty_request_list">Request list is empty</string>
+    <string name="success_handle_request">Handle request success</string>
+    <string name="refuse">Refuse</string>
+    <string name="accept">Accept</string>
+    
+    <string name="app_exception">App exception</string>
 
 </resources>
