@@ -107,6 +107,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.tranway.Oband_Fitnessband.viewSettings.SettingsNightGoalActivity"
+            android:label="@string/settings"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.tranway.Oband_Fitnessband.viewSettings.ChangePwdActivity"
             android:label="@string/settings"
             android:windowSoftInputMode="stateHidden"

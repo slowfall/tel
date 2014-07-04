@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,9 +28,10 @@ import android.widget.TextView;
 
 import com.tranway.Oband_Fitnessband.R;
 import com.tranway.Oband_Fitnessband.model.BLEPacket;
+import com.tranway.Oband_Fitnessband.model.UserGoalKeeper;
 import com.tranway.Oband_Fitnessband.model.UserInfoKeeper;
 import com.tranway.Oband_Fitnessband.model.Util;
-import com.tranway.Oband_Fitnessband.viewSettings.SettingsGoalActivity;
+import com.tranway.Oband_Fitnessband.viewSettings.SettingsNightGoalActivity;
 import com.tranway.Oband_Fitnessband.widget.MultiRoundProgressBar;
 import com.tranway.Oband_Fitnessband.widget.chartview.AbstractSeries;
 import com.tranway.Oband_Fitnessband.widget.chartview.ChartView;
@@ -73,6 +75,16 @@ public class SleepActivity extends Activity {
 
 		mSleepData.clear();
 		mSleepData.addAll(DBManager.queryAllSleepInfos(userId));
+		if (mSleepData.size() <= 0) {
+			Map<String, Object> data = new TreeMap<String, Object>();
+			data.put(DBInfo.KEY_UTC_TIME, System.currentTimeMillis() / 1000);
+			data.put(DBInfo.KEY_SLEEP_DEEP_TIME, 0l);
+			data.put(DBInfo.KEY_SLEEP_GOAL,
+					60l * UserGoalKeeper.readSleepGoalTime(getApplicationContext()));
+			data.put(DBInfo.KEY_SLEEP_SHALLOW_TIME, 0l);
+			data.put(DBInfo.KEY_SLEEP_PACKET, new byte[0]);
+			mSleepData.add(data);
+		}
 		mAdapter.notifyDataSetChanged();
 		if (mSleepData.size() > 0) {
 			mViewPager.setCurrentItem(mSleepData.size() - 1);
@@ -162,6 +174,9 @@ public class SleepActivity extends Activity {
 			long deepSleepTime = (Long) info.get(DBInfo.KEY_SLEEP_DEEP_TIME);
 			long shallowSleepTime = (Long) info.get(DBInfo.KEY_SLEEP_SHALLOW_TIME);
 			long sleepGoal = (Long) info.get(DBInfo.KEY_SLEEP_GOAL);
+			if (sleepGoal < 0) {
+				sleepGoal = 0;
+			}
 			float rate = 1.0f;
 			long sleepTotalTime = deepSleepTime + shallowSleepTime;
 			if (sleepGoal < sleepTotalTime) {
@@ -190,8 +205,10 @@ public class SleepActivity extends Activity {
 				holder.sleepCondition.setText(R.string.sleep_bad);
 			} else if (quality <= 0.25) {
 				holder.sleepCondition.setText(R.string.sleep_normal);
-			} else {
+			} else if (quality > 0.25) {
 				holder.sleepCondition.setText(R.string.sleep_good);
+			} else {
+				holder.sleepCondition.setText("");
 			}
 
 			holder.showDetail.setOnClickListener(new OnClickListener() {
@@ -212,11 +229,7 @@ public class SleepActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-
-					Intent intent = new Intent(mContext, SettingsGoalActivity.class);
-					intent.putExtra(SettingsGoalActivity.SHOW_WHICH_FRAGMENT,
-							SettingsGoalActivity.SHOW_SLEEP_GOAL_FRAGMENT);
+					Intent intent = new Intent(mContext, SettingsNightGoalActivity.class);
 					startActivity(intent);
 				}
 			});

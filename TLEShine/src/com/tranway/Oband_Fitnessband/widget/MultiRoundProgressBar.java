@@ -57,7 +57,7 @@ public class MultiRoundProgressBar extends View {
 	 */
 	private int progress;
 	private int progressNext;
-	
+
 	/**
 	 * 开始的角度
 	 */
@@ -99,21 +99,30 @@ public class MultiRoundProgressBar extends View {
 
 		paint = new Paint();
 
-		TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundProgressBar);
+		TypedArray mTypedArray = context
+				.obtainStyledAttributes(attrs, R.styleable.RoundProgressBar);
 
 		// 获取自定义属性和默认值
 		roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED);
-		roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.GREEN);
-		roundProgressNextColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressNextColor, Color.GREEN);
-		startAngle = mTypedArray.getInteger(R.styleable.RoundProgressBar_roundProgressStartAngle, -90);
-		startAngleNext = mTypedArray.getInteger(R.styleable.RoundProgressBar_roundProgressNextStartAngle, -90);
-		textCurrentColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textCurrentColor, Color.GREEN);
-		textTotalColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textTotalColor, Color.GRAY);
-		textCurrentSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textCurrentSize, 15);
+		roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor,
+				Color.GREEN);
+		roundProgressNextColor = mTypedArray.getColor(
+				R.styleable.RoundProgressBar_roundProgressNextColor, Color.GREEN);
+		startAngle = mTypedArray.getInteger(R.styleable.RoundProgressBar_roundProgressStartAngle,
+				-90);
+		startAngleNext = mTypedArray.getInteger(
+				R.styleable.RoundProgressBar_roundProgressNextStartAngle, -90);
+		textCurrentColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textCurrentColor,
+				Color.GREEN);
+		textTotalColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textTotalColor,
+				Color.GRAY);
+		textCurrentSize = mTypedArray
+				.getDimension(R.styleable.RoundProgressBar_textCurrentSize, 15);
 		textTotalSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textTotalSize, 15);
 		roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);
 		max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
-		textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, false);
+		textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable,
+				false);
 		style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
 
 		mTypedArray.recycle();
@@ -146,18 +155,20 @@ public class MultiRoundProgressBar extends View {
 		switch (style) {
 		case STROKE:
 			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawArc(oval, startAngle, 360 * progress / max, false, paint); // 根据进度画圆弧
+			canvas.drawArc(oval, startAngle, max == 0 ? 0 : 360 * progress / max, false, paint); // 根据进度画圆弧
 			paint.setColor(roundProgressNextColor);
-			canvas.drawArc(oval, startAngleNext, 360 * progressNext / max, false, paint); // 画第二个进度
+			canvas.drawArc(oval, startAngleNext, max == 0 ? 0 : 360 * progressNext / max, false,
+					paint); // 画第二个进度
 			break;
 		case FILL:
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			if (progress != 0) {
-				canvas.drawArc(oval, startAngle, 360 * progress / max, true, paint); // 根据进度画圆弧
+				canvas.drawArc(oval, startAngle, max == 0 ? 0 : 360 * progress / max, true, paint); // 根据进度画圆弧
 			}
 			if (progressNext != 0) {
 				paint.setColor(roundProgressNextColor);
-				canvas.drawArc(oval, startAngleNext, 360 * progressNext / max, true, paint); // 画第二个进度
+				canvas.drawArc(oval, startAngleNext, max == 0 ? 0 : 360 * progressNext / max, true,
+						paint); // 画第二个进度
 			}
 			break;
 		}
@@ -179,7 +190,8 @@ public class MultiRoundProgressBar extends View {
 			canvas.drawText(textCurrent, center - curWidth / 2, center + yOffset, paint);
 			paint.setColor(textTotalColor);
 			paint.setTextSize(textTotalSize);
-			canvas.drawText(textTotal, center - totalWidth / 2, center + textTotalSize + yOffset * 2, paint);
+			canvas.drawText(textTotal, center - totalWidth / 2, center + textTotalSize + yOffset
+					* 2, paint);
 		}
 	}
 
@@ -225,7 +237,7 @@ public class MultiRoundProgressBar extends View {
 			postInvalidate();
 		}
 	}
-	
+
 	public synchronized void setProgressNext(int progressNext) {
 		if (progressNext < 0) {
 			throw new IllegalArgumentException("progress not less than 0");

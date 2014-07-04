@@ -385,7 +385,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			// Test code
 //			saveActivityInfo(Util.getActivityInfoTestData());
 //			saveEvery15MinPacket(Util.getTestBytesList());
-			// saveSleepPacket(Util.getTestBytesList());
+//			 saveSleepPacket(Util.getTestBytesList());
 			break;
 		default:
 			break;

@@ -39,7 +39,6 @@
             android:id="@+id/radio_day"
             style="@style/main_tab_bottom"
             android:layout_weight="1.0"
-            android:checked="true"
             android:drawableTop="@drawable/radio_button_day"
             android:text="@string/exercise"
             android:textColor="@drawable/radio_text_color" />

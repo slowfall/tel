@@ -85,7 +85,7 @@
     <string name="sleep_no">No Sleep</string>
     <string name="sleep_total">Total time</string>
     <string name="sleep_wake_times">Wake times</string>
-    <string name="sleep_wake_times_unit"></string>
+    <string name="sleep_wake_times_unit">times</string>
     <string name="n_hour_sleep_goal">%1$s hour sleep goal</string>
     <string name="sleep_good">Sleep good</string>
     <string name="sleep_normal">Sleep normal</string>

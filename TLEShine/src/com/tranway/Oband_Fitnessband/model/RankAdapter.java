@@ -79,6 +79,8 @@ public class RankAdapter extends BaseAdapter {
 		holder.mPointTxt.setText(info.getPoint() + mContext.getString(R.string.activity_step));
 		if (position < mRankIconIDs.length) {
 			holder.mRankIcon.setImageResource(mRankIconIDs[position]);
+		} else {
+			holder.mRankIcon.setImageBitmap(null);
 		}
 
 		return convertView;

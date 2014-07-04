@@ -456,7 +456,7 @@ public class DBManager {
 					data.put(DBInfo.KEY_SLEEP_GOAL,
 							cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_GOAL)));
 				} else {
-					data.put(DBInfo.KEY_SLEEP_GOAL, 0);
+					data.put(DBInfo.KEY_SLEEP_GOAL, 0l);
 				}
 				data.put(DBInfo.KEY_SLEEP_DEEP_TIME,
 						cursor.getLong(cursor.getColumnIndex(DBInfo.KEY_SLEEP_DEEP_TIME)));
