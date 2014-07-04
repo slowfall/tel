@@ -10,6 +10,15 @@
     <string name="promte_search_friend">输入要搜索的好友名字或邮箱</string>
     <string name="search_result_empty">未搜索到匹配的用户信息!</string>
 	<string name="add_friend_failed">添加好友失败</string>
-	<string name="add_friend_success">添加好友成功</string>
+	<string name="add_friend_success">请求添加好友成功</string>
     
+    <string name="new_friend">新朋友</string>
+    <string name="received_add_friends">请求添加</string>
+    <string name="request_add_friends">等待回复</string>
+    <string name="empty_request_list">没有请求未处理的请求</string>
+    <string name="success_handle_request">请求处理成功</string>
+    <string name="refuse">拒绝</string>
+    <string name="accept">同意</string>
+    
+    <string name="app_exception">程序异常</string>
 </resources>

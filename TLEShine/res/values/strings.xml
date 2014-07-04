@@ -97,7 +97,6 @@
     <string name="minute">M</string>
     <string name="start">Start</string>
     <string name="end">End</string>
-    <string name="title_activity_photo_selector">PhotoSelectorActivity</string>
 	
     <!-- RegisterUserInfoActivity strings -->
     <string name="profile_picture">Profile picture</string>

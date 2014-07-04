@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tranway.Oband_Fitnessband"
-    android:versionCode="3"
-    android:versionName="1.02" >
+    android:versionCode="4"
+    android:versionName="1.04" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -187,10 +187,6 @@
             android:name="com.tranway.Oband_Fitnessband.DocumentActivity"
             android:label="@string/title_activity_document"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
-        <activity
-            android:name="com.tranway.Oband_Fitnessband.PhotoSelectorActivity"
-            android:label="@string/title_activity_photo_selector" >
         </activity>
     </application>
 

@@ -28,6 +28,11 @@ public class UserInfo {
 	public static final String SEVER_KEY_AVATAR = "Avatar";
 	public static final String SEVER_KEY_DEVICE_ID = "DeviceID";
 
+	// for handle request add friends
+	public static final String SEVER_KEY_USER_ID = "UserID";
+	public static final String SEVER_KEY_FRIEND_ID = "FriendID";
+	public static final String SEVER_KEY_HANDLE_STATE = "State";
+
 	private int weight = -1; // Weight(Unit: 0.1Kg); 2byte
 	private int age = -1; // Age; 1byte
 	private int height = -1; // Height(Unit: 1cm); 1byte
@@ -43,7 +48,7 @@ public class UserInfo {
 	private long id = -1; // user id
 	private String avatar = null;
 	private String deviceID = null;
-	
+
 	public UserInfo() {
 
 	}

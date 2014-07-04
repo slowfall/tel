@@ -15,17 +15,18 @@ public class FriendsActivity extends Activity {
 	public static final String SAVED_TAG = "fragment_tag";
 
 	private SocialInfoFragment mInfoFragment;
+	private NewFriendFragment mNewFriendFragment;
 	private SocialRankFragment mDayRankFragment, mYesterdayRankFragment;
 
 	private String mRadioTag = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
 		initView();
-		//		showInfoFragment();
+		// showInfoFragment();
 		showFragment(R.id.radio_my_info);
 	}
 
@@ -49,8 +50,7 @@ public class FriendsActivity extends Activity {
 		switch (radioId) {
 		case R.id.radio_my_info:
 			mInfoFragment = new SocialInfoFragment();
-			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment)
-					.commit();
+			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment).commit();
 			break;
 		case R.id.radio_rank_today:
 		case R.id.radio_rank_yesterday:
@@ -58,24 +58,26 @@ public class FriendsActivity extends Activity {
 			Bundle bundle = new Bundle();
 			bundle.putInt(SAVED_TAG, radioId);
 			mDayRankFragment.setArguments(bundle);
-			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment)
-					.commit();
+			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment).commit();
+			break;
+		case R.id.radio_new_friend:
+			mNewFriendFragment = new NewFriendFragment();
+			getFragmentManager().beginTransaction().replace(R.id.fragment_social, mNewFriendFragment).commit();
 			break;
 		default:
 			break;
 		}
 	}
+
 	private void showInfoFragment() {
 		mRadioTag = TAG_INFO;
 		mInfoFragment = new SocialInfoFragment();
-		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment)
-				.commit();
+		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mInfoFragment).commit();
 	}
 
 	private void showTodayRankFragment() {
 		mRadioTag = TAG_TODAY;
 		mDayRankFragment = new SocialRankFragment();
-		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment)
-				.commit();
+		getFragmentManager().beginTransaction().replace(R.id.fragment_social, mDayRankFragment).commit();
 	}
 }
